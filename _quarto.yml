@@ -8,6 +8,10 @@ website:
     left:
       - text: "Home"
         href: TidyTuesdays.qmd
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
       - text: "2018-04-03 - US Tuition Costs"
         href: 2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.qmd
       - text: "2019-02-26 - French Train Delays"
@@ -19,4 +23,8 @@ website:
 
 editor: visual
 
-
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
