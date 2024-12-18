@@ -1,8 +1,6 @@
 ---
 title: "2018-04-03 - US Tuition Costs"
-author: "Hippolyte Menou"
-date: "2024-12-07"
-output: html_document
+format: html
 ---
 
 ```{r setup, include=FALSE}
@@ -40,7 +38,6 @@ label_dollars <- label_currency(accuracy = 1)
 
 ```
 
-
 ```{r import data}
 us_avg_tuition <- read_xlsx("us_avg_tuition.xlsx")
 
@@ -53,7 +50,8 @@ us_avg_tuition_longer <- us_avg_tuition %>%
   pivot_longer(`2004-05`:`2015-16`, names_to = "Season", values_to = "avg_tuition") 
 ```
 
-# How did tuition costs increased over time ? 
+# How did tuition costs increased over time ?
+
 ```{r}
 us_avg_tuition %>% 
   mutate(difference = `2015-16` - `2004-05`) %>% 
@@ -134,27 +132,23 @@ us_avg_tuition %>%
 
 
 ```
+
 The "lagging university increased faster to get more concentrated around the mean. A few escaped to reach the top
-
-
 
 No increase in 2008 yet the trend is consistent as soon as the following year
 
-
-# Average tuition cost trends over time ? 
-
-```{r}
-```
-
-# Did cheaper schools made their price increase faster ? 
-```{r}
-```
-
+# Average tuition cost trends over time ?
 
 ```{r}
 ```
 
+# Did cheaper schools made their price increase faster ?
 
 ```{r}
 ```
 
+```{r}
+```
+
+```{r}
+```

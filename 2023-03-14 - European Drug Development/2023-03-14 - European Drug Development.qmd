@@ -1,0 +1,177 @@
+---
+title: "European Drug Development"
+author: "Hippolyte Menou"
+format: html
+editor: visual
+---
+
+```{r Libraries}
+# devtools::install_github("teunbrand/elementalist")
+
+library(scales)
+library(ggridges)
+library(tidyverse)
+library(paletteer)
+library(patchwork)
+library(elementalist)  
+```
+
+# European Drug Development
+
+The data this week comes from the European Medicines Agency via Miquel Anglada Girotto on GitHub. We used the source table of all EPARs for human and veterinary medicines, rather than Miquel's scraped data.
+
+Miquel wrote about his exploration of the data.
+
+```{r Import data}
+drugs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-03-14/drugs.csv')
+
+drugs %>% 
+  glimpse
+```
+
+## Drug classes
+
+```{r Drug classes}
+drugs %>% 
+  mutate(category=="human", authorisation_status=="authorized") %>% 
+  count(therapeutic_area, sort=T)
+```
+
+## Time to Market
+
+```{r}
+drugs %>% 
+  mutate(time_to_market = decision_date - date_of_opinion) %>% 
+  filter(category=="human", !generic, !biosimilar, time_to_market>0) %>% 
+  ggplot(aes(x = time_to_market, y = orphan_medicine)) + 
+    geom_violin()
+```
+
+## Orphan drugs
+
+```{r}
+
+jack_bush_palette <- paletteer_d("lisa::JackBush_1")
+names(jack_bush_palette) <- c("Drug authorised", "Drug withdrawn", "Orphan drug authorised", "Orphan drug withdrawn")
+jack_bush_palette
+
+theme_set(theme_minimal())
+theme_update(
+  # Legend Styling
+  legend.title = element_blank(), 
+  legend.position = "none", 
+  
+  # Title Styling
+  plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+  plot.subtitle = element_text(hjust = 0.5),
+  
+  
+  #
+  panel.grid.minor = element_blank(),
+  
+  # Margins
+  plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
+)
+
+```
+
+```{r}
+orphan_drugs_years <- drugs %>% 
+  mutate(year = year(date_of_opinion)) %>%  # date_of_opinion, decision_date, first_published, marketing_authorisation_date, revision_date
+  filter(!is.na(year)) %>% 
+  group_by(orphan_medicine, authorisation_status) %>% 
+  count(year) %>% 
+  mutate(authorisation_status = if_else(authorisation_status=="authorised", T, F),
+         approved_orphan = case_when(
+           orphan_medicine & authorisation_status ~ "Orphan drug authorised",  # TRUE/TRUE
+           orphan_medicine & !authorisation_status ~ "Orphan drug withdrawn",  # TRUE/FALSE
+           !orphan_medicine & authorisation_status ~ "Drug authorised",   # FALSE/TRUE
+           !orphan_medicine & !authorisation_status ~ "Drug withdrawn"   # FALSE/FALSE
+         ) %>% factor(levels=c("Drug withdrawn", "Drug authorised", "Orphan drug withdrawn", "Orphan drug authorised")))  
+
+orphan_drugs_years
+```
+
+```{r}
+orphan_years_plot <- orphan_drugs_years %>% 
+  ggplot(aes(x=year, y=n, fill=approved_orphan)) + 
+  geom_col() + 
+  
+  scale_fill_manual(values=jack_bush_palette, breaks=c("Drug authorised", "Drug withdrawn", "Orphan drug authorised", "Orphan drug withdrawn")) + 
+  
+  scale_x_continuous(breaks=seq(1995, 2020, 5)) +
+  scale_y_continuous(breaks=seq(0, 120, 20)) +
+
+  # Number below horizon
+  geom_text(data = orphan_drugs_years %>% filter(approved_orphan == "Orphan drug authorised"), aes(label=n), colour="#F45F40FF", y = -2, fontface="bold") +
+  
+  labs(x = "Year of Opinion",
+       y = "Number of Drugs", 
+       title = "Number of drugs evaluated by the \n European Medicines Agency each year",
+       subtitle = "Submissions for orphan designation lagged after the EU orphan regulation became \neffective in 2000. In 2022, only 20 orphan drugs were submitted for evaluation.",
+       # caption = "Data source: European Medicines Agency",
+  ) +
+  
+  theme(
+    # Legend Styling
+    legend.position = "bottom", 
+    legend.box.background = element_rect_round(fill = "white", colour = "black"),
+  )
+
+orphan_years_plot
+```
+
+```{r}
+orphan_drugs_summary <- orphan_drugs_years %>% 
+  group_by(orphan_medicine, approved_orphan) %>% 
+  summarise(total = sum(n)) %>% 
+  ungroup %>% group_by(orphan_medicine) %>% add_tally(total) %>% ungroup %>% 
+  mutate(perc = round(total / n, 2), perc2 = round(n / sum(total), 2))
+
+orphan_drugs_summary
+
+orphan_total_plot <- orphan_drugs_summary %>% 
+  ggplot(aes(x = orphan_medicine, y = total, fill = approved_orphan)) + 
+  geom_col() + 
+  
+  # Number below the horizon
+  geom_text(data = orphan_drugs_summary %>% filter(approved_orphan %in% c("Orphan drug authorised", "Drug authorised")), aes(label=n), y=-20, fontface="bold", colour="black") + 
+  
+  # Percentage of approval
+  geom_text(data = orphan_drugs_summary %>% filter(approved_orphan %in% c("Orphan drug authorised", "Drug authorised")), aes(label=percent(perc)), position = position_stack(vjust = .5), colour="darkgray", fontface="bold") + 
+  
+  # Percentage of orphan drugs total
+  geom_text(data = orphan_drugs_summary %>% filter(approved_orphan %in% c("Orphan drug authorised", "Drug authorised")), aes(label=percent(perc2)), y=1100, fontface="bold", size=6) + 
+  
+  scale_fill_manual(values=jack_bush_palette, breaks=c("Drug authorised", "Drug withdrawn", "Orphan drug authorised", "Orphan drug withdrawn")) +
+  scale_x_discrete(labels = c("FALSE" = "Drugs", "TRUE" = "Orphan drugs")) +  # rename orphan drugs T/F
+  scale_y_continuous(breaks = seq(0, 1200, 200), expand = expansion(mult = c(0.05, 0.15))) +
+  
+  
+  labs(x = "",
+       y = "Number of Drugs", 
+       title = "Total Number of drugs evaluated by the \n European Medicines Agency (1995-2022)",
+       subtitle = "Orphan drugs are 12% of drugs approved while authorisation \n rates are around 90% for orphan drugs and regular drugs.",
+       # caption = "Data source: European Medicines Agency"
+  ) +
+  
+  theme(
+    axis.title.x = element_blank()
+  )
+
+orphan_total_plot
+```
+
+```{r}
+Orphan_drugs_plot <- wrap_plots(orphan_years_plot, orphan_total_plot, ncol = 2, nrow = 1, widths = c(1, 0.33)) + 
+  plot_annotation(title = 'Orphan drugs submitted for evaluation by the European Medicines Agency',
+                  subtitle = "",
+                  caption = "Data source: European Medicines Agency",
+                  
+                  # tag_levels = 'A', tag_prefix = "Plot ",
+                  theme = theme(plot.title = element_text(size = 32)))
+
+Orphan_drugs_plot
+
+ggsave("Orphan drugs plot.png", Orphan_drugs_plot, path="Plots", width = 5400, height = 3000, units = "px", bg="white")
+```
