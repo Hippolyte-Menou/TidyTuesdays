@@ -1,0 +1,7 @@
+git init  # First time only
+git remote add origin https://github.com/Hippolyte-Menou/TidyTuesdays.git  # First time only
+quarto render
+git add docs/
+git commit -m "Update website with new changes"
+git push origin main
+

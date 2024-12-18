@@ -1,0 +1,82 @@
+---
+title: "French Train Delays"
+author: "Hippolyte Menou"
+format: html
+editor: visual
+---
+
+# French Train Delays
+
+<https://twitter.com/noccaea/status/1095735292206739456>
+
+```{r Setup}
+#| echo: false
+library(tidyverse, quietly = T)
+```
+
+```{r Theme}
+theme_set(theme_minimal())
+```
+
+```{r Import}
+full_trains <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2019/2019-02-26/full_trains.csv")
+small_trains <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2019/2019-02-26/small_trains.csv") 
+
+international_stations <- c("ZURICH", "LAUSANNE", "GENEVE", "ITALIE", "STUTTGART", "FRANCFORT", "MADRID", "BARCELONA")
+
+is_international <- function(x){x %in% international_stations}
+
+small_trains <- small_trains %>% 
+  mutate(service = if_else(is.na(service), 
+                           if_else(is_international(departure_station) | is_international(arrival_station), "International", "National"), 
+                           service))
+
+small_trains %>% 
+  glimpse
+```
+
+```{r Plot 1}
+
+
+international_trains <- small_trains %>% 
+  filter(service == "International") 
+
+
+international_connections <- international_trains %>% 
+  group_by(departure_station, arrival_station) %>% 
+  summarise(average_journey_time = weighted.mean(journey_time_avg, total_num_trips)) %>% 
+  mutate(outgoing = arrival_station %in% international_stations,
+         connection = if_else(outgoing, str_c(departure_station, arrival_station, sep = " - "), str_c(arrival_station, departure_station, sep = " - ")))
+
+international_delay <- international_trains %>% 
+  group_by(arrival_station, departure_station) %>% 
+  summarise(average_arriving_delay = weighted.mean(avg_delay_all_arriving, num_late_at_departure), 
+            average_departing_delay = weighted.mean(avg_delay_all_departing, num_late_at_departure)) %>% 
+  left_join(international_connections, by = c("departure_station", "arrival_station")) %>% 
+  mutate(average_journey_time2 = average_journey_time) %>% 
+  pivot_longer(cols = c("average_arriving_delay", "average_journey_time", "average_departing_delay")) %>% 
+  mutate(name = if_else(
+    outgoing, 
+    str_c("outgoing_", name),
+    str_c("incoming_", name)
+  )) %>% 
+  mutate(name = factor(name, levels= c("outgoing_average_arriving_delay", "outgoing_average_journey_time", "outgoing_average_departing_delay", "incoming_average_departing_delay", "incoming_average_journey_time", "incoming_average_arriving_delay")),
+         connection = factor(connection, levels = c("PARIS EST - FRANCFORT", "PARIS EST - STUTTGART", "PARIS LYON - GENEVE", "PARIS LYON - LAUSANNE", "PARIS LYON - ZURICH", "PARIS LYON - ITALIE", "PARIS LYON - BARCELONA", "MARSEILLE ST CHARLES - MADRID"))
+         ) 
+
+international_delay %>% 
+  # filter(connection == "PARIS EST - FRANCFORT") %>% 
+  ggplot(aes(x = outgoing, y = value, fill = name)) + 
+    geom_col(width = 0.5) + 
+    coord_flip() +
+    facet_wrap(connection ~ ., ncol = 1, strip.position = "left") + 
+    # TODO arrow for direction
+  
+    labs(x = "", y = "Train delays") + 
+  
+    theme(
+      
+      axis.text.y = element_blank(),
+      legend.position = "none"
+    )
+```

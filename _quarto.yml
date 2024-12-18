@@ -1,5 +1,15 @@
 project:
   title: "TidyTuesdays"
+  type: website
+  output-dir: docs
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Folder1"
+        href: folder1/file1.qmd
+      - text: "Folder2"
+        href: folder2/file3.qmd
+  
 
 editor: visual
-

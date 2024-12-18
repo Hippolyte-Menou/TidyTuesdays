@@ -1,0 +1,292 @@
+---
+title: "Bob Ross Paintings"
+author: "Hippolyte Menou"
+format: html
+editor: visual
+---
+
+```{r}
+# devtools::install_github("frankiethull/BobRossColors")
+# devtools::install_github("ctesta01/ggtriangles")
+
+library(patchwork)
+library(tidyverse)
+library(colorspace)
+library(BobRossColors)
+library(ggtriangles)
+```
+
+```{r}
+bob_ross <- read_csv(
+  "https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv") %>% 
+  select(-1) %>% 
+  mutate(across(Black_Gesso:Alizarin_Crimson, as.logical))
+
+bob_ross %>% 
+  glimpse()
+```
+
+```{r Set Theme}
+theme_set(theme_minimal())
+
+theme_update(
+  
+  plot.background = element_rect(fill = "lightblue", color = "lightblue"),
+  panel.background = element_rect(fill = "lightyellow", color = "lightyellow"),
+  
+  panel.grid.major=element_blank(),
+  panel.grid.minor = element_blank(),
+  
+  axis.title = element_blank(),
+  axis.text = element_blank(),
+  
+  legend.position = "none"
+)
+
+```
+
+# How many paintings per season?
+
+There are 13 paintings per season every season for 31 season
+
+```{r}
+bob_ross %>% 
+  group_by(season) %>% 
+  summarise(paintings = n()) %>% 
+  arrange(desc(paintings))
+```
+
+# How many colors does Bob Ross uses per painting ?
+
+```{r color_number_plot}
+bob_ross %>% 
+  summarise(median=median(num_colors))
+
+bob_ross %>% 
+  count(num_colors, sort=T) %>% 
+  summarise(mean = weighted.mean(num_colors, n))
+
+bob_ross %>% 
+  count(num_colors, sort=T) %>% 
+  arrange(num_colors) %>% 
+  add_tally(n, name="total_paintings") %>% 
+  mutate(sum_colors = cumsum(n),
+         perc = round(sum_colors / total_paintings, 2)) 
+
+bob_ross %>% 
+  summarise(interval = list(quantile(num_colors, probs = c(0.05, 0.1, 0.9, 0.95)))) %>%
+  unnest_wider(interval)
+
+color_numbers <- bob_ross %>% 
+  left_join(bob_ross %>% count(num_colors), by="num_colors")
+
+indian_red <- "#CD5C5C"
+
+color_number_plot <- color_numbers %>% 
+  ggplot(aes(x=num_colors)) + 
+  geom_boxplot(aes(y=120), width=10, outliers=F, staplewidth =0.5, fill=indian_red) + 
+  
+  geom_bar(stat = "count", fill=indian_red) + 
+  
+  scale_x_continuous(breaks = 1:15) +
+  scale_y_continuous(breaks = seq(0, 100, 20), expand = c(0, 0.1), limits = c(0,130)) +
+  
+  labs(title="One Color or Many? How Many Colors Make a Masterpiece", 
+       x = "Number of colours used by Bob Ross in his paintings", 
+       y ="") +
+  
+  theme(
+    plot.title = element_text(hjust=0.5, size=24),
+    axis.text = element_text(),
+    axis.title = element_text(),
+    panel.grid.major.y = element_line(),
+    plot.margin = margin(t = 20, r = 10, b = 10, l = 10)
+  )
+
+color_number_plot
+```
+
+Bob Ross used on average more than 10 colors in his paintings (mean = 10.7 with a median = 11) and up to 15 colors in 7 of them. In 90% of his paintings, between 6 and 13 colors are used.
+
+Bob Ross used only one color of paint in this painting : "Contemplative Lady" was composed using only Van Dyke Brown which he declined in multiple shades.
+
+```{r One color painting}
+bob_ross %>%
+  filter(num_colors==1)
+# Contemplative Lady
+
+show_colors_and_paintings(paintings = c("contemplative_lady"))
+```
+
+# What are the most frequent colors used by Bob Ross
+
+```{r most_frequent_colors_plot}
+most_frequent_used_colours <- bob_ross %>% 
+  summarise(across(Black_Gesso:Alizarin_Crimson, sum)) %>% 
+  pivot_longer(Black_Gesso:Alizarin_Crimson, names_to = "color", values_to = "count") %>% 
+  arrange(desc(count)) %>% 
+  mutate(color = fct_reorder(color, count)) %>% 
+  mutate(color = str_replace_all(color, "_", "")) %>% 
+  left_join(unique_bob_ross_colors)
+
+color_palette <- most_frequent_used_colours$color_hex
+names(color_palette) <- most_frequent_used_colours$color
+color_palette
+
+
+most_frequent_colors_plot <- most_frequent_used_colours %>% 
+  ggplot(aes(x=fct_reorder(color, count), y=count, fill=color)) + 
+  geom_col() + 
+  coord_flip() +
+  ylim(0, 403) +
+  scale_y_continuous(limits=c(0,410), expand = c(0,0)) +
+  
+  scale_fill_manual(values=color_palette) + 
+  labs(title="Bob Ross's Favorite Hues", 
+       # subtitle="Starting with Titanium White",
+       x = NA, y = NA) +
+  theme(
+    plot.title = element_text(hjust=0.5, size=24),
+    plot.subtitle = element_text(hjust=0.5, size=16),
+
+    axis.text = element_text(),
+    axis.ticks = element_line(),
+    panel.grid.major.x = element_line(),
+    plot.margin = margin(t = 20, r = 10, b = 10, l = 10)
+  )
+
+most_frequent_colors_plot
+```
+
+```{r legend_plot}
+
+get_luminance <- function(color) {
+  rgb_color <- col2rgb(color) / 255
+  0.2126 * rgb_color[1,] + 0.7152 * rgb_color[2,] + 0.0722 * rgb_color[3,]
+}
+
+legend_colors <- most_frequent_used_colours %>% 
+  mutate(
+    label = color %>%
+      str_split("(?=[A-Z])") %>% 
+      map_chr(~ str_c(.x, collapse = " ")) %>% 
+      str_c(color_hex, sep="\n"),
+    
+    text_color = if_else(get_luminance(color_hex) > 0.5, "black", "white")) 
+legend_colors
+
+legend_plot <- legend_colors %>% 
+  ggplot(aes(y = fct_reorder(color, count), x=0)) + 
+  geom_tile(aes(fill=color)) + 
+  coord_fixed(ratio = 1) + 
+  
+  geom_text(aes(label=label, color = text_color)) +
+  
+  scale_color_identity() +
+  scale_fill_manual(values=color_palette) 
+
+legend_plot
+```
+
+```{r all_seasons_plot}
+
+facet_title <- str_c("Season ", 1:31)
+facet_title[-c(1,6,11,16,21,26,31)] <- ""  # Only write the season title for these seasons
+names(facet_title) <- 1:31
+facet_title
+
+all_seasons_colors <- bob_ross %>% 
+  pivot_longer(Black_Gesso:Alizarin_Crimson, names_to = "color") %>% 
+  mutate(color = str_replace_all(color, "_", "")) %>% 
+  filter(value) %>% 
+  left_join(most_frequent_used_colours, by="color")
+
+all_seasons_colors
+
+all_seasons_plot <- all_seasons_colors %>% 
+  ggplot(aes(x=episode, y=fct_reorder(color, count))) + 
+  geom_tile(aes(color=color, fill=color), width = 1, height = 1) + 
+  coord_fixed(ratio = 1) +
+  facet_wrap(~season, ncol=5, labeller = labeller(season = facet_title), strip.position = "left") + 
+  
+  scale_color_manual(values=color_palette) + 
+  scale_fill_manual(values=color_palette) + 
+  
+  theme(
+    
+    plot.background = element_rect(fill = "lightblue"),
+    panel.background = element_rect(fill = "lightyellow"),
+    
+    panel.grid.major=element_blank(),
+    panel.grid.minor = element_blank(),
+    
+    axis.title = element_blank(),
+    axis.text = element_blank())
+
+all_seasons_plot
+```
+
+```{r Plot Patchwork}
+total_width <- 4500 + 4000
+legend_width <- 1000
+legend_ratio <- legend_width / total_width
+all_ratio <- 1 - legend_ratio
+
+
+design <- "
+  123
+  124
+  12#
+"
+
+bob_ross_colors <- all_seasons_plot + legend_plot + color_number_plot + most_frequent_colors_plot +
+  plot_layout(design = design, widths = c(all_ratio, legend_ratio, all_ratio)) + 
+  plot_annotation(title = "The Joy of Color: Bob Ross's Happy Little Palette",
+                  subtitle = "",
+                  caption = "Data source: Jared Wilber's data on Bob Ross Paintings via @frankiethull Bob Ross Colors data package",
+                  
+                  theme = theme(plot.title = element_text(size = 32, hjust = 0.5)))
+
+bob_ross_colors
+
+ggsave("bob_ross_colors.png", bob_ross_colors, path="Plots", width = total_width, height = 7000, units = "px", bg="white")
+```
+
+# Which colors are used together
+
+```{r}
+row_occurance <- bob_ross %>% 
+  select(painting_index, Black_Gesso:Alizarin_Crimson) %>%
+  pivot_longer(Black_Gesso:Alizarin_Crimson, names_to = "color", values_to = "n")
+
+
+co_occurence <- row_occurance %>%
+  left_join(row_occurance, by = "painting_index") %>%
+  mutate(occurence = if_else(n.x & n.y, 1, 0)) %>% 
+  group_by(color.x, color.y) %>%
+  summarise(Occurance = sum(occurence)) %>%
+  spread(key = "color.y", value = "Occurance", fill = 0) %>% 
+  rename(Color = "color.x")
+
+co_occurence
+
+colors_used_together <- co_occurence %>% 
+  pivot_longer(Alizarin_Crimson:Yellow_Ochre, names_to = "Pair", values_to = "n") %>% 
+  mutate(Color = str_replace_all(Color, "_", ""), Pair = str_replace_all(Pair, "_", ""))
+
+colors_used_together %>% 
+  arrange(-n)
+
+used_together_plot <- colors_used_together %>% 
+  ggplot(aes(x=fct_reorder(Color, -n), y=fct_reorder(Pair, n))) +
+  geom_point(shape=21, aes(colour=Color, fill=Pair, size=n/400), stroke=1.5) +
+  
+  coord_fixed(ratio = 1) +
+
+  scale_fill_manual(values=color_palette) + 
+  scale_colour_manual(values=color_palette) + 
+  
+  theme()
+
+used_together_plot
+```
