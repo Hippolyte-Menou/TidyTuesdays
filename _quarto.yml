@@ -10,7 +10,6 @@ website:
     left:
       - text: "Home"
         href: TidyTuesdays.qmd
-    tools:
       - icon: github
         text: "Github"
         href: https://github.com/Hippolyte-Menou/TidyTuesdays
