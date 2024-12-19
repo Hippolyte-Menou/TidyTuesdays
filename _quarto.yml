@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: docs
   title: "TidyTuesdays"
+  execute:
+    warning: false
+    message: false
 
 website:
   navbar:
@@ -46,6 +49,3 @@ format:
     toc: true
     code-fold: true
 
-execute:
-  warning: false
-  message: false
