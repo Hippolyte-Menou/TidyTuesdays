@@ -5,16 +5,27 @@ format: html
 editor: visual
 ---
 
+This data story explores delays in French train services, with a particular focus on international connections. The dataset comes from the TidyTuesday project and contains information about train delays, journey times across all French stations.
+
 <https://twitter.com/noccaea/status/1095735292206739456>
 
+# Data Preparation
+
+First, we load the necessary packages and set up our visualization theme:
+
 ```{r Setup}
-#| echo: false
 library(tidyverse, quietly = T)
 ```
 
 ```{r Theme}
 theme_set(theme_minimal())
 ```
+
+## Data Import and Processing
+
+We import two datasets: `full_trains` and `small_trains`, with the latter being a subset of the former. To properly categorize international services, we create a list of international stations and a helper function to identify international routes. This allows us to fill in missing service types based on whether either the departure or arrival station is international.
+
+Let's examine the structure of our processed dataset:
 
 ```{r Import}
 full_trains <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2019/2019-02-26/full_trains.csv")
@@ -33,7 +44,27 @@ small_trains %>%
   glimpse
 ```
 
-```{r Plot 1}
+# International Connections
+
+Our first visualization focuses on international train connections from French stations. We prepare the data by:
+
+1.   Calculating average journey times weighted by the number of trips
+
+2.   Determining whether connections are outgoing or incoming
+
+3.   Computing average delays for both departures and arrivals
+
+The resulting plot shows the relationship between scheduled journey times and delays for each international connection. The bars represent:
+
+-   Journey time (middle bar)
+
+-   Average departure delay (left bar)
+
+-   Average arrival delay (right bar)
+
+For each connection, we can see both the outgoing (from France) and incoming (to France) statistics, allowing us to compare service reliability in both directions.
+
+```{r International Connections Delay}
 
 
 international_trains <- small_trains %>% 

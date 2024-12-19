@@ -5,6 +5,16 @@ format: html
 editor: visual
 ---
 
+# Introduction
+
+This analysis explores drug development and approval patterns in Europe, focusing particularly on orphan drugs - medicines developed specifically for rare diseases. The data comes from the European Medicines Agency (EMA) via Miquel Anglada Girotto on GitHub. Miquel wrote about his exploration of the data.
+
+We used the source table of all EPARs for human and veterinary medicines, rather than Miquel's scraped data. It includes information about drug authorizations, therapeutic areas, and timelines from 1995 to 2022.
+
+# Data Preparation
+
+After loading necessary visualization and data manipulation libraries, we import the dataset from TidyTuesday's repository. The data originates from the European Medicines Agency's table of all EPARs (European Public Assessment Reports) for human and veterinary medicines.
+
 ```{r Libraries}
 # devtools::install_github("teunbrand/elementalist")
 
@@ -16,10 +26,6 @@ library(patchwork)
 library(elementalist)  
 ```
 
-The data this week comes from the European Medicines Agency via Miquel Anglada Girotto on GitHub. We used the source table of all EPARs for human and veterinary medicines, rather than Miquel's scraped data.
-
-Miquel wrote about his exploration of the data.
-
 ```{r Import data}
 drugs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-03-14/drugs.csv')
 
@@ -27,7 +33,9 @@ drugs %>%
   glimpse
 ```
 
-## Drug classes
+# Analysis of Drug Categories
+
+Looking at the therapeutic areas for human drugs with authorized status, we can see the distribution of drug development across different medical fields. This helps us understand where pharmaceutical research and development efforts have been concentrated.
 
 ```{r Drug classes}
 drugs %>% 
@@ -35,7 +43,9 @@ drugs %>%
   count(therapeutic_area, sort=T)
 ```
 
-## Time to Market
+# Time to Market Analysis
+
+We examine the time between opinion date and decision date for non-generic, non-biosimilar human drugs. The violin plot comparison between orphan and non-orphan medicines reveals the variation in approval timelines, highlighting potential differences in the review process for these categories.
 
 ```{r}
 drugs %>% 
@@ -45,7 +55,16 @@ drugs %>%
     geom_violin()
 ```
 
-## Orphan drugs
+# Deep Dive into Orphan Drugs
+
+For our main analysis, we create two complementary visualizations using Jack Bush's color palette to explore orphan drug development over time:
+
+## Temporal Analysis (1995-2022): 
+
+-   Shows the yearly number of drug evaluations by the EMA
+-   Highlights the impact of EU orphan regulation (effective 2000)
+-   Demonstrates the relatively slow initial uptake of orphan drug submissions
+-   Notes the recent trend, with only 20 orphan drugs submitted in 2022
 
 ```{r}
 
@@ -119,6 +138,12 @@ orphan_years_plot <- orphan_drugs_years %>%
 orphan_years_plot
 ```
 
+##  Overall Statistics: 
+
+-   Orphan drugs represent 12% of all approved drugs
+-   Both orphan and regular drugs maintain similar authorization rates of around 90%
+-   Provides a clear comparison of total volumes between regular and orphan drugs
+
 ```{r}
 orphan_drugs_summary <- orphan_drugs_years %>% 
   group_by(orphan_medicine, approved_orphan) %>% 
@@ -159,6 +184,10 @@ orphan_total_plot <- orphan_drugs_summary %>%
 
 orphan_total_plot
 ```
+
+## Orphan Drugs plot
+
+The combined visualization effectively tells the story of orphan drug development in Europe, from policy implementation to current trends, while maintaining perspective on their proportion within overall drug development.
 
 ```{r}
 Orphan_drugs_plot <- wrap_plots(orphan_years_plot, orphan_total_plot, ncol = 2, nrow = 1, widths = c(1, 0.33)) + 

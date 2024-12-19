@@ -5,7 +5,15 @@ format: html
 editor: visual
 ---
 
-```{r}
+# Introduction
+
+This analysis explores the evolution of university tuition costs across different states in the United States over a twelve-year period (2004-2016). We'll investigate patterns in tuition increases, state-by-state variations, and potential relationships between initial costs and growth rates.
+
+# Data Preparation
+
+We begin by loading necessary libraries for data manipulation, visualization, and formatting. Our visual theme is minimalist, using a custom color palette and the Fira Sans font family. We've also set up currency formatting for clearer presentation of dollar amounts.
+
+```{r Libraries}
 library(glue)
 library(scales)
 library(ggtext)
@@ -16,7 +24,7 @@ library(patchwork)
 library(tidyverse)
 ```
 
-```{r}
+```{r Theme}
 theme_set(theme_minimal())
 
 theme_update(
@@ -32,19 +40,34 @@ label_dollars <- label_currency(accuracy = 1)
 
 ```
 
-```{r import data}
+The dataset contains average tuition costs by state from 2004-05 to 2015-16 academic years. We reshape the data into a longer format to facilitate various types of analysis.
+
+```{r Import Data}
 us_avg_tuition <- read_xlsx("us_avg_tuition.xlsx")
 
-us_avg_tuition %>% 
+us_avg_tuition_longer <- us_avg_tuition %>% 
+  pivot_longer(`2004-05`:`2015-16`, names_to = "Season", values_to = "avg_tuition") 
+
+us_avg_tuition_longer %>% 
   glimpse()
 ```
 
-```{r}
-us_avg_tuition_longer <- us_avg_tuition %>% 
-  pivot_longer(`2004-05`:`2015-16`, names_to = "Season", values_to = "avg_tuition") 
-```
-
 # How did tuition costs increased over time ?
+
+Our analysis reveals several interesting patterns in tuition cost evolution:
+
+1.  **Overall Growth Patterns**: We categorize states into six groups based on their tuition increase rates:
+
+    -   Decrease : Only one state had an decrease in the average tuition costs (Ohio)
+    -   Slow increase (0-23%)
+    -   Below median increase (23-50%)
+    -   Above median increase (50-75%)
+    -   Fast increase (75-100%)
+    -   More than double increase (\>100%) : Multiple states had more than doubled
+
+2.  **Distribution Changes**: The visualization shows how tuition costs have become more concentrated around the median over time, with some notable exceptions at the upper end. The median tuition increased from \${label_dollars(median_tuition_2005)} in 2004-05 to \${label_dollars(median_tuition_2015)} in 2015-16.
+
+3.  **Consistency of Increases**: Interestingly, despite the 2008 financial crisis, tuition increases remained relatively consistent, with continued growth resuming immediately in the following year.
 
 ```{r}
 us_avg_tuition %>% 

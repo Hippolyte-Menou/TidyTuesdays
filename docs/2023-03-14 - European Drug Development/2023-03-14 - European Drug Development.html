@@ -239,9 +239,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#drug-classes" id="toc-drug-classes" class="nav-link active" data-scroll-target="#drug-classes">Drug classes</a></li>
-  <li><a href="#time-to-market" id="toc-time-to-market" class="nav-link" data-scroll-target="#time-to-market">Time to Market</a></li>
-  <li><a href="#orphan-drugs" id="toc-orphan-drugs" class="nav-link" data-scroll-target="#orphan-drugs">Orphan drugs</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
+  <li><a href="#analysis-of-drug-categories" id="toc-analysis-of-drug-categories" class="nav-link" data-scroll-target="#analysis-of-drug-categories">Analysis of Drug Categories</a></li>
+  <li><a href="#time-to-market-analysis" id="toc-time-to-market-analysis" class="nav-link" data-scroll-target="#time-to-market-analysis">Time to Market Analysis</a></li>
+  <li><a href="#deep-dive-into-orphan-drugs" id="toc-deep-dive-into-orphan-drugs" class="nav-link" data-scroll-target="#deep-dive-into-orphan-drugs">Deep Dive into Orphan Drugs</a>
+  <ul class="collapse">
+  <li><a href="#temporal-analysis-1995-2022" id="toc-temporal-analysis-1995-2022" class="nav-link" data-scroll-target="#temporal-analysis-1995-2022">Temporal Analysis (1995-2022):</a></li>
+  <li><a href="#overall-statistics" id="toc-overall-statistics" class="nav-link" data-scroll-target="#overall-statistics">Overall Statistics:</a></li>
+  <li><a href="#orphan-drugs-plot" id="toc-orphan-drugs-plot" class="nav-link" data-scroll-target="#orphan-drugs-plot">Orphan Drugs plot</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -273,6 +280,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This analysis explores drug development and approval patterns in Europe, focusing particularly on orphan drugs - medicines developed specifically for rare diseases. The data comes from the European Medicines Agency (EMA) via Miquel Anglada Girotto on GitHub. Miquel wrote about his exploration of the data.</p>
+<p>We used the source table of all EPARs for human and veterinary medicines, rather than Miquel’s scraped data. It includes information about drug authorizations, therapeutic areas, and timelines from 1995 to 2022.</p>
+</section>
+<section id="data-preparation" class="level1">
+<h1>Data Preparation</h1>
+<p>After loading necessary visualization and data manipulation libraries, we import the dataset from TidyTuesday’s repository. The data originates from the European Medicines Agency’s table of all EPARs (European Public Assessment Reports) for human and veterinary medicines.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -286,8 +301,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(elementalist)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The data this week comes from the European Medicines Agency via Miquel Anglada Girotto on GitHub. We used the source table of all EPARs for human and veterinary medicines, rather than Miquel’s scraped data.</p>
-<p>Miquel wrote about his exploration of the data.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -329,8 +342,10 @@ $ revision_date                               &lt;dttm&gt; 2023-03-13 11:52:00, 
 $ url                                         &lt;chr&gt; "https://www.ema.europa.eu…</code></pre>
 </div>
 </div>
-<section id="drug-classes" class="level2">
-<h2 class="anchored" data-anchor-id="drug-classes">Drug classes</h2>
+</section>
+<section id="analysis-of-drug-categories" class="level1">
+<h1>Analysis of Drug Categories</h1>
+<p>Looking at the therapeutic areas for human drugs with authorized status, we can see the distribution of drug development across different medical fields. This helps us understand where pharmaceutical research and development efforts have been concentrated.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -356,8 +371,9 @@ $ url                                         &lt;chr&gt; "https://www.ema.europ
 </div>
 </div>
 </section>
-<section id="time-to-market" class="level2">
-<h2 class="anchored" data-anchor-id="time-to-market">Time to Market</h2>
+<section id="time-to-market-analysis" class="level1">
+<h1>Time to Market Analysis</h1>
+<p>We examine the time between opinion date and decision date for non-generic, non-biosimilar human drugs. The violin plot comparison between orphan and non-orphan medicines reveals the variation in approval timelines, highlighting potential differences in the review process for these categories.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -376,8 +392,17 @@ $ url                                         &lt;chr&gt; "https://www.ema.europ
 </div>
 </div>
 </section>
-<section id="orphan-drugs" class="level2">
-<h2 class="anchored" data-anchor-id="orphan-drugs">Orphan drugs</h2>
+<section id="deep-dive-into-orphan-drugs" class="level1">
+<h1>Deep Dive into Orphan Drugs</h1>
+<p>For our main analysis, we create two complementary visualizations using Jack Bush’s color palette to explore orphan drug development over time:</p>
+<section id="temporal-analysis-1995-2022" class="level2">
+<h2 class="anchored" data-anchor-id="temporal-analysis-1995-2022">Temporal Analysis (1995-2022):</h2>
+<ul>
+<li>Shows the yearly number of drug evaluations by the EMA</li>
+<li>Highlights the impact of EU orphan regulation (effective 2000)</li>
+<li>Demonstrates the relatively slow initial uptake of orphan drug submissions</li>
+<li>Notes the recent trend, with only 20 orphan drugs submitted in 2022</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -484,6 +509,14 @@ $ url                                         &lt;chr&gt; "https://www.ema.europ
 </div>
 </div>
 </div>
+</section>
+<section id="overall-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="overall-statistics">Overall Statistics:</h2>
+<ul>
+<li>Orphan drugs represent 12% of all approved drugs</li>
+<li>Both orphan and regular drugs maintain similar authorization rates of around 90%</li>
+<li>Provides a clear comparison of total volumes between regular and orphan drugs</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -545,6 +578,10 @@ $ url                                         &lt;chr&gt; "https://www.ema.europ
 </div>
 </div>
 </div>
+</section>
+<section id="orphan-drugs-plot" class="level2">
+<h2 class="anchored" data-anchor-id="orphan-drugs-plot">Orphan Drugs plot</h2>
+<p>The combined visualization effectively tells the story of orphan drug development in Europe, from policy implementation to current trends, while maintaining perspective on their proportion within overall drug development.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -572,6 +609,7 @@ $ url                                         &lt;chr&gt; "https://www.ema.europ
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
