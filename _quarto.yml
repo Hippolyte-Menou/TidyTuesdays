@@ -12,7 +12,7 @@ website:
         href: TidyTuesdays.qmd
     tools:
       - icon: github
-        text: Github
+        text: "Github"
         href: https://github.com/Hippolyte-Menou/TidyTuesdays
 
   sidebar:
