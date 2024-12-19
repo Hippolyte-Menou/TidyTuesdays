@@ -12,9 +12,8 @@ website:
         href: TidyTuesdays.qmd
     tools:
       - icon: github
-        menu:
-          - text: Source Code
-            href: https://github.com/Hippolyte-Menou/TidyTuesdays
+      - text: Github
+        href: https://github.com/Hippolyte-Menou/TidyTuesdays
 
   sidebar:
     style: "docked"
