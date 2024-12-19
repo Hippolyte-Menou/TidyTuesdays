@@ -6,21 +6,38 @@ project:
 website:
   navbar:
     pinned: true
+    collapse: true
     left:
       - text: "Home"
         href: TidyTuesdays.qmd
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            href:  https://github.com/Hippolyte-Menou/TidyTuesdays
   sidebar:
     style: "docked"
     search: true
-    contents:
-      - text: "2018-04-03 - US Tuition Costs"
-        href: 2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.qmd
-      - text: "2019-02-26 - French Train Delays"
-        href: 2019-02-26 - French Train Delays/2019-02-26 - French Train Delays.qmd
-      - text: "2023-02-21 - Bob Ross Paintings"
-        href: 2023-02-21 - Bob Ross Paintings/2023-02-21 - Bob Ross Paintings.qmd
-      - text: "2023-03-14 - European Drug Development"
-        href: 2023-03-14 - European Drug Development/2023-03-14 - European Drug Development.qmd
+    content:
+      - section: "TidyTuesdays Data Stories"
+        content: 
+          - text: "2018-04-03 - US Tuition Costs"
+            href: 2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.qmd
+          - text: "2019-02-26 - French Train Delays"
+            href: 2019-02-26 - French Train Delays/2019-02-26 - French Train Delays.qmd
+          - text: "2023-02-21 - Bob Ross Paintings"
+            href: 2023-02-21 - Bob Ross Paintings/2023-02-21 - Bob Ross Paintings.qmd
+          - text: "2023-03-14 - European Drug Development"
+            href: 2023-03-14 - European Drug Development/2023-03-14 - European Drug Development.qmd
+      - section: "TidyTuesdays Data visualization"
+        content: 
+          - text: "Hi!"
+      - section: "Helpers"
+        content:
+          - text: "Legend styling"
+          - text: "Tips and tricks"
+      
+
 
 editor: visual
 
