@@ -8,7 +8,8 @@ website:
     pinned: true
     collapse: true
     left:
-      - text: "Home"
+      - icon: house-fill
+        text: "Home"
         href: TidyTuesdays.qmd
       - icon: github
         text: "Github"
@@ -43,3 +44,5 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
+    code-fold: true
+

@@ -123,7 +123,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../TidyTuesdays.html"> 
+    <a class="nav-link" href="../TidyTuesdays.html"> <i class="bi bi-house-fill" role="img">
+</i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -288,10 +289,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>full_trains <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2019/2019-02-26/full_trains.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 5462 Columns: 27
 ── Column specification ────────────────────────────────────────────────────────
@@ -303,7 +310,10 @@ lgl  (2): comment_cancellations, comment_delays_at_departure
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>small_trains <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2019/2019-02-26/small_trains.csv"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 32772 Columns: 13
 ── Column specification ────────────────────────────────────────────────────────
@@ -314,6 +324,8 @@ dbl (9): year, month, journey_time_avg, total_num_trips, avg_delay_all_depar...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>international_stations <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ZURICH"</span>, <span class="st">"LAUSANNE"</span>, <span class="st">"GENEVE"</span>, <span class="st">"ITALIE"</span>, <span class="st">"STUTTGART"</span>, <span class="st">"FRANCFORT"</span>, <span class="st">"MADRID"</span>, <span class="st">"BARCELONA"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>is_international <span class="ot">&lt;-</span> <span class="cf">function</span>(x){x <span class="sc">%in%</span> international_stations}</span>
@@ -325,6 +337,7 @@ dbl (9): year, month, journey_time_avg, total_num_trips, avg_delay_all_depar...
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>small_trains <span class="sc">%&gt;%</span> </span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  glimpse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 32,772
 Columns: 13
@@ -344,6 +357,8 @@ $ delayed_number          &lt;dbl&gt; 0.25000000, 0.25000000, 0.21428571, 0.1551
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>international_trains <span class="ot">&lt;-</span> small_trains <span class="sc">%&gt;%</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(service <span class="sc">==</span> <span class="st">"International"</span>) </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -353,10 +368,13 @@ $ delayed_number          &lt;dbl&gt; 0.25000000, 0.25000000, 0.21428571, 0.1551
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_journey_time =</span> <span class="fu">weighted.mean</span>(journey_time_avg, total_num_trips)) <span class="sc">%&gt;%</span> </span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">outgoing =</span> arrival_station <span class="sc">%in%</span> international_stations,</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">connection =</span> <span class="fu">if_else</span>(outgoing, <span class="fu">str_c</span>(departure_station, arrival_station, <span class="at">sep =</span> <span class="st">" - "</span>), <span class="fu">str_c</span>(arrival_station, departure_station, <span class="at">sep =</span> <span class="st">" - "</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'departure_station'. You can override using
 the `.groups` argument.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>international_delay <span class="ot">&lt;-</span> international_trains <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(arrival_station, departure_station) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_arriving_delay =</span> <span class="fu">weighted.mean</span>(avg_delay_all_arriving, num_late_at_departure), </span>
@@ -372,10 +390,13 @@ the `.groups` argument.</code></pre>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">"outgoing_average_arriving_delay"</span>, <span class="st">"outgoing_average_journey_time"</span>, <span class="st">"outgoing_average_departing_delay"</span>, <span class="st">"incoming_average_departing_delay"</span>, <span class="st">"incoming_average_journey_time"</span>, <span class="st">"incoming_average_arriving_delay"</span>)),</span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">connection =</span> <span class="fu">factor</span>(connection, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"PARIS EST - FRANCFORT"</span>, <span class="st">"PARIS EST - STUTTGART"</span>, <span class="st">"PARIS LYON - GENEVE"</span>, <span class="st">"PARIS LYON - LAUSANNE"</span>, <span class="st">"PARIS LYON - ZURICH"</span>, <span class="st">"PARIS LYON - ITALIE"</span>, <span class="st">"PARIS LYON - BARCELONA"</span>, <span class="st">"MARSEILLE ST CHARLES - MADRID"</span>))</span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>         ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'arrival_station'. You can override using
 the `.groups` argument.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>international_delay <span class="sc">%&gt;%</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter(connection == "PARIS EST - FRANCFORT") %&gt;% </span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> outgoing, <span class="at">y =</span> value, <span class="at">fill =</span> name)) <span class="sc">+</span> </span>
@@ -391,6 +412,7 @@ the `.groups` argument.</code></pre>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">"none"</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

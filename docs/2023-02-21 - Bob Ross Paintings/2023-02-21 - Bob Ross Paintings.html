@@ -123,7 +123,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../TidyTuesdays.html"> 
+    <a class="nav-link" href="../TidyTuesdays.html"> <i class="bi bi-house-fill" role="img">
+</i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -274,11 +275,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("frankiethull/BobRossColors")</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("ctesta01/ggtriangles")</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -291,15 +295,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BobRossColors)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtriangles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(Black_Gesso<span class="sc">:</span>Alizarin_Crimson, as.logical))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 Rows: 403 Columns: 29
@@ -311,8 +321,11 @@ Rows: 403 Columns: 29
 Specify the column types or set `show_col_types = FALSE` to quiet this message.
 • `` -&gt; `...1`</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 403
 Columns: 28
@@ -347,6 +360,8 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(</span>
@@ -362,15 +377,19 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">"none"</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <section id="how-many-paintings-per-season" class="level1">
 <h1>How many paintings per season?</h1>
 <p>There are 13 paintings per season every season for 31 season</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(season) <span class="sc">%&gt;%</span> </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">paintings =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(paintings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 2
    season paintings
@@ -392,29 +411,38 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <section id="how-many-colors-does-bob-ross-uses-per-painting" class="level1">
 <h1>How many colors does Bob Ross uses per painting ?</h1>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median=</span><span class="fu">median</span>(num_colors))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   median
    &lt;dbl&gt;
 1     11</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(num_colors, <span class="at">sort=</span>T) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">weighted.mean</span>(num_colors, n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
    mean
   &lt;dbl&gt;
 1  10.7</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(num_colors, <span class="at">sort=</span>T) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(num_colors) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_tally</span>(n, <span class="at">name=</span><span class="st">"total_paintings"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sum_colors =</span> <span class="fu">cumsum</span>(n),</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">perc =</span> <span class="fu">round</span>(sum_colors <span class="sc">/</span> total_paintings, <span class="dv">2</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 14 × 5
    num_colors     n total_paintings sum_colors  perc
@@ -434,15 +462,20 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 13         14    12             403        396  0.98
 14         15     7             403        403  1   </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">interval =</span> <span class="fu">list</span>(<span class="fu">quantile</span>(num_colors, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.95</span>)))) <span class="sc">%&gt;%</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(interval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
    `5%` `10%` `90%` `95%`
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 1     6     7    13    13</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>color_numbers <span class="ot">&lt;-</span> bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bob_ross <span class="sc">%&gt;%</span> <span class="fu">count</span>(num_colors), <span class="at">by=</span><span class="st">"num_colors"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -470,6 +503,7 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>color_number_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -481,8 +515,11 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <p>Bob Ross used on average more than 10 colors in his paintings (mean = 10.7 with a median = 11) and up to 15 colors in 7 of them. In 90% of his paintings, between 6 and 13 colors are used.</p>
 <p>Bob Ross used only one color of paint in this painting : “Contemplative Lady” was composed using only Van Dyke Brown which he declined in multiple shades.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bob_ross <span class="sc">%&gt;%</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(num_colors<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 28
   painting_index img_src    painting_title season episode num_colors youtube_src
@@ -496,9 +533,12 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 #   Prussian_Blue &lt;lgl&gt;, Sap_Green &lt;lgl&gt;, Titanium_White &lt;lgl&gt;,
 #   Van_Dyke_Brown &lt;lgl&gt;, Yellow_Ochre &lt;lgl&gt;, Alizarin_Crimson &lt;lgl&gt;</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contemplative Lady</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">show_colors_and_paintings</span>(<span class="at">paintings =</span> <span class="fu">c</span>(<span class="st">"contemplative_lady"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -511,6 +551,8 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <section id="what-are-the-most-frequent-colors-used-by-bob-ross" class="level1">
 <h1>What are the most frequent colors used by Bob Ross</h1>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>most_frequent_used_colours <span class="ot">&lt;-</span> bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(Black_Gesso<span class="sc">:</span>Alizarin_Crimson, sum)) <span class="sc">%&gt;%</span> </span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Black_Gesso<span class="sc">:</span>Alizarin_Crimson, <span class="at">names_to =</span> <span class="st">"color"</span>, <span class="at">values_to =</span> <span class="st">"count"</span>) <span class="sc">%&gt;%</span> </span>
@@ -518,12 +560,16 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">color =</span> <span class="fu">fct_reorder</span>(color, count)) <span class="sc">%&gt;%</span> </span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">color =</span> <span class="fu">str_replace_all</span>(color, <span class="st">"_"</span>, <span class="st">""</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(unique_bob_ross_colors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Joining with `by = join_by(color)`</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>color_palette <span class="ot">&lt;-</span> most_frequent_used_colours<span class="sc">$</span>color_hex</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(color_palette) <span class="ot">&lt;-</span> most_frequent_used_colours<span class="sc">$</span>color</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>color_palette</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  TitaniumWhite AlizarinCrimson    VanDykeBrown   CadmiumYellow     YellowOchre 
       "#FFFFFF"       "#4E1500"       "#221B15"       "#FFEC00"       "#C79B00" 
@@ -534,6 +580,8 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
     LiquidClear     LiquidBlack       IndianRed 
       "#FFFFFF"       "#000000"       "#CD5C5C" </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>most_frequent_colors_plot <span class="ot">&lt;-</span> most_frequent_used_colours <span class="sc">%&gt;%</span> </span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_reorder</span>(color, count), <span class="at">y=</span>count, <span class="at">fill=</span>color)) <span class="sc">+</span> </span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> </span>
@@ -554,11 +602,15 @@ $ Alizarin_Crimson &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE,
 <span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(),</span>
 <span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="dv">10</span>, <span class="at">b =</span> <span class="dv">10</span>, <span class="at">l =</span> <span class="dv">10</span>)</span>
 <span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Scale for y is already present.
 Adding another scale for y, which will replace the existing scale.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>most_frequent_colors_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -568,6 +620,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>get_luminance <span class="ot">&lt;-</span> <span class="cf">function</span>(color) {</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  rgb_color <span class="ot">&lt;-</span> <span class="fu">col2rgb</span>(color) <span class="sc">/</span> <span class="dv">255</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.2126</span> <span class="sc">*</span> rgb_color[<span class="dv">1</span>,] <span class="sc">+</span> <span class="fl">0.7152</span> <span class="sc">*</span> rgb_color[<span class="dv">2</span>,] <span class="sc">+</span> <span class="fl">0.0722</span> <span class="sc">*</span> rgb_color[<span class="dv">3</span>,]</span>
@@ -582,6 +636,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">text_color =</span> <span class="fu">if_else</span>(<span class="fu">get_luminance</span>(color_hex) <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="st">"black"</span>, <span class="st">"white"</span>)) </span>
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>legend_colors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 18 × 5
    color           count color_hex label                        text_color
@@ -605,6 +660,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 17 LiquidBlack        19 #000000   " Liquid Black\n#000000"     white     
 18 IndianRed           0 #CD5C5C   " Indian Red\n#CD5C5C"       white     </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>legend_plot <span class="ot">&lt;-</span> legend_colors <span class="sc">%&gt;%</span> </span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_reorder</span>(color, count), <span class="at">x=</span><span class="dv">0</span>)) <span class="sc">+</span> </span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>color)) <span class="sc">+</span> </span>
@@ -616,6 +673,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>color_palette) </span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>legend_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -625,10 +683,13 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>facet_title <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"Season "</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>facet_title[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">11</span>,<span class="dv">16</span>,<span class="dv">21</span>,<span class="dv">26</span>,<span class="dv">31</span>)] <span class="ot">&lt;-</span> <span class="st">""</span>  <span class="co"># Only write the season title for these seasons</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(facet_title) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">31</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>facet_title</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          1           2           3           4           5           6 
  "Season 1"          ""          ""          ""          ""  "Season 6" 
@@ -643,6 +704,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
          31 
 "Season 31" </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>all_seasons_colors <span class="ot">&lt;-</span> bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Black_Gesso<span class="sc">:</span>Alizarin_Crimson, <span class="at">names_to =</span> <span class="st">"color"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">color =</span> <span class="fu">str_replace_all</span>(color, <span class="st">"_"</span>, <span class="st">""</span>)) <span class="sc">%&gt;%</span> </span>
@@ -650,6 +713,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(most_frequent_used_colours, <span class="at">by=</span><span class="st">"color"</span>)</span>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>all_seasons_colors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,292 × 14
    painting_index img_src   painting_title season episode num_colors youtube_src
@@ -668,6 +732,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 # ℹ 7 more variables: colors &lt;chr&gt;, color_hex.x &lt;chr&gt;, tags &lt;chr&gt;, color &lt;chr&gt;,
 #   value &lt;lgl&gt;, count &lt;int&gt;, color_hex.y &lt;chr&gt;</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>all_seasons_plot <span class="ot">&lt;-</span> all_seasons_colors <span class="sc">%&gt;%</span> </span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>episode, <span class="at">y=</span><span class="fu">fct_reorder</span>(color, count))) <span class="sc">+</span> </span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">color=</span>color, <span class="at">fill=</span>color), <span class="at">width =</span> <span class="dv">1</span>, <span class="at">height =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
@@ -689,6 +755,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>())</span>
 <span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>all_seasons_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -698,6 +765,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>total_width <span class="ot">&lt;-</span> <span class="dv">4500</span> <span class="sc">+</span> <span class="dv">4000</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>legend_width <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>legend_ratio <span class="ot">&lt;-</span> legend_width <span class="sc">/</span> total_width</span>
@@ -719,6 +788,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">32</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)))</span>
 <span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>bob_ross_colors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -726,12 +796,17 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 </figure>
 </div>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"bob_ross_colors.png"</span>, bob_ross_colors, <span class="at">path=</span><span class="st">"Plots"</span>, <span class="at">width =</span> total_width, <span class="at">height =</span> <span class="dv">7000</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">bg=</span><span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="which-colors-are-used-together" class="level1">
 <h1>Which colors are used together</h1>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>row_occurance <span class="ot">&lt;-</span> bob_ross <span class="sc">%&gt;%</span> </span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(painting_index, Black_Gesso<span class="sc">:</span>Alizarin_Crimson) <span class="sc">%&gt;%</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Black_Gesso<span class="sc">:</span>Alizarin_Crimson, <span class="at">names_to =</span> <span class="st">"color"</span>, <span class="at">values_to =</span> <span class="st">"n"</span>)</span>
@@ -744,6 +819,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Occurance =</span> <span class="fu">sum</span>(occurence)) <span class="sc">%&gt;%</span></span>
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> <span class="st">"color.y"</span>, <span class="at">value =</span> <span class="st">"Occurance"</span>, <span class="at">fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Color =</span> <span class="st">"color.x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in left_join(., row_occurance, by = "painting_index"): Detected an unexpected many-to-many relationship between `x` and `y`.
 ℹ Row 1 of `x` matches multiple rows in `y`.
@@ -755,7 +831,10 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <pre><code>`summarise()` has grouped output by 'color.x'. You can override using the
 `.groups` argument.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>co_occurence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 18 × 19
 # Groups:   Color [18]
@@ -785,12 +864,15 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 #   Prussian_Blue &lt;dbl&gt;, Sap_Green &lt;dbl&gt;, Titanium_White &lt;dbl&gt;,
 #   Van_Dyke_Brown &lt;dbl&gt;, Yellow_Ochre &lt;dbl&gt;</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>colors_used_together <span class="ot">&lt;-</span> co_occurence <span class="sc">%&gt;%</span> </span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Alizarin_Crimson<span class="sc">:</span>Yellow_Ochre, <span class="at">names_to =</span> <span class="st">"Pair"</span>, <span class="at">values_to =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="fu">str_replace_all</span>(Color, <span class="st">"_"</span>, <span class="st">""</span>), <span class="at">Pair =</span> <span class="fu">str_replace_all</span>(Pair, <span class="st">"_"</span>, <span class="st">""</span>))</span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>colors_used_together <span class="sc">%&gt;%</span> </span>
 <span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 324 × 3
 # Groups:   Color [18]
@@ -808,6 +890,8 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 10 CadmiumYellow   CadmiumYellow     346
 # ℹ 314 more rows</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>used_together_plot <span class="ot">&lt;-</span> colors_used_together <span class="sc">%&gt;%</span> </span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_reorder</span>(Color, <span class="sc">-</span>n), <span class="at">y=</span><span class="fu">fct_reorder</span>(Pair, n))) <span class="sc">+</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape=</span><span class="dv">21</span>, <span class="fu">aes</span>(<span class="at">colour=</span>Color, <span class="at">fill=</span>Pair, <span class="at">size=</span>n<span class="sc">/</span><span class="dv">400</span>), <span class="at">stroke=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
@@ -820,6 +904,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>()</span>
 <span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>used_together_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
