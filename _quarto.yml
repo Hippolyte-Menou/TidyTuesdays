@@ -17,8 +17,9 @@ website:
 
   sidebar:
     style: "docked"
-    search: true
     contents:
+      - text: "Home"
+        href: TidyTuesdays.qmd
       - section: "TidyTuesdays Data Stories"
         contents:
           - text: "2018-04-03 - US Tuition Costs"
