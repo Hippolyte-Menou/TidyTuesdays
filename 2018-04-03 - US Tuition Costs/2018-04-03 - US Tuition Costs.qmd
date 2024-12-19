@@ -1,11 +1,9 @@
 ---
 title: "2018-04-03 - US Tuition Costs"
 format: html
+execute:
+  echo: false
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ```{r}
 library(glue)
@@ -24,8 +22,6 @@ theme_set(theme_minimal())
 theme_update(
   
   legend.position = "None"
-  
-  
   
 )
 
