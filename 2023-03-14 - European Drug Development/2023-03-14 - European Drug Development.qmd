@@ -16,8 +16,6 @@ library(patchwork)
 library(elementalist)  
 ```
 
-# European Drug Development
-
 The data this week comes from the European Medicines Agency via Miquel Anglada Girotto on GitHub. We used the source table of all EPARs for human and veterinary medicines, rather than Miquel's scraped data.
 
 Miquel wrote about his exploration of the data.

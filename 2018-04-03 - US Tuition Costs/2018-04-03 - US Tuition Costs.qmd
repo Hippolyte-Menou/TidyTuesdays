@@ -1,8 +1,8 @@
 ---
 title: "2018-04-03 - US Tuition Costs"
+author: "Hippolyte Menou"
 format: html
-execute:
-  echo: false
+editor: visual
 ---
 
 ```{r}
@@ -20,9 +20,7 @@ library(tidyverse)
 theme_set(theme_minimal())
 
 theme_update(
-  
   legend.position = "None"
-  
 )
 
 font_family <- "Fira Sans"

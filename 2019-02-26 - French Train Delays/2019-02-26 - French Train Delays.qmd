@@ -5,8 +5,6 @@ format: html
 editor: visual
 ---
 
-# French Train Delays
-
 <https://twitter.com/noccaea/status/1095735292206739456>
 
 ```{r Setup}
