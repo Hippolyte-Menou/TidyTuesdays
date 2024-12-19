@@ -46,3 +46,6 @@ format:
     toc: true
     code-fold: true
 
+execute:
+  warning: false
+  message: false
