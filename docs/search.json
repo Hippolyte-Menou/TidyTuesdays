@@ -4,17 +4,27 @@
     "href": "TidyTuesdays.html",
     "title": "TidyTuesdays",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n\nCode\n1 + 1\n\n\n[1] 2",
+    "text": "Welcome! I’m Hippolyte Menou, and this is where I explore and visualize interesting datasets, primarily through the #TidyTuesday community project. As a data enthusiast, I believe in the power of combining rigorous analysis with compelling visual storytelling.\n\n\n\n\nEach week, I dive deep into diverse datasets from the TidyTuesday project, creating comprehensive analyses that go beyond just numbers. From European drug development patterns to American university tuition trends, these stories combine statistical insight with clear, engaging visualizations to uncover meaningful patterns and trends.\n\n\n\nSometimes a single, well-crafted visualization can tell a powerful story. Here you’ll find my focused visual pieces, where I experiment with different visualization techniques and design approaches using R and ggplot2. Recent examples include:\n\nFrench train delays across international routes\nEvolution of US college tuition costs\nEuropean orphan drug development trends\n\n### Tips & Tricks\nThroughout my data visualization journey, I’ve accumulated various techniques and solutions for common challenges in R and ggplot2. I share these insights here, from efficient data wrangling approaches to creating publication-ready visualizations. Some popular topics include:\n\nCreating consistent visual themes\nHandling complex temporal data\nOptimizing code for reusability\nAdvanced ggplot2 customization\n\n\n\n\n\nEvery visualization on this site follows these core principles:\n\nData integrity first\nClear and purposeful design choices\nAttention to detail in presentation\nReproducible code and methods",
     "crumbs": [
       "Home"
     ]
   },
   {
-    "objectID": "TidyTuesdays.html#quarto",
-    "href": "TidyTuesdays.html#quarto",
+    "objectID": "TidyTuesdays.html#what-youll-find-here",
+    "href": "TidyTuesdays.html#what-youll-find-here",
     "title": "TidyTuesdays",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n\nCode\n1 + 1\n\n\n[1] 2",
+    "text": "Each week, I dive deep into diverse datasets from the TidyTuesday project, creating comprehensive analyses that go beyond just numbers. From European drug development patterns to American university tuition trends, these stories combine statistical insight with clear, engaging visualizations to uncover meaningful patterns and trends.\n\n\n\nSometimes a single, well-crafted visualization can tell a powerful story. Here you’ll find my focused visual pieces, where I experiment with different visualization techniques and design approaches using R and ggplot2. Recent examples include:\n\nFrench train delays across international routes\nEvolution of US college tuition costs\nEuropean orphan drug development trends\n\n### Tips & Tricks\nThroughout my data visualization journey, I’ve accumulated various techniques and solutions for common challenges in R and ggplot2. I share these insights here, from efficient data wrangling approaches to creating publication-ready visualizations. Some popular topics include:\n\nCreating consistent visual themes\nHandling complex temporal data\nOptimizing code for reusability\nAdvanced ggplot2 customization",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "TidyTuesdays.html#my-approach",
+    "href": "TidyTuesdays.html#my-approach",
+    "title": "TidyTuesdays",
+    "section": "",
+    "text": "Every visualization on this site follows these core principles:\n\nData integrity first\nClear and purposeful design choices\nAttention to detail in presentation\nReproducible code and methods",
     "crumbs": [
       "Home"
     ]

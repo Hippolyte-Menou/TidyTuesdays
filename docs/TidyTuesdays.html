@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -236,7 +202,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quarto" id="toc-quarto" class="nav-link active" data-scroll-target="#quarto">Quarto</a></li>
+  <li><a href="#data-stories-visualizations" id="toc-data-stories-visualizations" class="nav-link active" data-scroll-target="#data-stories-visualizations">Data Stories &amp; Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#what-youll-find-here" id="toc-what-youll-find-here" class="nav-link" data-scroll-target="#what-youll-find-here">What You’ll Find Here</a>
+  <ul class="collapse">
+  <li><a href="#tidytuesday-data-stories" id="toc-tidytuesday-data-stories" class="nav-link" data-scroll-target="#tidytuesday-data-stories">TidyTuesday Data Stories</a></li>
+  <li><a href="#standalone-visualizations" id="toc-standalone-visualizations" class="nav-link" data-scroll-target="#standalone-visualizations">Standalone Visualizations</a></li>
+  </ul></li>
+  <li><a href="#my-approach" id="toc-my-approach" class="nav-link" data-scroll-target="#my-approach">My Approach</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -262,20 +236,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<section id="data-stories-visualizations" class="level1">
+<h1>Data Stories &amp; Visualizations</h1>
+<p>Welcome! I’m Hippolyte Menou, and this is where I explore and visualize interesting datasets, primarily through the #TidyTuesday community project. As a data enthusiast, I believe in the power of combining rigorous analysis with compelling visual storytelling.</p>
+<section id="what-youll-find-here" class="level2">
+<h2 class="anchored" data-anchor-id="what-youll-find-here">What You’ll Find Here</h2>
+<section id="tidytuesday-data-stories" class="level3">
+<h3 class="anchored" data-anchor-id="tidytuesday-data-stories">TidyTuesday Data Stories</h3>
+<p>Each week, I dive deep into diverse datasets from the TidyTuesday project, creating comprehensive analyses that go beyond just numbers. From European drug development patterns to American university tuition trends, these stories combine statistical insight with clear, engaging visualizations to uncover meaningful patterns and trends.</p>
+</section>
+<section id="standalone-visualizations" class="level3">
+<h3 class="anchored" data-anchor-id="standalone-visualizations">Standalone Visualizations</h3>
+<p>Sometimes a single, well-crafted visualization can tell a powerful story. Here you’ll find my focused visual pieces, where I experiment with different visualization techniques and design approaches using R and ggplot2. Recent examples include:</p>
+<ul>
+<li><p>French train delays across international routes</p></li>
+<li><p>Evolution of US college tuition costs</p></li>
+<li><p>European orphan drug development trends</p></li>
+</ul>
+<pre><code>### Tips &amp; Tricks</code></pre>
+<p>Throughout my data visualization journey, I’ve accumulated various techniques and solutions for common challenges in R and ggplot2. I share these insights here, from efficient data wrangling approaches to creating publication-ready visualizations. Some popular topics include:</p>
+<ul>
+<li>Creating consistent visual themes</li>
+<li>Handling complex temporal data</li>
+<li>Optimizing code for reusability</li>
+<li>Advanced ggplot2 customization</li>
+</ul>
+</section>
+</section>
+<section id="my-approach" class="level2">
+<h2 class="anchored" data-anchor-id="my-approach">My Approach</h2>
+<p>Every visualization on this site follows these core principles:</p>
+<ol type="1">
+<li><p>Data integrity first</p></li>
+<li><p>Clear and purposeful design choices</p></li>
+<li><p>Attention to detail in presentation</p></li>
+<li><p>Reproducible code and methods</p></li>
+</ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
