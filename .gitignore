@@ -1,8 +1,27 @@
+# Ignore RStudio-specific files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 .Rprofile
+
+# Ignore Quarto-specific directories
 /_freeze/
 /.quarto/
+
+# Ignore renv-specific directory
 /renv/
+
+# Ignore environment variables file
+.Renviron
+
+# Ignore specific file
+ggplotstylingparams.rmd
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db

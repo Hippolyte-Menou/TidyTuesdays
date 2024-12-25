@@ -1,0 +1,143 @@
+---
+title: "2019-01-15 - Space Launches"
+format: html
+---
+
+# *Introduction*
+
+*These are the data behind the "space launches" article, [The space race is dominated by new contenders](https://economist.com/graphic-detail/2018/10/18/the-space-race-is-dominated-by-new-contenders).*
+
+*Principal data came from the Jonathan McDowell's JSR Launch Vehicle Database, available online at <http://www.planet4589.org/space/lvdb/index.html>.*
+
+## *Launches (launches.csv)*
+
+| *variable* | *definition* |
+|----|----|
+| *tag* | *Harvard or [COSPAR](https://en.wikipedia.org/wiki/International_Designator) id of launch* |
+| *JD* | [*Julian Date*](https://en.wikipedia.org/wiki/Julian_day) *of launch* |
+| *launch_date* | *date of launch* |
+| *launch_year* | *year of launch* |
+| *type* | *type of launch vehicle* |
+| *variant* | *variant of launch vehicle* |
+| *mission* |  |
+| *agency* | *launching agency* |
+| *state_code* | *launching agency's state* |
+| *category* | *success (O) or failure (F)* |
+| *agency_type* | *type of agency* |
+
+## *Agencies (Agencies.csv)*
+
+| *variable*           | *definition*              |
+|----------------------|---------------------------|
+| *agency*             | *org phase code*          |
+| *count*              | *number of launches*      |
+| *ucode*              | *org Ucode*               |
+| *state_code*         | *responsible state*       |
+| *type*               | *type of org*             |
+| *class*              | *class of org*            |
+| *tstart*             | *org/phase founding date* |
+| *tstop*              | *org/phase ending date*   |
+| *short_name*         | *short name*              |
+| *name*               | *full name*               |
+| *location*           | *plain english location*  |
+| *longitude*          |                           |
+| *latitude*           |                           |
+| *error*              | *uncertainty in long/lat* |
+| *parent*             | *parent org*              |
+| *short_english_name* | *english short name*      |
+| *english_name*       | *english full name*       |
+| *unicode_name*       | *unicode full name*       |
+| *agency_type*        | *type of agency*          |
+
+# *Data Preparation*
+
+```{r Import libraries}
+library(tidyverse)
+library(patchwork)
+library(extrafont)
+```
+
+```{r Import data}
+#/ warning: F
+agencies <- read_csv("agencies.csv")
+launches <- read_csv("launches.csv")
+
+country_names <- c("BR" = "Brazil", "CN" = "China", "CYM" = "Consortium", "F" = "France", "I" = "Italy", "I-ELDO" = "Italy", "I-ESA" = "Italy", "IL" = "Israel", "IN" = "India", "IR" = "Iran", "J" = "Japan",  "KP" = "North Korea", "KR" = "South Korea", "RU" = "Soviet Union/Russia", "SU" = "Soviet Union/Russia", "UK" = "United Kingdom", "US" = "United States"
+)
+
+launches <- launches %>% 
+  mutate(country_name = country_names[state_code])
+
+agencies %>% glimpse
+launches %>% glimpse
+```
+
+```{r Theme}
+loadfonts(device = "win")
+
+theme_set(theme_minimal())
+theme_update(
+  
+  plot.title = element_text(
+    family = "DejaVu Math TeX Gyre",
+    face = "bold",
+    size = 16,           
+    colour = "black",        
+    angle = 0,
+    hjust = 0.5,
+    vjust = 0.5,
+    lineheight = 1.2, 
+    margin = margin(t = 10), 
+  )
+  
+)
+
+```
+
+# *Visualizing Launches*
+
+## *Launches by country*
+
+```{r}
+#| label: Launches by country
+
+launches_by_country <- launches %>% 
+  group_by(country_name) %>% 
+  summarise(count = n())
+
+total_country <- nrow(launches_by_country)
+keep_n <- 4
+
+launches_by_country_top_plot <- launches_by_country %>% 
+  mutate(country_name = fct_lump_n(country_name, n = keep_n, w = count),
+         country_name = fct_reorder(country_name, count)) %>% 
+  ggplot(aes(x = country_name, y = count)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(position = "right") +
+  labs(title = "Number of Space Launches by Country",
+       x = "",
+       y = "Number of Launches") 
+
+launches_by_country_inset_plot <- launches_by_country %>% 
+  arrange(count) %>% 
+  head(total_country-keep_n) %>% 
+  mutate(country_name = fct_reorder(country_name, count)) %>% 
+  ggplot(aes(x = country_name, y=count)) + 
+  geom_col() + 
+  scale_y_continuous(position="right") +
+  coord_flip() +
+  labs(title = "",
+       x = "",
+       y = "") + 
+  theme(
+    plot.background = element_rect(color = "grey30", size = 0.2)
+  )
+
+launches_by_country_top_plot + 
+  inset_element(launches_by_country_inset_plot, 
+                l = 0.6, r = 1.0,  t = 0.5, b = 0, clip = FALSE)
+
+```
+
+## The fall of the SU

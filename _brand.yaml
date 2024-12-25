@@ -1,0 +1,30 @@
+color:
+  palette:
+    dark-grey: "#222222"
+    cool-mist: "EEF2F3"
+    seafoam: "D4E7E7"
+    muted-coral: "F7E5E5"
+    soft-Sand: "#F2E6D9"
+  background: seafoam
+  foreground: dark-grey
+  primary: black
+
+logo: 
+  medium: assets\logo.png
+
+typography:
+  fonts:
+    - family: Jura
+      source: google
+    - family: Space Mono
+      source: google
+  base: Jura
+  headings: Jura
+  link:
+    decoration: underline
+  monospace: Space Mono
+  monospace-inline:
+    color: muted-coral
+    background-color: light-grey
+  monospace-block: 
+    background-color: "#eef4f8"
