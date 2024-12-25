@@ -35,29 +35,29 @@ website:
           - text: "Hi!"
       - section: "Helpers"
         contents:
-          - text: "Advanced facetting techniques"
+          - text: "Advanced Facetting Techniques"
             href: tips/Advanced facetting techniques.qmd
-          - text: "Custom theme functions"  
-            href: tips/Custom theme functions.qmd
-          - text: "Advanced geometries with ggforce"  
+          - text: "Advanced Geometries with ggforce"  
             href: tips/Advanced geometries with ggforce.qmd
-          - text: "Data Emphasis"  
-            href: tips/Data Emphasis.qmd
           - text: "Advanced Nested Faceting with ggh4x"  
             href: tips/Advanced Nested Faceting with ggh4x.qmd
-          - text: "Multiple Color Scales with ggnewscale"  
-            href: tips/Multiple Color Scales with ggnewscale.qm
-          - text: "Common gotchas with text"  
+          - text: "Common Gotchas with text"  
             href: tips/Common gotchas with text.qmd
-          - text: "Ordered Barcharts"  
-            href: tips/Ordered Barcharts.qmd
           - text: "Complex Layouts with patchwork"  
             href: tips/Complex Layouts with patchwork.qmd
-          - text: "Saving and reusing themes"  
-            href: tips/Saving and reusing themes.qmd
           - text: "Custom Color Palettes"  
             href: tips/Custom Color Palettes.qmd
-          - text: "Theme elements"  
+          - text: "Custom Theme Functions"  
+            href: tips/Custom theme functions.qmd
+          - text: "Data Emphasis"  
+            href: tips/Data Emphasis.qmd
+          - text: "Multiple Color Scales with ggnewscale"  
+            href: tips/Multiple Color Scales with ggnewscale.qm
+          - text: "Ordered Barcharts"  
+            href: tips/Ordered Barcharts.qmd
+          - text: "Saving and Reusing Themes"  
+            href: tips/Saving and reusing themes.qmd
+          - text: "Theme Elements"  
             href: tips/Theme elements.qmd
 
 editor: visual
