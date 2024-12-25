@@ -2,5 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-
+.Rprofile
+/_freeze/
 /.quarto/
+/renv/
