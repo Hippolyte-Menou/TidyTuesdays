@@ -1,0 +1,349 @@
+---
+title: "Advanced Nested Faceting with ggh4x"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+ggh4x provides powerful nested faceting capabilities that go beyond standard ggplot2 faceting. This guide explores these advanced features.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(ggh4x)
+library(palmerpenguins)
+
+# Prepare additional data for examples
+diamonds_subset <- diamonds %>%
+  filter(cut %in% c("Ideal", "Premium", "Very Good")) %>%
+  sample_n(1000)
+```
+
+## Basic Nested Faceting
+
+### Simple Nesting
+
+```{r}
+#| label: basic-nesting
+# Basic nested structure
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(~ species + island) +
+  labs(title = "Basic Nested Faceting",
+       subtitle = "Species nested with Islands")
+
+# With explicit nesting operator
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(~ species + island, nest_line = TRUE) +
+  labs(title = "Nested Faceting with Divider Lines")
+```
+
+## Advanced Nesting Features
+
+### Nested Grid Layouts
+
+```{r}
+#| label: nested-grid
+# Two-way nested grid
+ggplot(diamonds_subset, 
+       aes(carat, price, color = clarity)) +
+  geom_point(alpha = 0.6) +
+  facet_nested(cut ~ color + clarity) +
+  labs(title = "Two-way Nested Grid",
+       subtitle = "Cut by Color and Clarity")
+
+# Complex nesting with varying scales
+ggplot(diamonds_subset, 
+       aes(carat, price, color = clarity)) +
+  geom_point(alpha = 0.6) +
+  facet_nested(
+    cut ~ color + clarity,
+    scales = "free_y",
+    nest_line = TRUE,
+    strip = strip_nested(
+      background_y = list(
+        element_rect(fill = "lightblue"),
+        element_rect(fill = "lightgreen")
+      )
+    )
+  ) +
+  labs(title = "Nested Grid with Custom Styling")
+```
+
+### Independent Scale Control
+
+```{r}
+#| label: scale-control
+# Different scales for different nesting levels
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(
+    species + island ~ sex,
+    independent = "all",
+    scales = "free"
+  ) +
+  labs(title = "Independent Scales at Each Level")
+
+# Partial scale independence
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(
+    species + island ~ .,
+    scales = "free_y",
+    independent = "y"
+  ) +
+  labs(title = "Partial Scale Independence")
+```
+
+## Custom Strip Appearances
+
+### Hierarchical Strip Styling
+
+```{r}
+#| label: strip-styling
+# Different styles for different levels
+ggplot(diamonds_subset, aes(carat, price)) +
+  geom_point(alpha = 0.5) +
+  facet_nested(
+    ~ cut + clarity,
+    strip = strip_nested(
+      background_x = list(
+        element_rect(fill = "lightblue"),
+        element_rect(fill = "lightpink")
+      ),
+      text_x = list(
+        element_text(face = "bold", size = 12),
+        element_text(face = "italic", size = 10)
+      )
+    )
+  ) +
+  labs(title = "Hierarchical Strip Styling")
+```
+
+### Nested Strip Placement
+
+```{r}
+#| label: strip-placement
+# Control strip positions
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(
+    ~ species + island,
+    switch = "x",
+    strip = strip_nested(
+      placement = "outside",
+      clip = "off"
+    )
+  ) +
+  labs(title = "Custom Strip Placement")
+```
+
+## Complex Nesting Patterns
+
+### Multi-level Nesting
+
+```{r}
+#| label: multi-level
+# Create more complex grouping structure
+diamonds_nested <- diamonds_subset %>%
+  mutate(
+    price_category = case_when(
+      price < 5000 ~ "Low",
+      price < 10000 ~ "Medium",
+      TRUE ~ "High"
+    ),
+    size_category = case_when(
+      carat < 0.5 ~ "Small",
+      carat < 1 ~ "Medium",
+      TRUE ~ "Large"
+    )
+  )
+
+# Multi-level nested plot
+ggplot(diamonds_nested, 
+       aes(carat, price, color = clarity)) +
+  geom_point(alpha = 0.6) +
+  facet_nested(
+    cut + price_category ~ color + size_category,
+    nest_line = TRUE,
+    strip = strip_nested(
+      background = list(
+        element_rect(fill = "lightblue"),
+        element_rect(fill = "lightpink"),
+        element_rect(fill = "lightgreen"),
+        element_rect(fill = "lightyellow")
+      )
+    )
+  ) +
+  labs(title = "Multi-level Nested Faceting")
+```
+
+### Nested Margins
+
+```{r}
+#| label: nested-margins
+# Control margins between nested levels
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(
+    ~ species + island,
+    margins = "island",
+    strip = strip_nested(
+      background = list(
+        element_rect(fill = "gray95"),
+        element_rect(fill = "gray85")
+      )
+    )
+  ) +
+  labs(title = "Nested Facets with Margins")
+```
+
+## Best Practices
+
+### 1. Handling Complex Hierarchies
+
+```{r}
+#| label: complex-hierarchies
+# Function to create nested facets with proper ordering
+create_nested_facets <- function(data, vars, strip_colors) {
+  ggplot(data, aes(bill_length_mm, bill_depth_mm)) +
+    geom_point() +
+    facet_nested(
+      vars,
+      strip = strip_nested(
+        background = lapply(strip_colors, function(x) 
+          element_rect(fill = x))
+      )
+    )
+}
+
+# Example usage
+nested_colors <- c("lightblue", "lightpink", "lightgreen")
+create_nested_facets(
+  penguins, 
+  ~ species + island + sex,
+  nested_colors
+) +
+  labs(title = "Properly Ordered Nested Facets")
+```
+
+### 2. Scale Management
+
+```{r}
+#| label: scale-management
+# Function to determine appropriate scale independence
+nested_with_scales <- function(data, threshold = 0.5) {
+  scale_independence <- if(var(data$bill_length_mm) / mean(data$bill_length_mm) > threshold) {
+    "all"
+  } else {
+    "none"
+  }
+  
+  ggplot(data, aes(bill_length_mm, bill_depth_mm)) +
+    geom_point() +
+    facet_nested(
+      ~ species + island,
+      scales = "free",
+      independent = scale_independence
+    )
+}
+
+nested_with_scales(penguins) +
+  labs(title = "Adaptive Scale Independence")
+```
+
+## Common Pitfalls and Solutions
+
+### 1. Overcomplicated Nesting
+
+```{r}
+#| label: overcomplicated
+# Bad: Too many nesting levels
+too_complex <- ggplot(diamonds_nested, 
+                     aes(carat, price)) +
+  geom_point() +
+  facet_nested(
+    cut + clarity + color + price_category ~ size_category
+  ) +
+  labs(title = "Too Many Nesting Levels")
+
+# Better: Simplified structure
+better_structure <- ggplot(diamonds_nested,
+                         aes(carat, price, color = clarity)) +
+  geom_point() +
+  facet_nested(
+    cut + price_category ~ size_category
+  ) +
+  labs(title = "Simplified Nesting Structure")
+
+# Compare
+too_complex
+better_structure
+```
+
+### 2. Inconsistent Visual Hierarchy
+
+```{r}
+#| label: visual-hierarchy
+# Bad: Confusing hierarchy
+bad_hierarchy <- ggplot(penguins,
+                       aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_nested(
+    ~ species + island,
+    strip = strip_nested(
+      background = list(
+        element_rect(fill = "lightgray"),
+        element_rect(fill = "darkblue")
+      )
+    )
+  )
+
+# Better: Clear hierarchy
+good_hierarchy <- ggplot(penguins,
+                        aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_nested(
+    ~ species + island,
+    strip = strip_nested(
+      background = list(
+        element_rect(fill = "darkblue"),
+        element_rect(fill = "lightblue")
+      ),
+      text = list(
+        element_text(size = 12, face = "bold", color = "white"),
+        element_text(size = 10)
+      )
+    )
+  )
+
+# Compare
+bad_hierarchy + labs(title = "Confusing Hierarchy")
+good_hierarchy + labs(title = "Clear Hierarchy")
+```
+
+## Tips for Effective Nested Faceting
+
+1. **Plan Your Hierarchy**
+   - Organize variables by importance
+   - Limit nesting depth
+   - Consider visual clarity
+
+2. **Manage Visual Elements**
+   - Use consistent color schemes
+   - Maintain clear text hierarchy
+   - Control spacing effectively
+
+3. **Handle Scale Relationships**
+   - Choose appropriate scale independence
+   - Consider data distributions
+   - Maintain comparability where needed
+
+4. **Consider Performance**
+   - Limit total number of facets
+   - Use efficient data structures
+   - Test with large datasets

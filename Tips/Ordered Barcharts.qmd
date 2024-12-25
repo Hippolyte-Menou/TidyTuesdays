@@ -1,0 +1,269 @@
+---
+title: "Creating Ordered Bar Plots in R"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Ordered bar plots are essential for effective data visualization. This guide demonstrates various methods to create ordered bar plots in R using `forcats::fct_reorder` and related functions. We'll use different datasets and scenarios to illustrate each approach.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Basic Reordering with fct_reorder
+
+The most common use case is reordering a factor based on another numeric variable.
+
+```{r}
+#| label: basic-reordering
+penguins %>%
+  group_by(species) %>%
+  summarise(mean_mass = mean(body_mass_g, na.rm = TRUE)) %>%
+  ggplot(aes(x = fct_reorder(species, mean_mass), y = mean_mass)) +
+  geom_col() +
+  labs(x = "Species", y = "Mean Body Mass (g)") +
+  theme_minimal()
+```
+
+## Reordering with Summarized Data
+
+When working with grouped data, you might need to reorder based on a summary statistic:
+
+```{r}
+#| label: summarized-reordering
+starwars %>%
+  group_by(species) %>%
+  filter(n() >= 3) %>%
+  summarise(avg_height = mean(height, na.rm = TRUE)) %>%
+  ggplot(aes(x = fct_reorder(species, avg_height), y = avg_height)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Species", y = "Average Height") +
+  theme_minimal()
+```
+
+## Reordering Based on Multiple Variables
+
+`fct_reorder2()` is particularly useful for ordering grouped bar charts when you want to consider the relationship between two variables. Here's an example using the diamonds dataset:
+
+```{r}
+#| label: multiple-variable-reordering
+diamonds %>%
+  group_by(cut, clarity) %>%
+  summarise(
+    mean_price = mean(price),
+    .groups = "drop"
+  ) %>%
+  ggplot(aes(x = fct_reorder2(cut, clarity, mean_price), 
+             y = mean_price, 
+             fill = clarity)) +
+  geom_col(position = "dodge") +
+  labs(x = "Cut",
+       y = "Mean Price ($)",
+       fill = "Clarity",
+       title = "Diamond Prices by Cut and Clarity",
+       subtitle = "Cuts ordered by their price relationship with clarity") +
+  theme_minimal() +
+  scale_fill_viridis_d()
+```
+
+This example demonstrates why `fct_reorder2()` is powerful for grouped bar charts:
+
+1.  It orders the cuts based on how their prices vary across clarity levels
+2.  The ordering considers the interaction between cut and clarity
+3.  Makes it easier to see patterns in how price varies across both dimensions
+
+The key difference from `fct_reorder()` is that `fct_reorder2()` considers two variables (here, clarity and mean_price) when ordering the factor (cut). This is especially useful when you want to order categories based on their relationship with a grouping variable.
+
+## Reverse Ordering with fct_rev
+
+Sometimes you want to reverse the order of your bars:
+
+```{r}
+#| label: reverse-ordering
+mpg %>%
+  group_by(manufacturer) %>%
+  summarise(avg_hwy = mean(hwy)) %>%
+  ggplot(aes(x = fct_rev(fct_reorder(manufacturer, avg_hwy)), y = avg_hwy)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Manufacturer", y = "Average Highway MPG") +
+  theme_minimal()
+```
+
+## Manual Reordering with fct_relevel
+
+When you need specific control over the order:
+
+```{r}
+#| label: manual-reordering
+penguins %>%
+  mutate(species = fct_relevel(species, "Gentoo", "Adelie", "Chinstrap")) %>%
+  ggplot(aes(x = species, y = body_mass_g)) +
+  geom_boxplot() +
+  labs(x = "Species", y = "Body Mass (g)") +
+  theme_minimal()
+```
+
+## Reordering Within Groups
+
+For faceted plots, you might want to order within each facet:
+
+```{r}
+#| label: within-group-reordering
+penguins %>%
+  ggplot(aes(x = fct_reorder(species, body_mass_g, .desc = TRUE), 
+             y = body_mass_g)) +
+  geom_boxplot() +
+  facet_wrap(~sex) +
+  labs(x = "Species", y = "Body Mass (g)") +
+  theme_minimal()
+```
+
+## Using other tidyverse functions
+
+Sometimes it's clearer to reorder during data transformation:
+
+```{r}
+#| label: tidyverse-reordering
+mtcars %>%
+  rownames_to_column("car") %>%
+  arrange(desc(mpg)) %>%
+  mutate(car = factor(car, levels = car)) %>%
+  ggplot(aes(x = car, y = mpg)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Car Model", y = "Miles Per Gallon") +
+  theme_minimal()
+```
+
+## Ordering by Frequency with fct_infreq
+
+`fct_infreq()` is a simple but powerful function for ordering factors by their frequency of occurrence. Here's how to use it:
+
+```{r}
+#| label: frequency-ordering
+# Basic frequency ordering
+mpg %>%
+  mutate(class = fct_infreq(class)) %>%
+  ggplot(aes(x = class)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    x = "Vehicle Class",
+    y = "Count",
+    title = "Vehicle Classes by Frequency",
+    subtitle = "Ordered from most to least common"
+  ) +
+  theme_minimal()
+
+# Combining with fct_rev for reverse order
+mpg %>%
+  mutate(class = fct_rev(fct_infreq(class))) %>%
+  ggplot(aes(x = class)) +
+  geom_bar(fill = "darkred") +
+  labs(
+    x = "Vehicle Class",
+    y = "Count",
+    title = "Vehicle Classes by Frequency",
+    subtitle = "Ordered from least to most common"
+  ) +
+  theme_minimal()
+
+# Using with grouped data
+mpg %>%
+  mutate(class = fct_infreq(class)) %>%
+  ggplot(aes(x = class, fill = drv)) +
+  geom_bar(position = "dodge") +
+  labs(
+    x = "Vehicle Class",
+    y = "Count",
+    fill = "Drive Type",
+    title = "Vehicle Classes by Drive Type",
+    subtitle = "Classes ordered by overall frequency"
+  ) +
+  theme_minimal() +
+  scale_fill_viridis_d()
+```
+
+`fct_infreq()` is particularly useful when: - You want to show categories in order of their occurrence - You're creating frequency plots or bar charts - You want to emphasize the most common categories - You need to create a visual hierarchy based on frequency
+
+You can combine it with: - `fct_rev()` to reverse the order - `fct_lump()` to first combine rare categories - Other grouping or faceting approaches to show frequency distributions within subgroups
+
+## Simplifying Categories with fct_lump
+
+When dealing with data that has many categories, `fct_lump` is invaluable for creating more manageable visualizations. Here's how to use it effectively:
+
+```{r}
+#| label: fct-lump-example
+# Using the starwars dataset to demonstrate fct_lump with species
+starwars %>%
+  # Remove NAs for cleaner visualization
+  filter(!is.na(species)) %>%
+  # Count species
+  count(species) %>%
+  # Keep only the top 5 species, lumping others together
+  mutate(
+    species_lumped = fct_lump_n(species, n = 7, w = n),
+    species_lumped = fct_reorder(species_lumped, n, .desc = F)
+  ) %>%
+  ggplot(aes(x = species_lumped, y = n)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    x = "Species",
+    y = "Count",
+    title = "Star Wars Characters by Species",
+    subtitle = "Showing top 7 species, with others combined\nTied species are all kept"
+  ) +
+  theme_minimal() +
+  coord_flip()
+
+# Demonstrate different lumping approaches
+starwars %>%
+  filter(!is.na(species)) %>%
+  mutate(
+    # Lump by proportion
+    prop_lumped = fct_lump_prop(species, prop = 0.1),
+    # Lump keeping min number of items
+    min_lumped = fct_lump_min(species, min = 3),
+    # Lump smaller categories until reaching cumulative proportion
+    cumsum_lumped = fct_lump_lowfreq(species)
+  ) %>%
+  select(species, prop_lumped, min_lumped, cumsum_lumped) %>%
+  count(species, prop_lumped, min_lumped, cumsum_lumped) %>%
+  knitr::kable()
+```
+
+Key `fct_lump` variants:
+
+1.  `fct_lump_n()`: Keep n most frequent categories
+2.  `fct_lump_prop()`: Keep categories that appear more than proportion p
+3.  `fct_lump_min()`: Keep categories that appear at least n times
+4.  `fct_lump_lowfreq()`: Progressively lump low-frequency categories
+
+This technique is particularly useful when: - You have many categories with long tails of low-frequency items - You want to focus attention on the most important categories - You need to create more manageable legends or axis labels
+
+## Tips and Best Practices
+
+1.  Always consider whether ascending or descending order makes more sense for your visualization
+2.  Use `coord_flip()` for long category names
+3.  Consider using `fct_lump()` to combine small categories
+4.  Remember that `fct_reorder()` takes a summary function as its third argument (default is median)
+5.  Use `fct_infreq()` for ordering by frequency of occurrence
+
+## Common Pitfalls to Avoid
+
+1.  Forgetting to handle NA values appropriately
+2.  Not considering the direction of ordering
+3.  Applying `fct_reorder()` after creating the plot
+4.  Using overly complex ordering when simple would suffice
+5.  Not documenting the reasoning behind specific ordering choices
+
+## Conclusion
+
+Effective ordering of categorical variables is crucial for creating meaningful visualizations. The `forcats` package provides a robust set of tools for this purpose, and understanding when to use each function will help you create more effective data visualizations.

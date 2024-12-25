@@ -1,0 +1,372 @@
+---
+title: "Advanced Faceting Techniques in ggplot2"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Faceting in ggplot2 goes beyond simple grid layouts. This guide explores advanced techniques for creating complex and informative faceted visualizations.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(ggforce)   # For advanced faceting
+library(ggh4x)     # For enhanced faceting
+library(patchwork) # For combining plots
+library(palmerpenguins)
+```
+
+## Complex Faceting Formulas
+
+### Nested Faceting
+
+```{r}
+#| label: nested-facets
+# Basic nested faceting
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(species ~ island) +
+  labs(title = "Nested Faceting: Species within Islands")
+
+# Nested faceting with varying scales
+penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid(species ~ island, scales = "free_y") +
+  labs(title = "Free Scales in Nested Facets")
+```
+
+### Custom Facet Layouts
+
+```{r}
+#| label: custom-layouts
+# Create custom layout matrix
+layout_matrix <- "
+112
+113
+456
+"
+  
+  
+# Generate individual plots
+p1 <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point()
+p2 <- ggplot(penguins, aes(body_mass_g, fill = species)) +
+  geom_density(alpha = 0.5)
+p3 <- ggplot(penguins, aes(flipper_length_mm, fill = species)) +
+  geom_density(alpha = 0.5)
+p4 <- ggplot(penguins, aes(species)) +
+  geom_bar()
+p5 <- ggplot(penguins, aes(island)) +
+  geom_bar()
+p6 <- ggplot(penguins, aes(sex, fill = species)) +
+  geom_bar()
+
+# Combine with layout
+(p1 + p2 + p3 + p4 + p5 + p6) + 
+  plot_layout(design = layout_matrix) +
+  plot_annotation(title = "Custom Layout Matrix")
+```
+
+## Advanced Faceting with ggforce
+
+### Zoom Faceting
+
+```{r}
+#| label: zoom-facets
+# Zoom on specific region
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  facet_zoom(x = species == "Gentoo") +
+  labs(title = "Zoom Facet on Gentoo Species")
+
+# Multiple zoom levels
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  facet_zoom(xy = body_mass_g > 5000) +
+  labs(title = "Zoom on Heavy Penguins")
+```
+
+### Wrapped Strips
+
+```{r}
+#| label: wrapped-strips
+# Create long labels
+penguins_long <- penguins %>%
+  mutate(
+    species_desc = case_when(
+      species == "Adelie" ~ "Adelie (Small Size)",
+      species == "Gentoo" ~ "Gentoo (Large Size)",
+      species == "Chinstrap" ~ "Chinstrap (Medium Size)"
+    )
+  )
+
+# Use wrapped strips
+ggplot(penguins_long, 
+       aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_wrap(~species_desc, 
+             labeller = label_wrap_gen(width = 15)) +
+  labs(title = "Wrapped Strip Labels")
+```
+
+## Enhanced Faceting with ggh4x
+
+### Nested Strips
+
+```{r}
+#| label: nested-strips
+# Create hierarchical grouping
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_nested(~ species + island) +
+  labs(title = "Nested Strips")
+```
+
+### Independent Scales
+
+```{r}
+#| label: independent-scales
+# Different scales for each facet
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid2(species ~ island, scales = "free", 
+              independent = "all") +
+  labs(title = "Independent Scales for Each Facet")
+```
+
+### Scale-specific Breaks
+
+```{r}
+#| label: scale-breaks
+# Custom breaks for specific facets
+breaks <- list(
+  Adelie = seq(30, 50, by = 5),
+  Gentoo = seq(40, 60, by = 5),
+  Chinstrap = seq(35, 55, by = 5)
+)
+
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +
+#   geom_point() +
+#   facet_wrap2(~species, scales = "free_x",
+#              axes = "x") +
+#   scale_x_continuous(breaks = breaks) +
+#   labs(title = "Custom Breaks by Species")
+```
+
+## Conditional Faceting
+
+### Dynamic Facet Variables
+
+```{r}
+#| label: dynamic-facets
+# Function to create dynamic facets
+create_facets <- function(data, facet_var) {
+  ggplot(data, aes(bill_length_mm, bill_depth_mm, color = species)) +
+    geom_point() +
+    facet_wrap(vars(!!sym(facet_var))) +
+    labs(title = paste("Faceted by", facet_var))
+}
+
+# Apply to different variables
+p1 <- create_facets(penguins, "island")
+p2 <- create_facets(penguins, "sex")
+
+p1 / p2
+```
+
+### Conditional Display
+
+```{r}
+#| label: conditional-display
+# Show facets only for specific conditions
+penguins %>%
+  group_by(species, island) %>%
+  filter(n() >= 20) %>%  # Only show groups with sufficient data
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid(species ~ island) +
+  labs(title = "Facets with Sufficient Data Only")
+```
+
+## Styling and Themes
+
+### Custom Strip Appearance
+
+```{r}
+#| label: strip-styling
+# Customize strip appearance
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_wrap(~species) +
+  theme(
+    strip.background = element_rect(
+      fill = "navy",
+      color = "black",
+      linewidth = 1
+    ),
+    strip.text = element_text(
+      color = "white",
+      face = "bold",
+      size = 12
+    )
+  ) +
+  labs(title = "Custom Strip Styling")
+```
+
+### Varying Strip Colors
+
+```{r}
+#| label: varying-strips
+# Different colors for different strips
+species_colors <- c(
+  "Adelie" = "#FF9999",
+  "Gentoo" = "#99FF99",
+  "Chinstrap" = "#9999FF"
+)
+
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species) +
+  theme(
+    strip.background = element_rect(
+      fill = species_colors[unique(penguins$species)]
+    ),
+    strip.text = element_text(
+      color = "black",
+      face = "bold"
+    )
+  ) +
+  labs(title = "Species-Specific Strip Colors")
+```
+
+## Best Practices
+
+### 1. Scale Management
+
+```{r}
+#| label: scale-management
+# Consider when to use free scales
+p1 <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species) +
+  labs(title = "Fixed Scales")
+
+p2 <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species, scales = "free") +
+  labs(title = "Free Scales")
+
+p1 / p2
+```
+
+### 2. Space Utilization
+
+```{r}
+#| label: space-utilization
+# Efficient use of space
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(
+    ~species,
+    scales = "free",
+    nrow = 1,
+    strip.position = "bottom"
+  ) +
+  theme(
+    panel.spacing = unit(2, "lines"),
+    strip.placement = "outside"
+  ) +
+  labs(title = "Efficient Space Usage")
+```
+
+### 3. Information Hierarchy
+
+```{r}
+#| label: info-hierarchy
+# Clear information hierarchy
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid(
+    island ~ species,
+    switch = "y"
+  ) +
+  theme(
+    strip.text.y = element_text(angle = 0),
+    strip.background = element_rect(fill = "gray95"),
+    panel.spacing = unit(1.5, "lines")
+  ) +
+  labs(title = "Clear Facet Hierarchy")
+```
+
+## Common Pitfalls and Solutions
+
+### 1. Overcrowding
+
+```{r}
+#| label: overcrowding
+# Bad: Too many facets
+bad_facets <- ggplot(penguins, 
+                     aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid(species ~ island ~ sex)
+
+# Better: Simplified faceting
+good_facets <- ggplot(penguins,
+                      aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  facet_grid(species ~ island)
+
+# Compare
+bad_facets + labs(title = "Too Many Facets")
+good_facets + labs(title = "Appropriate Number of Facets")
+```
+
+### 2. Label Overlap
+
+```{r}
+#| label: label-overlap
+# Problem: Overlapping labels
+problem_labels <- ggplot(penguins,
+                        aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species, labeller = label_wrap_gen(width = 5))
+
+# Solution: Proper wrapping and spacing
+fixed_labels <- ggplot(penguins,
+                      aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(
+    ~species,
+    labeller = label_wrap_gen(width = 10)
+  ) +
+  theme(
+    strip.text = element_text(margin = margin(5, 0, 5, 0))
+  )
+
+# Compare
+problem_labels + labs(title = "Overlapping Labels")
+fixed_labels + labs(title = "Fixed Labels")
+```
+
+## Tips for Complex Faceting
+
+1.  **Plan Your Layout**
+    -   Sketch the desired layout
+    -   Consider the hierarchy of variables
+    -   Think about scale relationships
+2.  **Manage Space Efficiently**
+    -   Use appropriate spacing
+    -   Consider strip placement
+    -   Control panel sizes
+3.  **Handle Labels**
+    -   Use clear labeling
+    -   Manage long labels
+    -   Consider orientation
+4.  **Consider Performance**
+    -   Limit number of facets
+    -   Use efficient computations
+    -   Test with large datasets

@@ -1,5 +1,713 @@
 [
   {
+    "objectID": "tips/Theme elements.html",
+    "href": "tips/Theme elements.html",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "",
+    "text": "Understanding theme() elements is crucial for creating polished visualizations in ggplot2. This guide provides a detailed exploration of theme customization.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot to use throughout examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#introduction",
+    "href": "tips/Theme elements.html#introduction",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "",
+    "text": "Understanding theme() elements is crucial for creating polished visualizations in ggplot2. This guide provides a detailed exploration of theme customization.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot to use throughout examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#theme-element-types",
+    "href": "tips/Theme elements.html#theme-element-types",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Theme Element Types",
+    "text": "Theme Element Types\nThere are five main types of theme elements:\n\nelement_text(): For text customization\nelement_line(): For line customization\nelement_rect(): For rectangular elements\nelement_blank(): To remove elements\nunit(): For specifying sizes",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#text-elements",
+    "href": "tips/Theme elements.html#text-elements",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Text Elements",
+    "text": "Text Elements\n\nTitle Customization\n\n\nCode\nbase_plot +\n  labs(title = \"Penguin Bill Dimensions\",\n       subtitle = \"Exploring the relationship between length and depth\",\n       caption = \"Data: palmerpenguins package\") +\n  theme(\n    # Plot title\n    plot.title = element_text(\n      size = 16,                # Text size\n      face = \"bold\",           # Bold face\n      color = \"navy\",          # Text color\n      hjust = 0.5,            # Center horizontally\n      margin = margin(b = 10)  # Bottom margin\n    ),\n    # Subtitle\n    plot.subtitle = element_text(\n      size = 12,\n      face = \"italic\",\n      color = \"gray30\",\n      margin = margin(b = 15)\n    ),\n    # Caption\n    plot.caption = element_text(\n      size = 8,\n      face = \"plain\",\n      color = \"gray50\",\n      hjust = 1              # Right-align\n    )\n  )\n\n\n\n\n\n\n\n\n\n\n\nAxis Text Customization\n\n\nCode\nbase_plot +\n  theme(\n    # Axis titles\n    axis.title.x = element_text(\n      size = 12,\n      face = \"bold\",\n      margin = margin(t = 10)  # Top margin\n    ),\n    axis.title.y = element_text(\n      size = 12,\n      face = \"bold\",\n      angle = 90,             # Vertical text\n      margin = margin(r = 10) # Right margin\n    ),\n    # Axis text (tick labels)\n    axis.text.x = element_text(\n      angle = 45,            # Angled text\n      hjust = 1,            # Right-align\n      color = \"darkblue\",\n      size = 10\n    ),\n    axis.text.y = element_text(\n      hjust = 1,           # Right-align\n      color = \"darkblue\",\n      size = 10\n    )\n  )\n\n\n\n\n\n\n\n\n\n\n\nLegend Text Customization\n\n\nCode\nbase_plot +\n  theme(\n    # Legend title\n    legend.title = element_text(\n      size = 12,\n      face = \"bold\",\n      hjust = 0.5\n    ),\n    # Legend text\n    legend.text = element_text(\n      size = 10,\n      face = \"italic\"\n    ),\n    # Legend position and layout\n    legend.position = \"bottom\",\n    legend.box = \"horizontal\"\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#line-elements",
+    "href": "tips/Theme elements.html#line-elements",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Line Elements",
+    "text": "Line Elements\n\nGrid Lines\n\n\nCode\nbase_plot +\n  theme(\n    # Major grid lines\n    panel.grid.major = element_line(\n      color = \"gray80\",\n      linewidth = 0.5,\n      linetype = \"dashed\"\n    ),\n    # Minor grid lines\n    panel.grid.minor = element_line(\n      color = \"gray90\",\n      linewidth = 0.25,\n      linetype = \"dotted\"\n    ),\n    # Remove vertical grid lines\n    panel.grid.major.x = element_blank(),\n    panel.grid.minor.x = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\n\nAxis Lines\n\n\nCode\nbase_plot +\n  theme(\n    # Axis lines\n    axis.line = element_line(\n      color = \"black\",\n      linewidth = 1,\n      lineend = \"square\"\n    ),\n    # Remove grid lines to emphasize axis lines\n    panel.grid = element_blank(),\n    # Add padding around plot\n    plot.margin = margin(20, 20, 20, 20)\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#rectangle-elements",
+    "href": "tips/Theme elements.html#rectangle-elements",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Rectangle Elements",
+    "text": "Rectangle Elements\n\nPanel Customization\n\n\nCode\nbase_plot +\n  theme(\n    # Panel background\n    panel.background = element_rect(\n      fill = \"gray95\",\n      color = \"black\",\n      linewidth = 1\n    ),\n    # Plot background\n    plot.background = element_rect(\n      fill = \"white\",\n      color = \"gray80\",\n      linewidth = 2\n    ),\n    # Legend background\n    legend.background = element_rect(\n      fill = \"white\",\n      color = \"gray80\",\n      linewidth = 0.5\n    )\n  )\n\n\n\n\n\n\n\n\n\n\n\nLegend Box Customization\n\n\nCode\nbase_plot +\n  theme(\n    # Legend box\n    legend.box.background = element_rect(\n      fill = \"gray95\",\n      color = \"black\",\n      linewidth = 0.5\n    ),\n    # Legend key (background for symbols)\n    legend.key = element_rect(\n      fill = \"white\",\n      color = \"gray80\"\n    ),\n    legend.position = \"bottom\",\n    legend.margin = margin(10, 10, 10, 10)\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#complex-theme-combinations",
+    "href": "tips/Theme elements.html#complex-theme-combinations",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Complex Theme Combinations",
+    "text": "Complex Theme Combinations\n\nProfessional Publication Theme\n\n\nCode\ntheme_publication &lt;- function(base_size = 12) {\n  theme_minimal(base_size = base_size) %+replace%\n    theme(\n      # Text elements\n      plot.title = element_text(\n        size = base_size * 1.3,\n        face = \"bold\",\n        margin = margin(b = 15)\n      ),\n      plot.subtitle = element_text(\n        size = base_size * 1.1,\n        margin = margin(b = 10)\n      ),\n      axis.title = element_text(\n        size = base_size,\n        face = \"bold\"\n      ),\n      axis.text = element_text(\n        size = base_size * 0.8,\n        color = \"gray30\"\n      ),\n      # Grid elements\n      panel.grid.major = element_line(\n        color = \"gray90\",\n        linewidth = 0.5\n      ),\n      panel.grid.minor = element_blank(),\n      # Legend elements\n      legend.title = element_text(\n        size = base_size,\n        face = \"bold\"\n      ),\n      legend.text = element_text(\n        size = base_size * 0.8\n      ),\n      legend.position = \"bottom\",\n      # Spacing\n      plot.margin = margin(20, 20, 20, 20),\n      # Background\n      panel.background = element_rect(\n        fill = \"white\",\n        color = NA\n      ),\n      plot.background = element_rect(\n        fill = \"white\",\n        color = NA\n      )\n    )\n}\n\n# Apply the theme\nbase_plot +\n  labs(title = \"Penguin Bill Dimensions\",\n       subtitle = \"Exploring morphological variation across species\",\n       caption = \"Data: palmerpenguins package\") +\n  theme_publication()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#common-pitfalls-and-solutions",
+    "href": "tips/Theme elements.html#common-pitfalls-and-solutions",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\nMargin Issues\n\n\n\nCode\n# Problem: Text getting cut off\nproblematic_plot &lt;- base_plot +\n  labs(title = \"Very Long Title That Might Get Cut Off\") +\n  theme(plot.margin = unit(c(0, 0, 0, 0), \"pt\"))\n\n# Solution: Add adequate margins\nfixed_plot &lt;- base_plot +\n  labs(title = \"Very Long Title That Might Get Cut Off\") +\n  theme(plot.margin = margin(t = 20, r = 20, b = 20, l = 20))\n\n# Compare\nproblematic_plot\n\n\n\n\n\n\n\n\n\nCode\nfixed_plot\n\n\n\n\n\n\n\n\n\n\nText Alignment\n\n\n\nCode\n# Problem: Misaligned facet labels\nfacet_plot &lt;- base_plot +\n  facet_wrap(~island) +\n  theme(strip.text = element_text(hjust = 0.5))\n\n# Solution: Proper alignment and spacing\nfacet_plot_fixed &lt;- base_plot +\n  facet_wrap(~island) +\n  theme(\n    strip.text = element_text(\n      hjust = 0.5,\n      margin = margin(5, 0, 5, 0)\n    ),\n    strip.background = element_rect(\n      fill = \"gray95\",\n      color = \"gray80\"\n    )\n  )\n\n# Compare\nfacet_plot\n\n\n\n\n\n\n\n\n\nCode\nfacet_plot_fixed",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#theme-inheritance",
+    "href": "tips/Theme elements.html#theme-inheritance",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Theme Inheritance",
+    "text": "Theme Inheritance\nUnderstanding theme inheritance is crucial:\n\n\nCode\n# Base theme modifications\nmy_theme &lt;- theme_minimal() +\n  theme(\n    text = element_text(family = \"serif\"),\n    plot.title = element_text(size = 16)\n  )\n\n# These will override only specific elements\nbase_plot +\n  my_theme +\n  theme(plot.title = element_text(color = \"blue\"))",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#best-practices",
+    "href": "tips/Theme elements.html#best-practices",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nCreate Reusable Themes\n\n\n\nCode\n# Function to create consistent themes\ncreate_company_theme &lt;- function(\n  base_size = 12,\n  base_family = \"sans\",\n  primary_color = \"navy\"\n) {\n  theme_minimal(\n    base_size = base_size,\n    base_family = base_family\n  ) %+replace%\n  theme(\n    plot.title = element_text(\n      color = primary_color,\n      size = base_size * 1.3,\n      face = \"bold\"\n    ),\n    axis.title = element_text(\n      color = primary_color,\n      size = base_size\n    )\n    # Add more elements as needed\n  )\n}\n\n# Usage\nbase_plot + create_company_theme(primary_color = \"darkred\")\n\n\n\n\n\n\n\n\n\n\nDocument Theme Choices\n\n\n\nCode\n# Create a theme specification\ntheme_spec &lt;- list(\n  font_family = \"sans\",\n  base_size = 12,\n  colors = list(\n    primary = \"navy\",\n    secondary = \"gray30\",\n    background = \"white\"\n  ),\n  margins = list(\n    plot = margin(20, 20, 20, 20),\n    title = margin(0, 0, 10, 0)\n  )\n)\n\n# Use the specification\ncreate_theme_from_spec &lt;- function(spec) {\n  theme_minimal(\n    base_size = spec$base_size,\n    base_family = spec$font_family\n  ) %+replace%\n  theme(\n    plot.title = element_text(\n      color = spec$colors$primary,\n      margin = spec$margins$title\n    ),\n    plot.margin = spec$margins$plot\n  )\n}",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Theme elements.html#tips-for-theme-development",
+    "href": "tips/Theme elements.html#tips-for-theme-development",
+    "title": "A Deep Dive into ggplot2 Theme Elements",
+    "section": "Tips for Theme Development",
+    "text": "Tips for Theme Development\n\nStart with a base theme (theme_minimal(), theme_bw(), etc.)\nModify elements systematically\nTest with different plot types\nConsider accessibility\nDocument all customizations\nUse version control for theme files\nTest themes across different output formats\n\nRemember that themes can be: - Applied globally with theme_set() - Saved and loaded between sessions - Modified for specific plot instances - Inherited and overridden as needed",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Theme elements"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html",
+    "href": "tips/Ordered Barcharts.html",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "",
+    "text": "Ordered bar plots are essential for effective data visualization. This guide demonstrates various methods to create ordered bar plots in R using forcats::fct_reorder and related functions. We’ll use different datasets and scenarios to illustrate each approach.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#introduction",
+    "href": "tips/Ordered Barcharts.html#introduction",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "",
+    "text": "Ordered bar plots are essential for effective data visualization. This guide demonstrates various methods to create ordered bar plots in R using forcats::fct_reorder and related functions. We’ll use different datasets and scenarios to illustrate each approach.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#basic-reordering-with-fct_reorder",
+    "href": "tips/Ordered Barcharts.html#basic-reordering-with-fct_reorder",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Basic Reordering with fct_reorder",
+    "text": "Basic Reordering with fct_reorder\nThe most common use case is reordering a factor based on another numeric variable.\n\n\nCode\npenguins %&gt;%\n  group_by(species) %&gt;%\n  summarise(mean_mass = mean(body_mass_g, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = fct_reorder(species, mean_mass), y = mean_mass)) +\n  geom_col() +\n  labs(x = \"Species\", y = \"Mean Body Mass (g)\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#reordering-with-summarized-data",
+    "href": "tips/Ordered Barcharts.html#reordering-with-summarized-data",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Reordering with Summarized Data",
+    "text": "Reordering with Summarized Data\nWhen working with grouped data, you might need to reorder based on a summary statistic:\n\n\nCode\nstarwars %&gt;%\n  group_by(species) %&gt;%\n  filter(n() &gt;= 3) %&gt;%\n  summarise(avg_height = mean(height, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = fct_reorder(species, avg_height), y = avg_height)) +\n  geom_col() +\n  coord_flip() +\n  labs(x = \"Species\", y = \"Average Height\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#reordering-based-on-multiple-variables",
+    "href": "tips/Ordered Barcharts.html#reordering-based-on-multiple-variables",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Reordering Based on Multiple Variables",
+    "text": "Reordering Based on Multiple Variables\nfct_reorder2() is particularly useful for ordering grouped bar charts when you want to consider the relationship between two variables. Here’s an example using the diamonds dataset:\n\n\nCode\ndiamonds %&gt;%\n  group_by(cut, clarity) %&gt;%\n  summarise(\n    mean_price = mean(price),\n    .groups = \"drop\"\n  ) %&gt;%\n  ggplot(aes(x = fct_reorder2(cut, clarity, mean_price), \n             y = mean_price, \n             fill = clarity)) +\n  geom_col(position = \"dodge\") +\n  labs(x = \"Cut\",\n       y = \"Mean Price ($)\",\n       fill = \"Clarity\",\n       title = \"Diamond Prices by Cut and Clarity\",\n       subtitle = \"Cuts ordered by their price relationship with clarity\") +\n  theme_minimal() +\n  scale_fill_viridis_d()\n\n\n\n\n\n\n\n\n\nThis example demonstrates why fct_reorder2() is powerful for grouped bar charts:\n\nIt orders the cuts based on how their prices vary across clarity levels\nThe ordering considers the interaction between cut and clarity\nMakes it easier to see patterns in how price varies across both dimensions\n\nThe key difference from fct_reorder() is that fct_reorder2() considers two variables (here, clarity and mean_price) when ordering the factor (cut). This is especially useful when you want to order categories based on their relationship with a grouping variable.",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#reverse-ordering-with-fct_rev",
+    "href": "tips/Ordered Barcharts.html#reverse-ordering-with-fct_rev",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Reverse Ordering with fct_rev",
+    "text": "Reverse Ordering with fct_rev\nSometimes you want to reverse the order of your bars:\n\n\nCode\nmpg %&gt;%\n  group_by(manufacturer) %&gt;%\n  summarise(avg_hwy = mean(hwy)) %&gt;%\n  ggplot(aes(x = fct_rev(fct_reorder(manufacturer, avg_hwy)), y = avg_hwy)) +\n  geom_col() +\n  coord_flip() +\n  labs(x = \"Manufacturer\", y = \"Average Highway MPG\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#manual-reordering-with-fct_relevel",
+    "href": "tips/Ordered Barcharts.html#manual-reordering-with-fct_relevel",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Manual Reordering with fct_relevel",
+    "text": "Manual Reordering with fct_relevel\nWhen you need specific control over the order:\n\n\nCode\npenguins %&gt;%\n  mutate(species = fct_relevel(species, \"Gentoo\", \"Adelie\", \"Chinstrap\")) %&gt;%\n  ggplot(aes(x = species, y = body_mass_g)) +\n  geom_boxplot() +\n  labs(x = \"Species\", y = \"Body Mass (g)\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#reordering-within-groups",
+    "href": "tips/Ordered Barcharts.html#reordering-within-groups",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Reordering Within Groups",
+    "text": "Reordering Within Groups\nFor faceted plots, you might want to order within each facet:\n\n\nCode\npenguins %&gt;%\n  ggplot(aes(x = fct_reorder(species, body_mass_g, .desc = TRUE), \n             y = body_mass_g)) +\n  geom_boxplot() +\n  facet_wrap(~sex) +\n  labs(x = \"Species\", y = \"Body Mass (g)\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#using-other-tidyverse-functions",
+    "href": "tips/Ordered Barcharts.html#using-other-tidyverse-functions",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Using other tidyverse functions",
+    "text": "Using other tidyverse functions\nSometimes it’s clearer to reorder during data transformation:\n\n\nCode\nmtcars %&gt;%\n  rownames_to_column(\"car\") %&gt;%\n  arrange(desc(mpg)) %&gt;%\n  mutate(car = factor(car, levels = car)) %&gt;%\n  ggplot(aes(x = car, y = mpg)) +\n  geom_col() +\n  coord_flip() +\n  labs(x = \"Car Model\", y = \"Miles Per Gallon\") +\n  theme_minimal()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#ordering-by-frequency-with-fct_infreq",
+    "href": "tips/Ordered Barcharts.html#ordering-by-frequency-with-fct_infreq",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Ordering by Frequency with fct_infreq",
+    "text": "Ordering by Frequency with fct_infreq\nfct_infreq() is a simple but powerful function for ordering factors by their frequency of occurrence. Here’s how to use it:\n\n\nCode\n# Basic frequency ordering\nmpg %&gt;%\n  mutate(class = fct_infreq(class)) %&gt;%\n  ggplot(aes(x = class)) +\n  geom_bar(fill = \"steelblue\") +\n  labs(\n    x = \"Vehicle Class\",\n    y = \"Count\",\n    title = \"Vehicle Classes by Frequency\",\n    subtitle = \"Ordered from most to least common\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nCode\n# Combining with fct_rev for reverse order\nmpg %&gt;%\n  mutate(class = fct_rev(fct_infreq(class))) %&gt;%\n  ggplot(aes(x = class)) +\n  geom_bar(fill = \"darkred\") +\n  labs(\n    x = \"Vehicle Class\",\n    y = \"Count\",\n    title = \"Vehicle Classes by Frequency\",\n    subtitle = \"Ordered from least to most common\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nCode\n# Using with grouped data\nmpg %&gt;%\n  mutate(class = fct_infreq(class)) %&gt;%\n  ggplot(aes(x = class, fill = drv)) +\n  geom_bar(position = \"dodge\") +\n  labs(\n    x = \"Vehicle Class\",\n    y = \"Count\",\n    fill = \"Drive Type\",\n    title = \"Vehicle Classes by Drive Type\",\n    subtitle = \"Classes ordered by overall frequency\"\n  ) +\n  theme_minimal() +\n  scale_fill_viridis_d()\n\n\n\n\n\n\n\n\n\nfct_infreq() is particularly useful when: - You want to show categories in order of their occurrence - You’re creating frequency plots or bar charts - You want to emphasize the most common categories - You need to create a visual hierarchy based on frequency\nYou can combine it with: - fct_rev() to reverse the order - fct_lump() to first combine rare categories - Other grouping or faceting approaches to show frequency distributions within subgroups",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#simplifying-categories-with-fct_lump",
+    "href": "tips/Ordered Barcharts.html#simplifying-categories-with-fct_lump",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Simplifying Categories with fct_lump",
+    "text": "Simplifying Categories with fct_lump\nWhen dealing with data that has many categories, fct_lump is invaluable for creating more manageable visualizations. Here’s how to use it effectively:\n\n\nCode\n# Using the starwars dataset to demonstrate fct_lump with species\nstarwars %&gt;%\n  # Remove NAs for cleaner visualization\n  filter(!is.na(species)) %&gt;%\n  # Count species\n  count(species) %&gt;%\n  # Keep only the top 5 species, lumping others together\n  mutate(\n    species_lumped = fct_lump_n(species, n = 7, w = n),\n    species_lumped = fct_reorder(species_lumped, n, .desc = F)\n  ) %&gt;%\n  ggplot(aes(x = species_lumped, y = n)) +\n  geom_col(fill = \"steelblue\") +\n  labs(\n    x = \"Species\",\n    y = \"Count\",\n    title = \"Star Wars Characters by Species\",\n    subtitle = \"Showing top 7 species, with others combined\\nTied species are all kept\"\n  ) +\n  theme_minimal() +\n  coord_flip()\n\n\n\n\n\n\n\n\n\nCode\n# Demonstrate different lumping approaches\nstarwars %&gt;%\n  filter(!is.na(species)) %&gt;%\n  mutate(\n    # Lump by proportion\n    prop_lumped = fct_lump_prop(species, prop = 0.1),\n    # Lump keeping min number of items\n    min_lumped = fct_lump_min(species, min = 3),\n    # Lump smaller categories until reaching cumulative proportion\n    cumsum_lumped = fct_lump_lowfreq(species)\n  ) %&gt;%\n  select(species, prop_lumped, min_lumped, cumsum_lumped) %&gt;%\n  count(species, prop_lumped, min_lumped, cumsum_lumped) %&gt;%\n  knitr::kable()\n\n\n\n\n\nspecies\nprop_lumped\nmin_lumped\ncumsum_lumped\nn\n\n\n\n\nAleena\nOther\nOther\nAleena\n1\n\n\nBesalisk\nOther\nOther\nBesalisk\n1\n\n\nCerean\nOther\nOther\nCerean\n1\n\n\nChagrian\nOther\nOther\nChagrian\n1\n\n\nClawdite\nOther\nOther\nClawdite\n1\n\n\nDroid\nOther\nDroid\nDroid\n6\n\n\nDug\nOther\nOther\nDug\n1\n\n\nEwok\nOther\nOther\nEwok\n1\n\n\nGeonosian\nOther\nOther\nGeonosian\n1\n\n\nGungan\nOther\nGungan\nGungan\n3\n\n\nHuman\nHuman\nHuman\nHuman\n35\n\n\nHutt\nOther\nOther\nHutt\n1\n\n\nIktotchi\nOther\nOther\nIktotchi\n1\n\n\nKaleesh\nOther\nOther\nKaleesh\n1\n\n\nKaminoan\nOther\nOther\nKaminoan\n2\n\n\nKel Dor\nOther\nOther\nKel Dor\n1\n\n\nMirialan\nOther\nOther\nMirialan\n2\n\n\nMon Calamari\nOther\nOther\nMon Calamari\n1\n\n\nMuun\nOther\nOther\nMuun\n1\n\n\nNautolan\nOther\nOther\nNautolan\n1\n\n\nNeimodian\nOther\nOther\nNeimodian\n1\n\n\nPau’an\nOther\nOther\nPau’an\n1\n\n\nQuermian\nOther\nOther\nQuermian\n1\n\n\nRodian\nOther\nOther\nRodian\n1\n\n\nSkakoan\nOther\nOther\nSkakoan\n1\n\n\nSullustan\nOther\nOther\nSullustan\n1\n\n\nTholothian\nOther\nOther\nTholothian\n1\n\n\nTogruta\nOther\nOther\nTogruta\n1\n\n\nToong\nOther\nOther\nToong\n1\n\n\nToydarian\nOther\nOther\nToydarian\n1\n\n\nTrandoshan\nOther\nOther\nTrandoshan\n1\n\n\nTwi’lek\nOther\nOther\nTwi’lek\n2\n\n\nVulptereen\nOther\nOther\nVulptereen\n1\n\n\nWookiee\nOther\nOther\nWookiee\n2\n\n\nXexto\nOther\nOther\nXexto\n1\n\n\nYoda’s species\nOther\nOther\nYoda’s species\n1\n\n\nZabrak\nOther\nOther\nZabrak\n2\n\n\n\n\n\nKey fct_lump variants:\n\nfct_lump_n(): Keep n most frequent categories\nfct_lump_prop(): Keep categories that appear more than proportion p\nfct_lump_min(): Keep categories that appear at least n times\nfct_lump_lowfreq(): Progressively lump low-frequency categories\n\nThis technique is particularly useful when: - You have many categories with long tails of low-frequency items - You want to focus attention on the most important categories - You need to create more manageable legends or axis labels",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#tips-and-best-practices",
+    "href": "tips/Ordered Barcharts.html#tips-and-best-practices",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Tips and Best Practices",
+    "text": "Tips and Best Practices\n\nAlways consider whether ascending or descending order makes more sense for your visualization\nUse coord_flip() for long category names\nConsider using fct_lump() to combine small categories\nRemember that fct_reorder() takes a summary function as its third argument (default is median)\nUse fct_infreq() for ordering by frequency of occurrence",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#common-pitfalls-to-avoid",
+    "href": "tips/Ordered Barcharts.html#common-pitfalls-to-avoid",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Common Pitfalls to Avoid",
+    "text": "Common Pitfalls to Avoid\n\nForgetting to handle NA values appropriately\nNot considering the direction of ordering\nApplying fct_reorder() after creating the plot\nUsing overly complex ordering when simple would suffice\nNot documenting the reasoning behind specific ordering choices",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Ordered Barcharts.html#conclusion",
+    "href": "tips/Ordered Barcharts.html#conclusion",
+    "title": "Creating Ordered Bar Plots in R",
+    "section": "Conclusion",
+    "text": "Conclusion\nEffective ordering of categorical variables is crucial for creating meaningful visualizations. The forcats package provides a robust set of tools for this purpose, and understanding when to use each function will help you create more effective data visualizations.",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Ordered Barcharts"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html",
+    "href": "tips/Data Emphasis.html",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "",
+    "text": "The gghighlight package provides powerful tools for emphasizing specific data points or groups in ggplot2 visualizations. This guide explores various emphasis techniques.\n\n\nCode\nlibrary(tidyverse)\nlibrary(gghighlight)\nlibrary(gapminder)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#introduction",
+    "href": "tips/Data Emphasis.html#introduction",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "",
+    "text": "The gghighlight package provides powerful tools for emphasizing specific data points or groups in ggplot2 visualizations. This guide explores various emphasis techniques.\n\n\nCode\nlibrary(tidyverse)\nlibrary(gghighlight)\nlibrary(gapminder)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#basic-highlighting",
+    "href": "tips/Data Emphasis.html#basic-highlighting",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Basic Highlighting",
+    "text": "Basic Highlighting\n\nSimple Value-based Highlighting\n\n\nCode\n# Highlight specific values\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(species == \"Gentoo\") +\n  labs(title = \"Highlighting Single Species\",\n       subtitle = \"Gentoo penguins emphasized\")\n\n\n\n\n\n\n\n\n\nCode\n# Highlight based on numeric condition\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(bill_length_mm &gt; 50) +\n  labs(title = \"Highlighting Large Bills\",\n       subtitle = \"Bills longer than 50mm emphasized\")\n\n\n\n\n\n\n\n\n\n\n\nMultiple Conditions\n\n\nCode\n# Combine multiple conditions\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(\n    species == \"Gentoo\" & bill_length_mm &gt; 50,\n    label_key = species\n  ) +\n  labs(title = \"Complex Highlighting\",\n       subtitle = \"Large Gentoo bills emphasized\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#advanced-highlighting-techniques",
+    "href": "tips/Data Emphasis.html#advanced-highlighting-techniques",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Advanced Highlighting Techniques",
+    "text": "Advanced Highlighting Techniques\n\nUsing Computed Statistics\n\n\nCode\n# Highlight based on mean values\ngapminder %&gt;%\n  filter(year == 2007) %&gt;%\n  ggplot(aes(gdpPercap, lifeExp, color = continent)) +\n  geom_point() +\n  gghighlight(\n    mean(lifeExp) &gt; 70,\n  ) +\n  scale_x_log10() +\n  labs(title = \"High Life Expectancy Continents\",\n       subtitle = \"Highlighting continents with mean life expectancy &gt; 70\")\n\n\n\n\n\n\n\n\n\n\n\nDynamic Thresholds\n\n\nCode\n# Calculate dynamic threshold\npenguins %&gt;%\n  ggplot(aes(flipper_length_mm, body_mass_g, color = species)) +\n  geom_point() +\n  gghighlight(\n    body_mass_g &gt; mean(body_mass_g, na.rm = TRUE),\n    label_key = species\n  ) +\n  labs(title = \"Above Average Mass\",\n       subtitle = \"Points above mean body mass highlighted\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#time-series-highlighting",
+    "href": "tips/Data Emphasis.html#time-series-highlighting",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Time Series Highlighting",
+    "text": "Time Series Highlighting\n\nHighlighting Trends\n\n\nCode\n# Prepare time series data\neconomics_long %&gt;%\n  filter(variable %in% c(\"pce\", \"psavert\")) %&gt;%\n  ggplot(aes(date, value, color = variable)) +\n  geom_line() +\n  gghighlight(max(value) &gt; 10000) +\n  labs(title = \"Economic Indicators\",\n       subtitle = \"Highlighting high-value series\")\n\n\n\n\n\n\n\n\n\nCode\n# Highlight specific time periods\neconomics_long %&gt;%\n  filter(variable == \"unemploy\") %&gt;%\n  ggplot(aes(date, value)) +\n  geom_line() +\n  gghighlight(\n    date &gt;= as.Date(\"2008-01-01\") & date &lt;= as.Date(\"2010-01-01\"),\n    unhighlighted_params = list(color = alpha(\"gray\", 0.5))\n  ) +\n  labs(title = \"Unemployment Over Time\",\n       subtitle = \"2008-2010 period highlighted\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#customizing-highlight-appearance",
+    "href": "tips/Data Emphasis.html#customizing-highlight-appearance",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Customizing Highlight Appearance",
+    "text": "Customizing Highlight Appearance\n\nModifying Unhighlighted Points\n\n\nCode\n# Control unhighlighted appearance\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point(size = 3) +\n  gghighlight(\n    species == \"Gentoo\",\n    unhighlighted_params = list(color = alpha(\"gray80\", 0.5), size = 2)\n  ) +\n  labs(title = \"Custom Unhighlighted Style\")\n\n\n\n\n\n\n\n\n\n\n\nAdding Labels\n\n\nCode\n# Add informative labels\ngapminder %&gt;%\n  filter(year == 2007) %&gt;%\n  ggplot(aes(gdpPercap, lifeExp, color = country)) +\n  geom_point() +\n  gghighlight(\n    gdpPercap &gt; 30000,\n    label_key = country,\n    label_params = list(size = 3, hjust = -0.1),\n    use_direct_label = TRUE\n  ) +\n  scale_x_log10() +\n  labs(title = \"High GDP Countries\",\n       subtitle = \"Countries with GDP per capita &gt; $30,000\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#complex-applications",
+    "href": "tips/Data Emphasis.html#complex-applications",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Complex Applications",
+    "text": "Complex Applications\n\nFaceted Highlights\n\n\nCode\n# Highlight within facets\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  gghighlight(bill_depth_mm &gt; mean(bill_depth_mm, na.rm = TRUE)) +\n  facet_wrap(~species) +\n  labs(title = \"Above Average Bill Depth\",\n       subtitle = \"Highlighted separately within each species\")\n\n\n\n\n\n\n\n\n\n\n\nMultiple Geoms\n\n\nCode\n# Highlight with multiple geometries\nggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +\n  geom_violin() +\n  geom_jitter(aes(color = species), width = 0.2) +\n  gghighlight(\n    mean(body_mass_g, na.rm = TRUE) &gt; 4500) +\n  labs(title = \"Heavy Species Distribution\",\n       subtitle = \"Species with mean mass &gt; 4500g highlighted\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#best-practices",
+    "href": "tips/Data Emphasis.html#best-practices",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Best Practices",
+    "text": "Best Practices\n\n1. Clear Visual Hierarchy\n\n\nCode\n# Create clear contrast\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point(size = 3) +\n  gghighlight(\n    species == \"Gentoo\",\n    unhighlighted_params = list(colour = alpha(\"gray90\", 0.5), size = 2),\n    label_key = species,\n    use_direct_label = TRUE\n  ) +\n  theme_minimal() +\n  labs(title = \"Clear Visual Hierarchy Example\")\n\n\n\n\n\n\n\n\n\n\n\n2. Informative Labels\n\n\nCode\n# Add context through labels\ngapminder %&gt;%\n  filter(year == 2007) %&gt;%\n  ggplot(aes(gdpPercap, lifeExp, color = continent)) +\n  geom_point() +\n  gghighlight(\n    mean(lifeExp) &gt; 75,\n    label_key = continent,\n    label_params = list(\n      vjust = -0.5,\n      size = 4,\n      fontface = \"bold\"\n    )\n  ) +\n  scale_x_log10() +\n  labs(\n    title = \"High Life Expectancy Regions\",\n    subtitle = \"Regions with mean life expectancy &gt; 75 years\",\n    caption = \"Data: Gapminder (2007)\"\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#common-pitfalls-and-solutions",
+    "href": "tips/Data Emphasis.html#common-pitfalls-and-solutions",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\n1. Too Much Highlighting\n\n\nCode\n# Bad: Too many points highlighted\nbad_highlight &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(bill_length_mm &gt; 40)  # Highlights too many points\n\n# Better: More selective highlighting\ngood_highlight &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(bill_length_mm &gt; quantile(bill_length_mm, 0.9, na.rm = TRUE))\n\n# Compare\nbad_highlight + labs(title = \"Too Many Points Highlighted\")\n\n\n\n\n\n\n\n\n\nCode\ngood_highlight + labs(title = \"Selective Highlighting\")\n\n\n\n\n\n\n\n\n\n\n\n2. Poor Contrast\n\n\nCode\n# Bad: Poor contrast\nbad_contrast &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(\n    species == \"Gentoo\",\n    unhighlighted_colour = alpha(\"gray60\", 0.8)  # Not enough contrast\n  )\n\n# Better: Clear contrast\ngood_contrast &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  gghighlight(\n    species == \"Gentoo\",\n    unhighlighted_colour = alpha(\"gray90\", 0.3)  # Better contrast\n  )\n\n# Compare\nbad_contrast + labs(title = \"Poor Contrast\")\n\n\n\n\n\n\n\n\n\nCode\ngood_contrast + labs(title = \"Good Contrast\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Data Emphasis.html#tips-for-effective-highlighting",
+    "href": "tips/Data Emphasis.html#tips-for-effective-highlighting",
+    "title": "Data Emphasis Techniques with gghighlight",
+    "section": "Tips for Effective Highlighting",
+    "text": "Tips for Effective Highlighting\n\nBe Selective\n\n\nHighlight only what’s important\nAvoid highlighting too many elements\nConsider using quantiles for thresholds\n\n\nMaintain Context\n\n\nKeep unhighlighted points visible\nUse appropriate transparency levels\nAdd informative labels\n\n\nConsider Accessibility\n\n\nUse sufficient color contrast\nDon’t rely solely on color\nTest with colorblind-friendly palettes\n\n\nAdd Clear Documentation\n\n\nUse informative titles and subtitles\nExplain highlight criteria\nInclude relevant context",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Data Emphasis"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html",
+    "href": "tips/Custom Color Palettes.html",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "",
+    "text": "While R has many built-in palettes, creating and implementing custom color palettes can be tricky. This guide focuses on how to effectively implement custom palettes and avoid common pitfalls.\n\n\nCode\nlibrary(tidyverse)\nlibrary(scales)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#introduction",
+    "href": "tips/Custom Color Palettes.html#introduction",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "",
+    "text": "While R has many built-in palettes, creating and implementing custom color palettes can be tricky. This guide focuses on how to effectively implement custom palettes and avoid common pitfalls.\n\n\nCode\nlibrary(tidyverse)\nlibrary(scales)\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#finding-color-palettes",
+    "href": "tips/Custom Color Palettes.html#finding-color-palettes",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "Finding Color Palettes",
+    "text": "Finding Color Palettes\nThe R Color Palette Finder is an invaluable resource showing 2000+ palettes from various R packages. Key features:\n\nInteractive visualization of all palettes\nCode snippets for implementation\nFiltering by colorblind friendliness\nCategories (sequential, diverging, qualitative)\nPackage-specific collections",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#implementing-custom-palettes",
+    "href": "tips/Custom Color Palettes.html#implementing-custom-palettes",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "Implementing Custom Palettes",
+    "text": "Implementing Custom Palettes\n\nBasic Implementation\n\n\nCode\n# Method 1: Direct color vector\nmy_colors &lt;- c(\"#E69F00\", \"#56B4E9\", \"#009E73\")\n\nggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point() +\n  scale_color_manual(values = my_colors)\n\n\n\n\n\n\n\n\n\nCode\n# Method 2: Named vector (for more control)\nspecies_colors &lt;- c(\n  \"Adelie\" = \"#E69F00\",\n  \"Chinstrap\" = \"#56B4E9\",\n  \"Gentoo\" = \"#009E73\"\n)\n\nggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point() +\n  scale_color_manual(values = species_colors)\n\n\n\n\n\n\n\n\n\n\n\nCommon Errors and Solutions\n\n\nCode\n# Error 1: Not enough colors\nfew_colors &lt;- c(\"#E69F00\", \"#56B4E9\")\ntry({\n  ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n    geom_point() +\n    scale_color_manual(values = few_colors)\n})\n\n\nError in `palette()`:\n! Insufficient values in manual scale. 3 needed but only 2 provided.\n\n\nCode\n# Solution: Check number of categories\nn_categories &lt;- n_distinct(penguins$species)\ncolors_needed &lt;- colorRampPalette(c(\"#E69F00\", \"#56B4E9\", \"#009E73\"))(n_categories)\n\n# Error 2: Colors don't match factor levels\nmismatched_colors &lt;- c(\n  \"Wrong\" = \"#E69F00\",\n  \"Names\" = \"#56B4E9\",\n  \"Here\" = \"#009E73\"\n)\ntry({\n  ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n    geom_point() +\n    scale_color_manual(values = mismatched_colors)\n})\n\n\n\n\n\n\n\n\n\nCode\n# Solution: Check factor levels\nlevels(penguins$species)\n\n\n[1] \"Adelie\"    \"Chinstrap\" \"Gentoo\"   \n\n\n\n\nCreating Reusable Palette Functions\n\n\nCode\n# Function that handles different numbers of categories\nflexible_palette &lt;- function(n) {\n  if (n &lt;= 3) {\n    return(c(\"#E69F00\", \"#56B4E9\", \"#009E73\")[1:n])\n  } else {\n    # Create additional colors if needed\n    return(colorRampPalette(c(\"#E69F00\", \"#56B4E9\", \"#009E73\"))(n))\n  }\n}\n\n# Function that includes error checking\nrobust_palette &lt;- function(data, variable) {\n  n_cats &lt;- n_distinct(data[[variable]])\n  if (n_cats &gt; 8) {\n    warning(\"More than 8 categories may be hard to distinguish\")\n  }\n  \n  base_colors &lt;- c(\"#E69F00\", \"#56B4E9\", \"#009E73\", \"#F0E442\",\n                   \"#0072B2\", \"#D55E00\", \"#CC79A7\", \"#999999\")\n  \n  if (n_cats &lt;= length(base_colors)) {\n    return(base_colors[1:n_cats])\n  } else {\n    return(colorRampPalette(base_colors)(n_cats))\n  }\n}\n\n# Usage\nggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point() +\n  scale_color_manual(values = robust_palette(penguins, \"species\"))",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#common-implementation-challenges",
+    "href": "tips/Custom Color Palettes.html#common-implementation-challenges",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "Common Implementation Challenges",
+    "text": "Common Implementation Challenges\n\nInconsistent Number of Categories\n\n\n\nCode\n# Function to handle missing/extra categories\nmake_safe_palette &lt;- function(data, variable, default_colors) {\n  actual_levels &lt;- levels(data[[variable]])\n  if (is.null(actual_levels)) actual_levels &lt;- unique(data[[variable]])\n  \n  # Check if we have colors for all levels\n  if (length(default_colors) &lt; length(actual_levels)) {\n    warning(\"Not enough colors provided, extending palette\")\n    default_colors &lt;- colorRampPalette(default_colors)(length(actual_levels))\n  }\n  \n  # Create named vector matching levels\n  setNames(default_colors[1:length(actual_levels)], actual_levels)\n}\n\n# Example with filtering\npenguins_subset &lt;- penguins %&gt;% filter(species != \"Gentoo\")\nspecies_palette &lt;- make_safe_palette(\n  penguins_subset, \n  \"species\",\n  c(\"#E69F00\", \"#56B4E9\", \"#009E73\")\n)\n\nggplot(penguins_subset, \n       aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point() +\n  scale_color_manual(values = species_palette)\n\n\n\n\n\n\n\n\n\n\nFill vs. Color Scales\n\n\n\nCode\n# Using same palette for both fill and color\nmy_palette &lt;- c(\"#E69F00\", \"#56B4E9\", \"#009E73\")\n\nggplot(penguins, aes(x = species)) +\n  geom_bar(aes(fill = species)) +\n  geom_text(aes(color = species, \n                label = after_stat(count),\n                y = after_stat(count) + 3),\n            stat = \"count\") +\n  scale_fill_manual(values = my_palette) +\n  scale_color_manual(values = my_palette)\n\n\n\n\n\n\n\n\n\n\nContinuous vs. Discrete Scales\n\n\n\nCode\n# Creating a continuous palette\ncontinuous_palette &lt;- colorRampPalette(c(\"#E69F00\", \"#009E73\"))\n\n# Compare discrete vs continuous usage\np1 &lt;- ggplot(penguins, \n            aes(x = bill_length_mm, y = bill_depth_mm, color = body_mass_g)) +\n  geom_point() +\n  scale_color_gradientn(colors = continuous_palette(100)) +\n  ggtitle(\"Continuous Scale\")\n\np2 &lt;- ggplot(penguins, \n            aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point() +\n  scale_color_manual(values = continuous_palette(3)) +\n  ggtitle(\"Discrete Scale\")\n\nlibrary(patchwork)\np1 + p2",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#troubleshooting-tips",
+    "href": "tips/Custom Color Palettes.html#troubleshooting-tips",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "Troubleshooting Tips",
+    "text": "Troubleshooting Tips\n\nCheck Factor Levels\n\n\n\nCode\n# Print levels to debug color matching\nstr(penguins$species)\n\n\n Factor w/ 3 levels \"Adelie\",\"Chinstrap\",..: 1 1 1 1 1 1 1 1 1 1 ...\n\n\nCode\nlevels(penguins$species)\n\n\n[1] \"Adelie\"    \"Chinstrap\" \"Gentoo\"   \n\n\n\nVerify Color Specifications\n\n\n\nCode\n# Function to validate hex colors\nis_valid_hex &lt;- function(x) {\n  grepl(\"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$\", x)\n}\n\n# Test colors\ntest_colors &lt;- c(\"#E69F00\", \"#56B4E9\", \"invalid\", \"red\")\ndata.frame(\n  color = test_colors,\n  is_valid = sapply(test_colors, is_valid_hex)\n)\n\n\n          color is_valid\n#E69F00 #E69F00     TRUE\n#56B4E9 #56B4E9     TRUE\ninvalid invalid    FALSE\nred         red    FALSE\n\n\n\nDebug Scale Mappings\n\n\n\nCode\n# Function to show color-value mappings\nshow_palette_mapping &lt;- function(data, variable, palette) {\n  if(is.factor(data[[variable]])) {\n    levels &lt;- levels(data[[variable]])\n  } else {\n    levels &lt;- unique(data[[variable]])\n  }\n  \n  if(length(palette) &lt; length(levels)) {\n    warning(\"Not enough colors in palette\")\n  }\n  \n  data.frame(\n    value = levels,\n    color = palette[1:length(levels)]\n  )\n}\n\n# Example usage\nshow_palette_mapping(penguins, \"species\", my_colors)\n\n\n      value   color\n1    Adelie #E69F00\n2 Chinstrap #56B4E9\n3    Gentoo #009E73",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Custom Color Palettes.html#best-practices",
+    "href": "tips/Custom Color Palettes.html#best-practices",
+    "title": "Implementing Custom Color Palettes in R",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nAlways create palette functions that handle:\n\nVariable numbers of categories\nMissing or filtered categories\nContinuous vs. discrete scales\nFill and color scales consistently\n\nDocument your palette choices:\n\n\n\nCode\n# Example of well-documented palette\ncompany_palette &lt;- list(\n  primary = c(\"#E69F00\", \"#56B4E9\", \"#009E73\"),\n  sequential = colorRampPalette(c(\"#E69F00\", \"#009E73\")),\n  discrete = function(n) {\n    if (n &lt;= 3) return(c(\"#E69F00\", \"#56B4E9\", \"#009E73\")[1:n])\n    colorRampPalette(c(\"#E69F00\", \"#56B4E9\", \"#009E73\"))(n)\n  }\n)\n\n# Add metadata\nattr(company_palette, \"creation_date\") &lt;- Sys.Date()\nattr(company_palette, \"colorblind_safe\") &lt;- TRUE\n\n\n\nTest your palettes with:\n\nDifferent numbers of categories\nBoth continuous and discrete scales\nVarious plot types\nColorblind simulation tools",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom Color Palettes"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html",
+    "href": "tips/Common gotchas with text.html",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "",
+    "text": "Text alignment, margins, and spacing are common sources of frustration in ggplot2. This guide covers frequent issues and their solutions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot for examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#introduction",
+    "href": "tips/Common gotchas with text.html#introduction",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "",
+    "text": "Text alignment, margins, and spacing are common sources of frustration in ggplot2. This guide covers frequent issues and their solutions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot for examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#text-alignment-gotchas",
+    "href": "tips/Common gotchas with text.html#text-alignment-gotchas",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "Text Alignment Gotchas",
+    "text": "Text Alignment Gotchas\n\n1. Long Axis Labels Getting Cut Off\n\n\nCode\n# Problem: Long labels getting cut off\nproblematic_plot &lt;- mpg %&gt;%\n  mutate(manufacturer = str_to_title(manufacturer)) %&gt;%\n  ggplot(aes(manufacturer, hwy)) +\n  geom_boxplot() +\n  labs(x = \"Manufacturer (with very long axis label that gets cut off)\")\n\n# Solution 1: Adjust margin\nsolution_1 &lt;- problematic_plot +\n  theme(axis.title.x = element_text(margin = margin(t = 20)))\n\n# Solution 2: Text wrapping\nsolution_2 &lt;- problematic_plot +\n  scale_x_discrete(label = function(x) str_wrap(x, width = 10)) +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n# Compare\nproblematic_plot\n\n\n\n\n\n\n\n\n\nCode\nsolution_1\n\n\n\n\n\n\n\n\n\nCode\nsolution_2\n\n\n\n\n\n\n\n\n\n\n\n2. Facet Label Alignment Issues\n\n\nCode\n# Problem: Misaligned facet labels\nproblematic_facets &lt;- penguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~island) +\n  theme(strip.text = element_text(hjust = 0))  # Wrong alignment\n\n# Solution: Proper centering and spacing\nfixed_facets &lt;- problematic_facets +\n  theme(\n    strip.text = element_text(\n      hjust = 0.5,  # Center text\n      margin = margin(t = 5, b = 5)  # Add vertical space\n    ),\n    strip.background = element_rect(\n      fill = \"gray95\",\n      color = \"gray80\"\n    )\n  )\n\n# Compare\nproblematic_facets\n\n\n\n\n\n\n\n\n\nCode\nfixed_facets\n\n\n\n\n\n\n\n\n\n\n\n3. Legend Title Wrapping\n\n\nCode\n# Problem: Long legend title\nproblematic_legend &lt;- base_plot +\n  labs(color = \"Species of Penguins with Very Long Legend Title That Wraps Awkwardly\")\n\n# Solution: Control wrapping and spacing\nfixed_legend &lt;- base_plot +\n  labs(color = str_wrap(\"Species of Penguins with Very Long Legend Title That Wraps Nicely\", width = 20)) +\n  theme(\n    legend.title = element_text(lineheight = 0.9),\n    legend.margin = margin(t = 5, b = 5)\n  )\n\n# Compare\nproblematic_legend\n\n\n\n\n\n\n\n\n\nCode\nfixed_legend",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#margin-gotchas",
+    "href": "tips/Common gotchas with text.html#margin-gotchas",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "Margin Gotchas",
+    "text": "Margin Gotchas\n\n1. Plot Margins Too Tight\n\n\nCode\n# Problem: Tight margins cutting off elements\ntight_margins &lt;- base_plot +\n  labs(title = \"Title Gets Cut Off With Tight Margins\",\n       caption = \"Caption also gets cut off\") +\n  theme(plot.margin = unit(c(0, 0, 0, 0), \"pt\"))\n\n# Solution: Proper margin spacing\nfixed_margins &lt;- base_plot +\n  labs(title = \"Title Has Room to Breathe\",\n       caption = \"Caption has proper spacing\") +\n  theme(\n    plot.margin = margin(t = 20, r = 20, b = 20, l = 20),\n    plot.title = element_text(margin = margin(b = 10)),\n    plot.caption = element_text(margin = margin(t = 10))\n  )\n\n# Compare\ntight_margins\n\n\n\n\n\n\n\n\n\nCode\nfixed_margins\n\n\n\n\n\n\n\n\n\n\n\n2. Overlapping Multi-line Titles\n\n\nCode\n# Problem: Overlapping title and subtitle\noverlapping_titles &lt;- base_plot +\n  labs(\n    title = \"Main Title\",\n    subtitle = \"Subtitle that overlaps with the title because of insufficient spacing\"\n  ) +\n  theme(\n    plot.title = element_text(margin = margin(b = 0)),\n    plot.subtitle = element_text(margin = margin(t = 0))\n  )\n\n# Solution: Proper title spacing\nfixed_titles &lt;- base_plot +\n  labs(\n    title = \"Main Title\",\n    subtitle = \"Subtitle with proper spacing from the title\"\n  ) +\n  theme(\n    plot.title = element_text(margin = margin(b = 10)),\n    plot.subtitle = element_text(margin = margin(t = 5, b = 15))\n  )\n\n# Compare\noverlapping_titles\n\n\n\n\n\n\n\n\n\nCode\nfixed_titles\n\n\n\n\n\n\n\n\n\n\n\n3. Legend Spacing Issues\n\n\nCode\n# Problem: Cramped legend\ncramped_legend &lt;- base_plot +\n  theme(\n    legend.margin = margin(0, 0, 0, 0),\n    legend.spacing = unit(0, \"pt\"),\n    legend.key.size = unit(10, \"pt\")\n  )\n\n# Solution: Proper legend spacing\nfixed_legend_spacing &lt;- base_plot +\n  theme(\n    legend.margin = margin(5, 5, 5, 5),\n    legend.spacing = unit(5, \"pt\"),\n    legend.key.size = unit(15, \"pt\"),\n    legend.text = element_text(margin = margin(l = 5))\n  )\n\n# Compare\ncramped_legend\n\n\n\n\n\n\n\n\n\nCode\nfixed_legend_spacing",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#spacing-gotchas",
+    "href": "tips/Common gotchas with text.html#spacing-gotchas",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "Spacing Gotchas",
+    "text": "Spacing Gotchas\n\n1. Axis Text Overlapping\n\n\nCode\n# Problem: Overlapping axis text\noverlapping_axis &lt;- mpg %&gt;%\n  ggplot(aes(manufacturer, hwy)) +\n  geom_boxplot() +\n  theme(axis.text.x = element_text(angle = 45))  # Missing hjust\n\n# Solution: Proper text adjustment\nfixed_axis &lt;- mpg %&gt;%\n  ggplot(aes(manufacturer, hwy)) +\n  geom_boxplot() +\n  theme(\n    axis.text.x = element_text(\n      angle = 45,\n      hjust = 1,  # Right-align rotated text\n      vjust = 1,  # Vertical adjustment\n      margin = margin(t = 5)  # Space from axis\n    )\n  )\n\n# Compare\noverlapping_axis\n\n\n\n\n\n\n\n\n\nCode\nfixed_axis\n\n\n\n\n\n\n\n\n\n\n\n2. Facet Spacing Issues\n\n\nCode\n# Problem: Poor facet spacing\npoor_facet_spacing &lt;- penguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species + island) +\n  theme(panel.spacing = unit(0, \"pt\"))\n\n# Solution: Better facet spacing\nfixed_facet_spacing &lt;- penguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species + island) +\n  theme(\n    panel.spacing = unit(2, \"lines\"),\n    strip.text = element_text(margin = margin(t = 5, b = 5))\n  )\n\n# Compare\npoor_facet_spacing\n\n\n\n\n\n\n\n\n\nCode\nfixed_facet_spacing",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#common-solutions-cheat-sheet",
+    "href": "tips/Common gotchas with text.html#common-solutions-cheat-sheet",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "Common Solutions Cheat Sheet",
+    "text": "Common Solutions Cheat Sheet\n\nText Alignment\n\n\n\nCode\ntext_fixes &lt;- list(\n  # Long axis labels\n  axis_text = theme(\n    axis.text.x = element_text(\n      angle = 45,\n      hjust = 1,\n      vjust = 1\n    )\n  ),\n  \n  # Centered facet labels\n  facet_text = theme(\n    strip.text = element_text(\n      hjust = 0.5,\n      margin = margin(t = 5, b = 5)\n    )\n  ),\n  \n  # Wrapped legend title\n  legend_text = theme(\n    legend.title = element_text(\n      lineheight = 0.9,\n      margin = margin(b = 5)\n    )\n  )\n)\n\n\n\nMargins\n\n\n\nCode\nmargin_fixes &lt;- list(\n  # Safe plot margins\n  plot_margins = theme(\n    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)\n  ),\n  \n  # Title spacing\n  title_margins = theme(\n    plot.title = element_text(margin = margin(b = 10)),\n    plot.subtitle = element_text(margin = margin(t = 5, b = 15)),\n    plot.caption = element_text(margin = margin(t = 10))\n  ),\n  \n  # Legend spacing\n  legend_margins = theme(\n    legend.margin = margin(5, 5, 5, 5),\n    legend.spacing = unit(5, \"pt\"),\n    legend.key.size = unit(15, \"pt\")\n  )\n)\n\n\n\nSpacing\n\n\n\nCode\nspacing_fixes &lt;- list(\n  # Panel spacing\n  panel_spacing = theme(\n    panel.spacing = unit(2, \"lines\")\n  ),\n  \n  # Axis spacing\n  axis_spacing = theme(\n    axis.title.x = element_text(margin = margin(t = 10)),\n    axis.title.y = element_text(margin = margin(r = 10))\n  ),\n  \n  # Legend key spacing\n  legend_spacing = theme(\n    legend.key.spacing = unit(5, \"pt\"),\n    legend.text = element_text(margin = margin(l = 5))\n  )\n)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Common gotchas with text.html#best-practices",
+    "href": "tips/Common gotchas with text.html#best-practices",
+    "title": "Common Gotchas with Text, Margins, and Spacing in ggplot2",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nAlways check plot margins first when elements are cut off\nUse hjust and vjust for fine-tuning text alignment\nAdd appropriate spacing between plot elements\nTest plots at different sizes\nConsider different output formats\nUse relative units when possible\nThink about text wrapping for long labels\nKeep consistency across related plots",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Common gotchas with text"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html",
+    "href": "tips/Advanced geometries with ggforce.html",
+    "title": "Advanced Geometries with ggforce",
+    "section": "",
+    "text": "ggforce extends ggplot2 with advanced geometries for specialized visualizations. This guide explores these powerful additions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggforce)\nlibrary(palmerpenguins)\nlibrary(concaveman)\n\ntheme_set(theme_minimal())",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#introduction",
+    "href": "tips/Advanced geometries with ggforce.html#introduction",
+    "title": "Advanced Geometries with ggforce",
+    "section": "",
+    "text": "ggforce extends ggplot2 with advanced geometries for specialized visualizations. This guide explores these powerful additions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggforce)\nlibrary(palmerpenguins)\nlibrary(concaveman)\n\ntheme_set(theme_minimal())",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#arc-and-circle-geometries",
+    "href": "tips/Advanced geometries with ggforce.html#arc-and-circle-geometries",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Arc and Circle Geometries",
+    "text": "Arc and Circle Geometries\n\ngeom_arc and geom_arc_bar\n\n\nCode\n# Create data for arcs\narc_data &lt;- tibble(\n  start = seq(0, 2*pi, length.out = 4),\n  end = lead(start, default = 2*pi),\n  r = rep(2:3, each = 2),\n  value = 1:4\n)\n\n# Basic arc plot\nggplot(arc_data) +\n  geom_arc_bar(aes(\n    x0 = 0, y0 = 0,\n    r0 = r-0.5, r = r,\n    start = start, end = end,\n    fill = factor(value)\n  )) +\n  coord_fixed() +\n  labs(title = \"Arc Bars\") +\n  theme_void()\n\n\n\n\n\n\n\n\n\nCode\n# Animated circle segments\nangles &lt;- seq(0, 2*pi, length.out = 20)\ncircle_data &lt;- tibble(\n  start = angles,\n  end = lead(angles, default = first(angles)),\n  group = rep(1:4, each = 5)\n)\n\nggplot(circle_data) +\n  geom_arc(aes(\n    x0 = 0, y0 = 0,\n    r = group,\n    start = start, end = end,\n    color = factor(group)\n  )) +\n  coord_fixed() +\n  theme_void()\n\n\n\n\n\n\n\n\n\n\n\nCircles and Regular Polygons\n\n\nCode\n# Create data for circles\ncircle_data &lt;- tibble(\n  x0 = rep(1:3, each = 2),\n  y0 = rep(1:2, 3),\n  r = seq(0.3, 0.8, length.out = 6)\n)\n\n# Circles with different sizes\nggplot(circle_data) +\n  geom_circle(aes(x0 = x0, y0 = y0, r = r, fill = r)) +\n  coord_fixed() +\n  scale_fill_viridis_c() +\n  theme_minimal() +\n  labs(title = \"Circles with Varying Radii\")\n\n\n\n\n\n\n\n\n\nCode\n# Regular polygons\npolygon_data &lt;- tibble(\n  x0 = rep(1:3, each = 2),\n  y0 = rep(1:2, 3),\n  sides = 3:8\n)\n\nggplot(polygon_data) +\n  geom_regon(aes(x0 = x0, y0 = y0, sides = sides, r = 0.4, angle = 0,\n                 fill = factor(sides))) +\n  coord_fixed() +\n  theme_minimal() +\n  labs(title = \"Regular Polygons\",\n       fill = \"Number of sides\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#advanced-mark-geometries",
+    "href": "tips/Advanced geometries with ggforce.html#advanced-mark-geometries",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Advanced Mark Geometries",
+    "text": "Advanced Mark Geometries\n\ngeom_mark_hull and geom_mark_ellipse\n\n\nCode\n# Mark interesting groups\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  geom_mark_hull(aes(\n    color = species,\n    label = species,\n    filter = species != \"Adelie\"\n  ),\n  expand = unit(3, \"mm\")) +\n  labs(title = \"Species Groups with Hull Marking\")\n\n\n\n\n\n\n\n\n\nCode\n# Ellipse marking with labels\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  geom_mark_ellipse(aes(\n    color = species,\n    label = species,\n    description = paste(\"Mean mass:\", round(mean(body_mass_g, na.rm = TRUE)), \"g\")\n  )) +\n  labs(title = \"Species Groups with Ellipse Marking\") + \n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\ngeom_mark_rect and geom_mark_circle\n\n\nCode\n# Rectangular highlights\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  geom_mark_rect(aes(\n    filter = species == \"Gentoo\",\n    label = \"Gentoo\",\n    description = \"Largest species\"\n  )) +\n  labs(title = \"Rectangular Highlight\")\n\n\n\n\n\n\n\n\n\nCode\n# Circular highlights\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  geom_mark_circle(aes(\n    group = species,\n    label = species\n  ),\n  label.buffer = unit(10, \"mm\")) +\n  labs(title = \"Circular Species Groups\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#specialized-layouts",
+    "href": "tips/Advanced geometries with ggforce.html#specialized-layouts",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Specialized Layouts",
+    "text": "Specialized Layouts\n\nParallel Sets (geom_parallel_sets)\n\n\nCode\n# Create parallel sets visualization\n\npenguins %&gt;%\n  gather_set_data(c(species, island, sex)) %&gt;%\n  group_by(species, island, sex) %&gt;% \n  mutate(value = n()) %&gt;% \n  ggplot(aes(x = x, id = id, split = y, value = value)) +\n  geom_parallel_sets(aes(fill = species)) +\n  geom_parallel_sets_axes(axis.width = 0.1) +\n  geom_parallel_sets_labels(angle = 0) +\n  labs(title = \"Penguin Characteristics\",\n       subtitle = \"Parallel Sets Visualization\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\nSina Plots (geom_sina)\n\n\nCode\n# Basic sina plot\nggplot(penguins, aes(species, body_mass_g)) +\n  geom_sina(aes(color = species)) +\n  labs(title = \"Distribution of Body Mass\",\n       subtitle = \"Sina Plot\")\n\n\n\n\n\n\n\n\n\nCode\n# Combined with violin plot\nggplot(penguins, aes(species, body_mass_g)) +\n  geom_violin(alpha = 0.3) +\n  geom_sina(aes(color = sex)) +\n  labs(title = \"Body Mass Distribution\",\n       subtitle = \"Violin + Sina Plot\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#advanced-faceting",
+    "href": "tips/Advanced geometries with ggforce.html#advanced-faceting",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Advanced Faceting",
+    "text": "Advanced Faceting\n\nfacet_zoom\n\n\nCode\n# Zoom in on specific region\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  facet_zoom(x = species == \"Gentoo\") +\n  labs(title = \"Bill Dimensions with Zoom on Gentoo\")\n\n\n\n\n\n\n\n\n\nCode\n# Multiple zoom levels\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  facet_zoom(xy = body_mass_g &gt; 5000) +\n  labs(title = \"Bill Dimensions\",\n       subtitle = \"Zoomed on Heavy Penguins\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#link-and-connection-geometries",
+    "href": "tips/Advanced geometries with ggforce.html#link-and-connection-geometries",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Link and Connection Geometries",
+    "text": "Link and Connection Geometries\n\ngeom_link and geom_link2\n\n\nCode\n# Create data for links\nlink_data &lt;- tibble(\n  x = c(1, 2, 3),\n  y = c(1, 2, 1),\n  xend = c(2, 3, 1),\n  yend = c(2, 1, 1)\n)\n\n# Basic links\nggplot(link_data) +\n  geom_link(aes(\n    x = x, y = y,\n    xend = xend, yend = yend,\n    alpha = stat(index)\n  )) +\n  labs(title = \"Basic Links\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#specialized-annotations",
+    "href": "tips/Advanced geometries with ggforce.html#specialized-annotations",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Specialized Annotations",
+    "text": "Specialized Annotations\n\ngeom_bezier\n\n\nCode\n# Create bezier curve data\nbezier_data &lt;- tibble(\n  x = c(1, 2, 3, 4),\n  y = c(1, 3, 2, 4),\n  group = 1\n)\n\n# Simple bezier curve\nggplot(bezier_data, aes(x, y, group = group)) +\n  geom_bezier() +\n  labs(title = \"Simple Bezier Curve\")\n\n\n\n\n\n\n\n\n\nCode\n# Multiple bezier curves\nbezier_data2 &lt;- bind_rows(\n  bezier_data,\n  bezier_data %&gt;% mutate(y = y + 2, group = 2)\n)\n\nggplot(bezier_data2, aes(x, y, group = group, color = factor(group))) +\n  geom_bezier() +\n  labs(title = \"Multiple Bezier Curves\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#common-applications-and-best-practices",
+    "href": "tips/Advanced geometries with ggforce.html#common-applications-and-best-practices",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Common Applications and Best Practices",
+    "text": "Common Applications and Best Practices\n\n1. Highlighting Groups\n\n\nCode\n# Combine mark geometries with points\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point(alpha = 0.5) +\n  geom_mark_ellipse(\n    aes(filter = species == \"Gentoo\",\n        label = \"Gentoo\",\n        description = \"Largest species\"),\n    label.buffer = unit(10, \"mm\")\n  ) +\n  labs(title = \"Highlighting with Context\")\n\n\n\n\n\n\n\n\n\n\n\n2. Complex Layouts\n\n\nCode\n# Combine multiple specialized geometries\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point(alpha = 0.5) +\n  geom_mark_hull(aes(color = species, fill = species),\n                 alpha = 0.2) +\n  facet_zoom(x = bill_length_mm &gt; 50) +\n  labs(title = \"Multi-layer Visualization\")\n\n\n\n\n\n\n\n\n\n\n\n3. Statistical Summaries\n\n\nCode\n# Use sina plots for distribution visualization\nggplot(penguins, aes(species, body_mass_g)) +\n  geom_sina(aes(color = sex), alpha = 0.6) +\n  geom_boxplot(width = 0.2, alpha = 0.2) +\n  labs(title = \"Distribution with Multiple Geometries\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced geometries with ggforce.html#tips-and-tricks",
+    "href": "tips/Advanced geometries with ggforce.html#tips-and-tricks",
+    "title": "Advanced Geometries with ggforce",
+    "section": "Tips and Tricks",
+    "text": "Tips and Tricks\n\nCoordinate Systems\n\nUse coord_fixed() with circular geometries\nConsider aspect ratio for mark geometries\nAdjust zoom factors in facet_zoom\n\nAesthetics\n\nLayer geometries effectively\nUse transparency for clarity\nConsider color and fill separately\n\nPerformance\n\nLimit complex geometries with large datasets\nUse simpler alternatives when possible\nConsider static alternatives to animations\n\nIntegration\n\nCombine with standard ggplot2 geometries\nUse consistent themes\nMaintain visual hierarchy",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced geometries with ggforce"
+    ]
+  },
+  {
     "objectID": "TidyTuesdays.html",
     "href": "TidyTuesdays.html",
     "title": "TidyTuesdays",
@@ -123,6 +831,590 @@
       "Home",
       "TidyTuesdays Data Stories",
       "2023-03-14 - European Drug Development"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html",
+    "href": "tips/Advanced facetting techniques.html",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "",
+    "text": "Faceting in ggplot2 goes beyond simple grid layouts. This guide explores advanced techniques for creating complex and informative faceted visualizations.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggforce)   # For advanced faceting\nlibrary(ggh4x)     # For enhanced faceting\nlibrary(patchwork) # For combining plots\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#introduction",
+    "href": "tips/Advanced facetting techniques.html#introduction",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "",
+    "text": "Faceting in ggplot2 goes beyond simple grid layouts. This guide explores advanced techniques for creating complex and informative faceted visualizations.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggforce)   # For advanced faceting\nlibrary(ggh4x)     # For enhanced faceting\nlibrary(patchwork) # For combining plots\nlibrary(palmerpenguins)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#complex-faceting-formulas",
+    "href": "tips/Advanced facetting techniques.html#complex-faceting-formulas",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Complex Faceting Formulas",
+    "text": "Complex Faceting Formulas\n\nNested Faceting\n\n\nCode\n# Basic nested faceting\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(species ~ island) +\n  labs(title = \"Nested Faceting: Species within Islands\")\n\n\n\n\n\n\n\n\n\nCode\n# Nested faceting with varying scales\npenguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid(species ~ island, scales = \"free_y\") +\n  labs(title = \"Free Scales in Nested Facets\")\n\n\n\n\n\n\n\n\n\n\n\nCustom Facet Layouts\n\n\nCode\n# Create custom layout matrix\nlayout_matrix &lt;- \"\n112\n113\n456\n\"\n  \n  \n# Generate individual plots\np1 &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point()\np2 &lt;- ggplot(penguins, aes(body_mass_g, fill = species)) +\n  geom_density(alpha = 0.5)\np3 &lt;- ggplot(penguins, aes(flipper_length_mm, fill = species)) +\n  geom_density(alpha = 0.5)\np4 &lt;- ggplot(penguins, aes(species)) +\n  geom_bar()\np5 &lt;- ggplot(penguins, aes(island)) +\n  geom_bar()\np6 &lt;- ggplot(penguins, aes(sex, fill = species)) +\n  geom_bar()\n\n# Combine with layout\n(p1 + p2 + p3 + p4 + p5 + p6) + \n  plot_layout(design = layout_matrix) +\n  plot_annotation(title = \"Custom Layout Matrix\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#advanced-faceting-with-ggforce",
+    "href": "tips/Advanced facetting techniques.html#advanced-faceting-with-ggforce",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Advanced Faceting with ggforce",
+    "text": "Advanced Faceting with ggforce\n\nZoom Faceting\n\n\nCode\n# Zoom on specific region\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  facet_zoom(x = species == \"Gentoo\") +\n  labs(title = \"Zoom Facet on Gentoo Species\")\n\n\n\n\n\n\n\n\n\nCode\n# Multiple zoom levels\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  facet_zoom(xy = body_mass_g &gt; 5000) +\n  labs(title = \"Zoom on Heavy Penguins\")\n\n\n\n\n\n\n\n\n\n\n\nWrapped Strips\n\n\nCode\n# Create long labels\npenguins_long &lt;- penguins %&gt;%\n  mutate(\n    species_desc = case_when(\n      species == \"Adelie\" ~ \"Adelie (Small Size)\",\n      species == \"Gentoo\" ~ \"Gentoo (Large Size)\",\n      species == \"Chinstrap\" ~ \"Chinstrap (Medium Size)\"\n    )\n  )\n\n# Use wrapped strips\nggplot(penguins_long, \n       aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_wrap(~species_desc, \n             labeller = label_wrap_gen(width = 15)) +\n  labs(title = \"Wrapped Strip Labels\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#enhanced-faceting-with-ggh4x",
+    "href": "tips/Advanced facetting techniques.html#enhanced-faceting-with-ggh4x",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Enhanced Faceting with ggh4x",
+    "text": "Enhanced Faceting with ggh4x\n\nNested Strips\n\n\nCode\n# Create hierarchical grouping\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(~ species + island) +\n  labs(title = \"Nested Strips\")\n\n\n\n\n\n\n\n\n\n\n\nIndependent Scales\n\n\nCode\n# Different scales for each facet\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid2(species ~ island, scales = \"free\", \n              independent = \"all\") +\n  labs(title = \"Independent Scales for Each Facet\")\n\n\n\n\n\n\n\n\n\n\n\nScale-specific Breaks\n\n\nCode\n# Custom breaks for specific facets\nbreaks &lt;- list(\n  Adelie = seq(30, 50, by = 5),\n  Gentoo = seq(40, 60, by = 5),\n  Chinstrap = seq(35, 55, by = 5)\n)\n\n# ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n#   geom_point() +\n#   facet_wrap2(~species, scales = \"free_x\",\n#              axes = \"x\") +\n#   scale_x_continuous(breaks = breaks) +\n#   labs(title = \"Custom Breaks by Species\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#conditional-faceting",
+    "href": "tips/Advanced facetting techniques.html#conditional-faceting",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Conditional Faceting",
+    "text": "Conditional Faceting\n\nDynamic Facet Variables\n\n\nCode\n# Function to create dynamic facets\ncreate_facets &lt;- function(data, facet_var) {\n  ggplot(data, aes(bill_length_mm, bill_depth_mm, color = species)) +\n    geom_point() +\n    facet_wrap(vars(!!sym(facet_var))) +\n    labs(title = paste(\"Faceted by\", facet_var))\n}\n\n# Apply to different variables\np1 &lt;- create_facets(penguins, \"island\")\np2 &lt;- create_facets(penguins, \"sex\")\n\np1 / p2\n\n\n\n\n\n\n\n\n\n\n\nConditional Display\n\n\nCode\n# Show facets only for specific conditions\npenguins %&gt;%\n  group_by(species, island) %&gt;%\n  filter(n() &gt;= 20) %&gt;%  # Only show groups with sufficient data\n  ggplot(aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid(species ~ island) +\n  labs(title = \"Facets with Sufficient Data Only\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#styling-and-themes",
+    "href": "tips/Advanced facetting techniques.html#styling-and-themes",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Styling and Themes",
+    "text": "Styling and Themes\n\nCustom Strip Appearance\n\n\nCode\n# Customize strip appearance\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_wrap(~species) +\n  theme(\n    strip.background = element_rect(\n      fill = \"navy\",\n      color = \"black\",\n      linewidth = 1\n    ),\n    strip.text = element_text(\n      color = \"white\",\n      face = \"bold\",\n      size = 12\n    )\n  ) +\n  labs(title = \"Custom Strip Styling\")\n\n\n\n\n\n\n\n\n\n\n\nVarying Strip Colors\n\n\nCode\n# Different colors for different strips\nspecies_colors &lt;- c(\n  \"Adelie\" = \"#FF9999\",\n  \"Gentoo\" = \"#99FF99\",\n  \"Chinstrap\" = \"#9999FF\"\n)\n\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species) +\n  theme(\n    strip.background = element_rect(\n      fill = species_colors[unique(penguins$species)]\n    ),\n    strip.text = element_text(\n      color = \"black\",\n      face = \"bold\"\n    )\n  ) +\n  labs(title = \"Species-Specific Strip Colors\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#best-practices",
+    "href": "tips/Advanced facetting techniques.html#best-practices",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Best Practices",
+    "text": "Best Practices\n\n1. Scale Management\n\n\nCode\n# Consider when to use free scales\np1 &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species) +\n  labs(title = \"Fixed Scales\")\n\np2 &lt;- ggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species, scales = \"free\") +\n  labs(title = \"Free Scales\")\n\np1 / p2\n\n\n\n\n\n\n\n\n\n\n\n2. Space Utilization\n\n\nCode\n# Efficient use of space\nggplot(penguins, aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(\n    ~species,\n    scales = \"free\",\n    nrow = 1,\n    strip.position = \"bottom\"\n  ) +\n  theme(\n    panel.spacing = unit(2, \"lines\"),\n    strip.placement = \"outside\"\n  ) +\n  labs(title = \"Efficient Space Usage\")\n\n\n\n\n\n\n\n\n\n\n\n3. Information Hierarchy\n\n\nCode\n# Clear information hierarchy\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid(\n    island ~ species,\n    switch = \"y\"\n  ) +\n  theme(\n    strip.text.y = element_text(angle = 0),\n    strip.background = element_rect(fill = \"gray95\"),\n    panel.spacing = unit(1.5, \"lines\")\n  ) +\n  labs(title = \"Clear Facet Hierarchy\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#common-pitfalls-and-solutions",
+    "href": "tips/Advanced facetting techniques.html#common-pitfalls-and-solutions",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\n1. Overcrowding\n\n\nCode\n# Bad: Too many facets\nbad_facets &lt;- ggplot(penguins, \n                     aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid(species ~ island ~ sex)\n\n# Better: Simplified faceting\ngood_facets &lt;- ggplot(penguins,\n                      aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_grid(species ~ island)\n\n# Compare\nbad_facets + labs(title = \"Too Many Facets\")\n\n\n\n\n\n\n\n\n\nCode\ngood_facets + labs(title = \"Appropriate Number of Facets\")\n\n\n\n\n\n\n\n\n\n\n\n2. Label Overlap\n\n\nCode\n# Problem: Overlapping labels\nproblem_labels &lt;- ggplot(penguins,\n                        aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(~species, labeller = label_wrap_gen(width = 5))\n\n# Solution: Proper wrapping and spacing\nfixed_labels &lt;- ggplot(penguins,\n                      aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_wrap(\n    ~species,\n    labeller = label_wrap_gen(width = 10)\n  ) +\n  theme(\n    strip.text = element_text(margin = margin(5, 0, 5, 0))\n  )\n\n# Compare\nproblem_labels + labs(title = \"Overlapping Labels\")\n\n\n\n\n\n\n\n\n\nCode\nfixed_labels + labs(title = \"Fixed Labels\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced facetting techniques.html#tips-for-complex-faceting",
+    "href": "tips/Advanced facetting techniques.html#tips-for-complex-faceting",
+    "title": "Advanced Faceting Techniques in ggplot2",
+    "section": "Tips for Complex Faceting",
+    "text": "Tips for Complex Faceting\n\nPlan Your Layout\n\nSketch the desired layout\nConsider the hierarchy of variables\nThink about scale relationships\n\nManage Space Efficiently\n\nUse appropriate spacing\nConsider strip placement\nControl panel sizes\n\nHandle Labels\n\nUse clear labeling\nManage long labels\nConsider orientation\n\nConsider Performance\n\nLimit number of facets\nUse efficient computations\nTest with large datasets",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced facetting techniques"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "",
+    "text": "ggh4x provides powerful nested faceting capabilities that go beyond standard ggplot2 faceting. This guide explores these advanced features.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggh4x)\nlibrary(palmerpenguins)\n\n# Prepare additional data for examples\ndiamonds_subset &lt;- diamonds %&gt;%\n  filter(cut %in% c(\"Ideal\", \"Premium\", \"Very Good\")) %&gt;%\n  sample_n(1000)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#introduction",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#introduction",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "",
+    "text": "ggh4x provides powerful nested faceting capabilities that go beyond standard ggplot2 faceting. This guide explores these advanced features.\n\n\nCode\nlibrary(tidyverse)\nlibrary(ggh4x)\nlibrary(palmerpenguins)\n\n# Prepare additional data for examples\ndiamonds_subset &lt;- diamonds %&gt;%\n  filter(cut %in% c(\"Ideal\", \"Premium\", \"Very Good\")) %&gt;%\n  sample_n(1000)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#basic-nested-faceting",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#basic-nested-faceting",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Basic Nested Faceting",
+    "text": "Basic Nested Faceting\n\nSimple Nesting\n\n\nCode\n# Basic nested structure\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(~ species + island) +\n  labs(title = \"Basic Nested Faceting\",\n       subtitle = \"Species nested with Islands\")\n\n\n\n\n\n\n\n\n\nCode\n# With explicit nesting operator\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(~ species + island, nest_line = TRUE) +\n  labs(title = \"Nested Faceting with Divider Lines\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#advanced-nesting-features",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#advanced-nesting-features",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Advanced Nesting Features",
+    "text": "Advanced Nesting Features\n\nNested Grid Layouts\n\n\nCode\n# Two-way nested grid\nggplot(diamonds_subset, \n       aes(carat, price, color = clarity)) +\n  geom_point(alpha = 0.6) +\n  facet_nested(cut ~ color + clarity) +\n  labs(title = \"Two-way Nested Grid\",\n       subtitle = \"Cut by Color and Clarity\")\n\n\n\n\n\n\n\n\n\nCode\n# Complex nesting with varying scales\nggplot(diamonds_subset, \n       aes(carat, price, color = clarity)) +\n  geom_point(alpha = 0.6) +\n  facet_nested(\n    cut ~ color + clarity,\n    scales = \"free_y\",\n    nest_line = TRUE,\n    strip = strip_nested(\n      background_y = list(\n        element_rect(fill = \"lightblue\"),\n        element_rect(fill = \"lightgreen\")\n      )\n    )\n  ) +\n  labs(title = \"Nested Grid with Custom Styling\")\n\n\n\n\n\n\n\n\n\n\n\nIndependent Scale Control\n\n\nCode\n# Different scales for different nesting levels\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(\n    species + island ~ sex,\n    independent = \"all\",\n    scales = \"free\"\n  ) +\n  labs(title = \"Independent Scales at Each Level\")\n\n\n\n\n\n\n\n\n\nCode\n# Partial scale independence\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(\n    species + island ~ .,\n    scales = \"free_y\",\n    independent = \"y\"\n  ) +\n  labs(title = \"Partial Scale Independence\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#custom-strip-appearances",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#custom-strip-appearances",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Custom Strip Appearances",
+    "text": "Custom Strip Appearances\n\nHierarchical Strip Styling\n\n\nCode\n# Different styles for different levels\nggplot(diamonds_subset, aes(carat, price)) +\n  geom_point(alpha = 0.5) +\n  facet_nested(\n    ~ cut + clarity,\n    strip = strip_nested(\n      background_x = list(\n        element_rect(fill = \"lightblue\"),\n        element_rect(fill = \"lightpink\")\n      ),\n      text_x = list(\n        element_text(face = \"bold\", size = 12),\n        element_text(face = \"italic\", size = 10)\n      )\n    )\n  ) +\n  labs(title = \"Hierarchical Strip Styling\")\n\n\n\n\n\n\n\n\n\n\n\nNested Strip Placement\n\n\nCode\n# Control strip positions\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(\n    ~ species + island,\n    switch = \"x\",\n    strip = strip_nested(\n      placement = \"outside\",\n      clip = \"off\"\n    )\n  ) +\n  labs(title = \"Custom Strip Placement\")\n\n\nError in strip_nested(placement = \"outside\", clip = \"off\"): argument inutilisé (placement = \"outside\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#complex-nesting-patterns",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#complex-nesting-patterns",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Complex Nesting Patterns",
+    "text": "Complex Nesting Patterns\n\nMulti-level Nesting\n\n\nCode\n# Create more complex grouping structure\ndiamonds_nested &lt;- diamonds_subset %&gt;%\n  mutate(\n    price_category = case_when(\n      price &lt; 5000 ~ \"Low\",\n      price &lt; 10000 ~ \"Medium\",\n      TRUE ~ \"High\"\n    ),\n    size_category = case_when(\n      carat &lt; 0.5 ~ \"Small\",\n      carat &lt; 1 ~ \"Medium\",\n      TRUE ~ \"Large\"\n    )\n  )\n\n# Multi-level nested plot\nggplot(diamonds_nested, \n       aes(carat, price, color = clarity)) +\n  geom_point(alpha = 0.6) +\n  facet_nested(\n    cut + price_category ~ color + size_category,\n    nest_line = TRUE,\n    strip = strip_nested(\n      background = list(\n        element_rect(fill = \"lightblue\"),\n        element_rect(fill = \"lightpink\"),\n        element_rect(fill = \"lightgreen\"),\n        element_rect(fill = \"lightyellow\")\n      )\n    )\n  ) +\n  labs(title = \"Multi-level Nested Faceting\")\n\n\nError in strip_nested(background = list(element_rect(fill = \"lightblue\"), : l'argument 1 correspond à plusieurs arguments formels\n\n\n\n\nNested Margins\n\n\nCode\n# Control margins between nested levels\nggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +\n  geom_point() +\n  facet_nested(\n    ~ species + island,\n    margins = \"island\",\n    strip = strip_nested(\n      background = list(\n        element_rect(fill = \"gray95\"),\n        element_rect(fill = \"gray85\")\n      )\n    )\n  ) +\n  labs(title = \"Nested Facets with Margins\")\n\n\nError in strip_nested(background = list(element_rect(fill = \"gray95\"), : l'argument 1 correspond à plusieurs arguments formels",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#best-practices",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#best-practices",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Best Practices",
+    "text": "Best Practices\n\n1. Handling Complex Hierarchies\n\n\nCode\n# Function to create nested facets with proper ordering\ncreate_nested_facets &lt;- function(data, vars, strip_colors) {\n  ggplot(data, aes(bill_length_mm, bill_depth_mm)) +\n    geom_point() +\n    facet_nested(\n      vars,\n      strip = strip_nested(\n        background = lapply(strip_colors, function(x) \n          element_rect(fill = x))\n      )\n    )\n}\n\n# Example usage\nnested_colors &lt;- c(\"lightblue\", \"lightpink\", \"lightgreen\")\ncreate_nested_facets(\n  penguins, \n  ~ species + island + sex,\n  nested_colors\n) +\n  labs(title = \"Properly Ordered Nested Facets\")\n\n\nError in strip_nested(background = lapply(strip_colors, function(x) element_rect(fill = x))): l'argument 1 correspond à plusieurs arguments formels\n\n\n\n\n2. Scale Management\n\n\nCode\n# Function to determine appropriate scale independence\nnested_with_scales &lt;- function(data, threshold = 0.5) {\n  scale_independence &lt;- if(var(data$bill_length_mm) / mean(data$bill_length_mm) &gt; threshold) {\n    \"all\"\n  } else {\n    \"none\"\n  }\n  \n  ggplot(data, aes(bill_length_mm, bill_depth_mm)) +\n    geom_point() +\n    facet_nested(\n      ~ species + island,\n      scales = \"free\",\n      independent = scale_independence\n    )\n}\n\nnested_with_scales(penguins) +\n  labs(title = \"Adaptive Scale Independence\")\n\n\nError in if (var(data$bill_length_mm)/mean(data$bill_length_mm) &gt; threshold) {: valeur manquante là où TRUE / FALSE est requis",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#common-pitfalls-and-solutions",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#common-pitfalls-and-solutions",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\n1. Overcomplicated Nesting\n\n\nCode\n# Bad: Too many nesting levels\ntoo_complex &lt;- ggplot(diamonds_nested, \n                     aes(carat, price)) +\n  geom_point() +\n  facet_nested(\n    cut + clarity + color + price_category ~ size_category\n  ) +\n  labs(title = \"Too Many Nesting Levels\")\n\n# Better: Simplified structure\nbetter_structure &lt;- ggplot(diamonds_nested,\n                         aes(carat, price, color = clarity)) +\n  geom_point() +\n  facet_nested(\n    cut + price_category ~ size_category\n  ) +\n  labs(title = \"Simplified Nesting Structure\")\n\n# Compare\ntoo_complex\n\n\n\n\n\n\n\n\n\nCode\nbetter_structure\n\n\n\n\n\n\n\n\n\n\n\n2. Inconsistent Visual Hierarchy\n\n\nCode\n# Bad: Confusing hierarchy\nbad_hierarchy &lt;- ggplot(penguins,\n                       aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_nested(\n    ~ species + island,\n    strip = strip_nested(\n      background = list(\n        element_rect(fill = \"lightgray\"),\n        element_rect(fill = \"darkblue\")\n      )\n    )\n  )\n\n\nError in strip_nested(background = list(element_rect(fill = \"lightgray\"), : l'argument 1 correspond à plusieurs arguments formels\n\n\nCode\n# Better: Clear hierarchy\ngood_hierarchy &lt;- ggplot(penguins,\n                        aes(bill_length_mm, bill_depth_mm)) +\n  geom_point() +\n  facet_nested(\n    ~ species + island,\n    strip = strip_nested(\n      background = list(\n        element_rect(fill = \"darkblue\"),\n        element_rect(fill = \"lightblue\")\n      ),\n      text = list(\n        element_text(size = 12, face = \"bold\", color = \"white\"),\n        element_text(size = 10)\n      )\n    )\n  )\n\n\nError in strip_nested(background = list(element_rect(fill = \"darkblue\"), : l'argument 2 correspond à plusieurs arguments formels\n\n\nCode\n# Compare\nbad_hierarchy + labs(title = \"Confusing Hierarchy\")\n\n\nError: objet 'bad_hierarchy' introuvable\n\n\nCode\ngood_hierarchy + labs(title = \"Clear Hierarchy\")\n\n\nError: objet 'good_hierarchy' introuvable",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Advanced Nested Faceting with ggh4x.html#tips-for-effective-nested-faceting",
+    "href": "tips/Advanced Nested Faceting with ggh4x.html#tips-for-effective-nested-faceting",
+    "title": "Advanced Nested Faceting with ggh4x",
+    "section": "Tips for Effective Nested Faceting",
+    "text": "Tips for Effective Nested Faceting\n\nPlan Your Hierarchy\n\nOrganize variables by importance\nLimit nesting depth\nConsider visual clarity\n\nManage Visual Elements\n\nUse consistent color schemes\nMaintain clear text hierarchy\nControl spacing effectively\n\nHandle Scale Relationships\n\nChoose appropriate scale independence\nConsider data distributions\nMaintain comparability where needed\n\nConsider Performance\n\nLimit total number of facets\nUse efficient data structures\nTest with large datasets",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Advanced Nested Faceting with ggh4x"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html",
+    "href": "tips/Complex Layouts with patchwork.html",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "",
+    "text": "The patchwork package provides powerful tools for combining multiple ggplot2 plots into complex layouts. This guide covers advanced techniques and common pitfalls.\n\n\nCode\nlibrary(tidyverse)\nlibrary(patchwork)\nlibrary(palmerpenguins)\n\n# Create some example plots to use throughout\np1 &lt;- penguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  theme_minimal() +\n  labs(title = \"Bill Dimensions\")\n\np2 &lt;- penguins %&gt;%\n  ggplot(aes(species, body_mass_g, fill = species)) +\n  geom_violin() +\n  theme_minimal() +\n  labs(title = \"Body Mass Distribution\")\n\np3 &lt;- penguins %&gt;%\n  ggplot(aes(flipper_length_mm, fill = species)) +\n  geom_density(alpha = 0.5) +\n  theme_minimal() +\n  labs(title = \"Flipper Length Distribution\")\n\np4 &lt;- penguins %&gt;%\n  ggplot(aes(x = species, fill = island)) +\n  geom_bar() +\n  theme_minimal() +\n  labs(title = \"Count by Species and Island\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#introduction",
+    "href": "tips/Complex Layouts with patchwork.html#introduction",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "",
+    "text": "The patchwork package provides powerful tools for combining multiple ggplot2 plots into complex layouts. This guide covers advanced techniques and common pitfalls.\n\n\nCode\nlibrary(tidyverse)\nlibrary(patchwork)\nlibrary(palmerpenguins)\n\n# Create some example plots to use throughout\np1 &lt;- penguins %&gt;%\n  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) +\n  geom_point() +\n  theme_minimal() +\n  labs(title = \"Bill Dimensions\")\n\np2 &lt;- penguins %&gt;%\n  ggplot(aes(species, body_mass_g, fill = species)) +\n  geom_violin() +\n  theme_minimal() +\n  labs(title = \"Body Mass Distribution\")\n\np3 &lt;- penguins %&gt;%\n  ggplot(aes(flipper_length_mm, fill = species)) +\n  geom_density(alpha = 0.5) +\n  theme_minimal() +\n  labs(title = \"Flipper Length Distribution\")\n\np4 &lt;- penguins %&gt;%\n  ggplot(aes(x = species, fill = island)) +\n  geom_bar() +\n  theme_minimal() +\n  labs(title = \"Count by Species and Island\")",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#basic-layout-operations",
+    "href": "tips/Complex Layouts with patchwork.html#basic-layout-operations",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Basic Layout Operations",
+    "text": "Basic Layout Operations\n\nSide-by-Side Plots\n\n\nCode\n# Using + operator\np1 + p2\n\n\n\n\n\n\n\n\n\nCode\n# Using plot_layout for control\np1 + p2 + plot_layout(widths = c(2, 1))\n\n\n\n\n\n\n\n\n\n\n\nStacked Plots\n\n\nCode\n# Using / operator\np1 / p2\n\n\n\n\n\n\n\n\n\nCode\n# Control heights\np1 / p2 + plot_layout(heights = c(2, 1))",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#advanced-layout-operations",
+    "href": "tips/Complex Layouts with patchwork.html#advanced-layout-operations",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Advanced Layout Operations",
+    "text": "Advanced Layout Operations\n\nNested Layouts\n\n\nCode\n# Create complex nested layout\n(p1 + p2) / (p3 + p4)\n\n\n\n\n\n\n\n\n\nCode\n# With different proportions\n((p1 + p2) / p3) | p4 +\n  plot_layout(widths = c(2, 1))\n\n\n\n\n\n\n\n\n\n\n\nGrid Layouts\n\n\nCode\n# Using plot_layout with ncol/nrow\np1 + p2 + p3 + p4 +\n  plot_layout(ncol = 2)\n\n\n\n\n\n\n\n\n\nCode\n# Using area parameter for spanning\nlayout &lt;- \"\nAAB\nAAB\nCCC\n\"\np1 + p2 + p3 + plot_layout(design = layout)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#customizing-layouts",
+    "href": "tips/Complex Layouts with patchwork.html#customizing-layouts",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Customizing Layouts",
+    "text": "Customizing Layouts\n\nControlling Spacing\n\n\nCode\n# Adjust plots spacing\np1 + p2 + plot_layout(widths = c(1, 1)) &\n  theme(plot.margin = margin(10, 10, 10, 10))\n\n\n\n\n\n\n\n\n\nCode\n# Add specific gaps\np1 + p2 + plot_layout(widths = c(1, 1), guides = \"collect\") +\n  plot_spacer() +\n  plot_layout(widths = c(4, 4, 1))\n\n\n\n\n\n\n\n\n\n\n\nAligning Plot Elements\n\n\nCode\n# Align plots with different scales\np1 + (p2 / p3) +\n  plot_layout(guides = \"collect\") &\n  theme(legend.position = \"bottom\")\n\n\n\n\n\n\n\n\n\nCode\n# Fix aspect ratio\np1 + p2 +\n  plot_layout(widths = c(1, 1)) &\n  coord_fixed(ratio = 1)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#working-with-annotations",
+    "href": "tips/Complex Layouts with patchwork.html#working-with-annotations",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Working with Annotations",
+    "text": "Working with Annotations\n\nAdding Global Titles\n\n\nCode\n# Add title to combined plot\n(p1 + p2) / (p3 + p4) +\n  plot_annotation(\n    title = \"Penguin Measurements\",\n    subtitle = \"Various dimensions across species\",\n    caption = \"Data: palmerpenguins package\",\n    tag_levels = \"A\"  # Add figure labels\n  )\n\n\n\n\n\n\n\n\n\n\n\nCustom Annotations\n\n\nCode\n# Create text grob\nlibrary(grid)\ntext_grob &lt;- textGrob(\"Important Feature\", gp = gpar(col = \"red\"))\n\n# Add annotation to specific location\np1 + p2 +\n  inset_element(text_grob, 0.6, 0.8, 0.9, 0.9, align_to = 'full')",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#complex-real-world-examples",
+    "href": "tips/Complex Layouts with patchwork.html#complex-real-world-examples",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Complex Real-World Examples",
+    "text": "Complex Real-World Examples\n\nDashboard-Style Layout\n\n\nCode\n# Create summary stats plot\np_stats &lt;- penguins %&gt;%\n  group_by(species) %&gt;%\n  summarise(\n    n = n(),\n    mean_mass = mean(body_mass_g, na.rm = TRUE)\n  ) %&gt;%\n  ggplot(aes(species, mean_mass, fill = species)) +\n  geom_col() +\n  theme_minimal() +\n  labs(title = \"Average Mass by Species\")\n\n# Create dashboard layout\nlayout &lt;- \"\nAAAB\nAAAB\nCCCD\n\"\n\np1 + p_stats + p3 + p4 +\n  plot_layout(design = layout) +\n  plot_annotation(\n    title = \"Penguin Analysis Dashboard\",\n    subtitle = \"Key metrics and distributions\",\n    theme = theme(\n      plot.title = element_text(size = 16, face = \"bold\"),\n      plot.subtitle = element_text(size = 12)\n    )\n  )\n\n\n\n\n\n\n\n\n\n\n\nPublication-Ready Figure\n\n\nCode\n# Create publication layout with shared legend\n((p1 + p2) / (p3 + p4)) +\n  plot_layout(guides = \"collect\") +\n  theme_minimal() +\n  theme(\n    legend.position = \"bottom\",\n    plot.title = element_text(size = 10),\n    axis.title = element_text(size = 8),\n    axis.text = element_text(size = 7)\n  ) +\n  plot_annotation(\n    title = \"Figure 1: Penguin Morphological Characteristics\",\n    subtitle = \"Measurements across different species\",\n    caption = \"Data collected from three islands in the Palmer Archipelago\",\n    tag_levels = \"A\"\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#common-pitfalls-and-solutions",
+    "href": "tips/Complex Layouts with patchwork.html#common-pitfalls-and-solutions",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\n1. Legend Issues\n\n\nCode\n# Problem: Multiple legends\nproblem_plot &lt;- p1 + p2  # Duplicate legends\n\n# Solution: Collect legends\nsolution_plot &lt;- p1 + p2 +\n  plot_layout(guides = \"collect\") &\n  theme(legend.position = \"bottom\")\n\nproblem_plot\n\n\n\n\n\n\n\n\n\nCode\nsolution_plot\n\n\n\n\n\n\n\n\n\n\n\n2. Alignment Problems\n\n\nCode\n# Problem: Misaligned axes\nproblem_align &lt;- p1 + p2  # Different scales\n\n# Solution: Fixed coordinates or scales\nsolution_align &lt;- p1 + p2 &\n  scale_y_continuous(limits = c(0, 6000))\n\nproblem_align\n\n\n\n\n\n\n\n\n\nCode\nsolution_align\n\n\n\n\n\n\n\n\n\n\n\n3. Spacing Issues\n\n\nCode\n# Problem: Uneven spacing\nproblem_spacing &lt;- (p1 + p2) / p3\n\n# Solution: Control heights and add spacing\nsolution_spacing &lt;- (p1 + p2) / p3 +\n  plot_layout(heights = c(1, 1)) &\n  theme(plot.margin = margin(10, 10, 10, 10))\n\nproblem_spacing\n\n\n\n\n\n\n\n\n\nCode\nsolution_spacing",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#best-practices",
+    "href": "tips/Complex Layouts with patchwork.html#best-practices",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nPlan Your Layout\n\nSketch the layout first\nConsider aspect ratios\nThink about shared elements\n\nMaintain Consistency\n\nUse consistent themes\nAlign similar elements\nKeep scales comparable\n\nHandle Legends Efficiently\n\nCollect when possible\nConsider placement carefully\nRemove redundant information\n\nControl Spacing\n\nUse appropriate margins\nAdd spacers when needed\nConsider text alignment\n\nDocument Your Layouts\n\n\n\nCode\n# Example of documented layout\ncreate_analysis_layout &lt;- function(p1, p2, p3, p4) {\n  layout &lt;- \"\n  AAB\n  AAB\n  CCC\n  \"\n  \n  (p1 + p2 + p3) +\n    plot_layout(design = layout) +\n    plot_annotation(\n      title = \"Analysis Layout\",\n      caption = \"Created: {format(Sys.time(), '%Y-%m-%d')}\"\n    )\n}",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Complex Layouts with patchwork.html#tips-for-complex-layouts",
+    "href": "tips/Complex Layouts with patchwork.html#tips-for-complex-layouts",
+    "title": "Complex Layouts with patchwork: A Comprehensive Guide",
+    "section": "Tips for Complex Layouts",
+    "text": "Tips for Complex Layouts\n\nBuild layouts incrementally\nTest with different window sizes\nUse nested operations for complex designs\nConsider aspect ratios early\nPlan legend placement carefully\nUse consistent themes across plots\nAdd appropriate spacing between elements\nDocument layout decisions",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Complex Layouts with patchwork"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html",
+    "href": "tips/Custom theme functions.html",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "",
+    "text": "Creating custom theme functions allows for consistent, maintainable, and flexible plot styling. This guide focuses on building robust theme functions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot for examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#introduction",
+    "href": "tips/Custom theme functions.html#introduction",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "",
+    "text": "Creating custom theme functions allows for consistent, maintainable, and flexible plot styling. This guide focuses on building robust theme functions.\n\n\nCode\nlibrary(tidyverse)\nlibrary(palmerpenguins)\n\n# Create a base plot for examples\nbase_plot &lt;- penguins %&gt;%\n  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +\n  geom_point()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#basic-theme-function-structure",
+    "href": "tips/Custom theme functions.html#basic-theme-function-structure",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "Basic Theme Function Structure",
+    "text": "Basic Theme Function Structure\n\nSimple Theme Function\n\n\nCode\ntheme_simple &lt;- function(base_size = 12, base_family = \"sans\") {\n  # Always start with a complete theme base\n  theme_minimal(\n    base_size = base_size,\n    base_family = base_family\n  ) %+replace%    # Use %+replace% instead of + for proper inheritance\n    theme(\n      # Text elements\n      plot.title = element_text(\n        size = rel(1.3),      # Relative sizing\n        face = \"bold\",\n        margin = margin(b = 15)\n      ),\n      # Grid elements\n      panel.grid.minor = element_blank(),\n      panel.grid.major = element_line(color = \"gray90\")\n    )\n}\n\n# Usage\nbase_plot +\n  labs(title = \"Simple Theme Example\") +\n  theme_simple()\n\n\n\n\n\n\n\n\n\n\n\nParameterized Theme Function\n\n\nCode\ntheme_flexible &lt;- function(\n    base_size = 12,\n    base_family = \"sans\",\n    title_size = rel(1.3),\n    title_color = \"black\",\n    grid_color = \"gray90\",\n    show_minor_grid = FALSE\n) {\n  # Input validation\n  stopifnot(\n    is.numeric(base_size),\n    is.character(base_family),\n    is.numeric(title_size) || inherits(title_size, \"rel\"),\n    is.character(title_color),\n    is.character(grid_color),\n    is.logical(show_minor_grid)\n  )\n  \n  # Create theme\n  theme_minimal(\n    base_size = base_size,\n    base_family = base_family\n  ) %+replace%\n    theme(\n      plot.title = element_text(\n        size = title_size,\n        color = title_color,\n        face = \"bold\",\n        margin = margin(b = 15)\n      ),\n      panel.grid.major = element_line(color = grid_color),\n      panel.grid.minor = if (show_minor_grid) {\n        element_line(color = grid_color, linewidth = 0.25)\n      } else {\n        element_blank()\n      }\n    )\n}\n\n# Usage examples\nbase_plot +\n  labs(title = \"Default Parameters\") +\n  theme_flexible()\n\n\n\n\n\n\n\n\n\nCode\nbase_plot +\n  labs(title = \"Custom Parameters\") +\n  theme_flexible(\n    base_size = 14,\n    title_color = \"navy\",\n    grid_color = \"gray80\",\n    show_minor_grid = TRUE\n  )",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#advanced-theme-functions",
+    "href": "tips/Custom theme functions.html#advanced-theme-functions",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "Advanced Theme Functions",
+    "text": "Advanced Theme Functions\n\nTheme with Built-in Error Handling\n\n\nCode\ntheme_robust &lt;- function(\n    base_size = 12,\n    style = c(\"light\", \"dark\"),\n    accent_color = \"#1f77b4\"\n) {\n  # Match and validate style argument\n  style &lt;- match.arg(style)\n  \n  # Validate color input\n  is_valid_color &lt;- function(x) {\n    tryCatch({\n      is.character(x) && \n        (grepl(\"^#[0-9A-Fa-f]{6}$\", x) || x %in% colors())\n    }, error = function(e) FALSE)\n  }\n  \n  if (!is_valid_color(accent_color)) {\n    stop(\"Invalid accent color. Use hex code or R color name.\")\n  }\n  \n  # Define style-specific parameters\n  if (style == \"light\") {\n    bg_color &lt;- \"white\"\n    text_color &lt;- \"black\"\n    grid_color &lt;- \"gray90\"\n  } else {\n    bg_color &lt;- \"gray10\"\n    text_color &lt;- \"white\"\n    grid_color &lt;- \"gray30\"\n  }\n  \n  # Create theme with error handling\n  tryCatch({\n    theme_minimal(\n      base_size = base_size\n    ) %+replace%\n    theme(\n      # Text elements\n      text = element_text(color = text_color),\n      plot.title = element_text(\n        color = accent_color,\n        size = rel(1.3),\n        face = \"bold\"\n      ),\n      # Panel elements\n      panel.background = element_rect(fill = bg_color, color = NA),\n      panel.grid = element_line(color = grid_color),\n      # Axis elements\n      axis.text = element_text(color = text_color),\n      axis.title = element_text(color = accent_color)\n    )\n  }, error = function(e) {\n    warning(\"Theme creation failed. Falling back to theme_minimal().\")\n    theme_minimal(base_size = base_size)\n  })\n}\n\n# Usage\nbase_plot +\n  labs(title = \"Light Theme\") +\n  theme_robust(style = \"light\", accent_color = \"navy\")\n\n\n\n\n\n\n\n\n\nCode\nbase_plot +\n  labs(title = \"Dark Theme\") +\n  theme_robust(style = \"dark\", accent_color = \"#ff7f0e\")\n\n\n\n\n\n\n\n\n\n\n\nTheme with Configuration Object\n\n\nCode\n# Define configuration object\ncreate_theme_config &lt;- function(\n    base_size = 12,\n    colors = list(\n      primary = \"#1f77b4\",\n      secondary = \"#ff7f0e\",\n      text = \"black\",\n      grid = \"gray90\"\n    ),\n    fonts = list(\n      base = \"sans\",\n      title = \"sans\",\n      axis = \"sans\"\n    ),\n    spacing = list(\n      title_margin = 15,\n      axis_margin = 10,\n      plot_margin = 20\n    )\n) {\n  # Validate configuration\n  stopifnot(\n    is.numeric(base_size),\n    is.list(colors),\n    is.list(fonts),\n    is.list(spacing)\n  )\n  \n  # Return validated config\n  list(\n    base_size = base_size,\n    colors = colors,\n    fonts = fonts,\n    spacing = spacing\n  )\n}\n\ntheme_from_config &lt;- function(config) {\n  # Validate config object\n  if (!all(c(\"base_size\", \"colors\", \"fonts\", \"spacing\") %in% names(config))) {\n    stop(\"Invalid config object\")\n  }\n  \n  theme_minimal(\n    base_size = config$base_size,\n    base_family = config$fonts$base\n  ) %+replace%\n    theme(\n      # Text elements\n      plot.title = element_text(\n        family = config$fonts$title,\n        color = config$colors$primary,\n        size = rel(1.3),\n        margin = margin(b = config$spacing$title_margin)\n      ),\n      axis.title = element_text(\n        family = config$fonts$axis,\n        color = config$colors$secondary,\n        margin = margin(t = config$spacing$axis_margin)\n      ),\n      # Grid elements\n      panel.grid = element_line(color = config$colors$grid),\n      # Margins\n      plot.margin = margin(\n        t = config$spacing$plot_margin,\n        r = config$spacing$plot_margin,\n        b = config$spacing$plot_margin,\n        l = config$spacing$plot_margin\n      )\n    )\n}\n\n# Usage\nmy_config &lt;- create_theme_config(\n  base_size = 14,\n  colors = list(\n    primary = \"navy\",\n    secondary = \"darkred\",\n    text = \"black\",\n    grid = \"gray85\"\n  )\n)\n\nbase_plot +\n  labs(title = \"Theme from Configuration\") +\n  theme_from_config(my_config)\n\n\n\n\n\n\n\n\n\n\n\nTheme with Extension Methods\n\n\nCode\n# Create a theme function with modifiable components\ncreate_extensible_theme &lt;- function() {\n  # Base theme creation\n  base &lt;- theme_minimal()\n  \n  # List of modification functions\n  modifications &lt;- list()\n  \n  # Function to add modifications\n  add_modification &lt;- function(name, func) {\n    modifications[[name]] &lt;- func\n    return(environment())\n  }\n  \n  # Function to build final theme\n  build &lt;- function() {\n    result &lt;- base\n    for (mod in modifications) {\n      result &lt;- result + mod()\n    }\n    return(result)\n  }\n  \n  # Return environment with methods\n  environment()\n}\n\n# Usage\nmy_theme &lt;- create_extensible_theme()\nmy_theme$add_modification(\"titles\", function() {\n  theme(\n    plot.title = element_text(face = \"bold\", size = 14)\n  )\n})\n\n\n&lt;environment: 0x0000016f00a00870&gt;\n\n\nCode\nmy_theme$add_modification(\"grid\", function() {\n  theme(\n    panel.grid.minor = element_blank()\n  )\n})\n\n\n&lt;environment: 0x0000016f009bad48&gt;\n\n\nCode\nbase_plot +\n  labs(title = \"Extensible Theme Example\") +\n  my_theme$build()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#best-practices",
+    "href": "tips/Custom theme functions.html#best-practices",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nInput Validation\n\n\n\nCode\nvalidate_theme_inputs &lt;- function(\n    base_size,\n    font_family,\n    colors\n) {\n  # Check numeric inputs\n  if (!is.numeric(base_size) || base_size &lt;= 0) {\n    stop(\"base_size must be a positive number\")\n  }\n  \n  # Check font family\n  if (!is.character(font_family) || length(font_family) != 1) {\n    stop(\"font_family must be a single character string\")\n  }\n  \n  # Check colors\n  sapply(colors, function(color) {\n    if (!is_valid_color(color)) {\n      stop(sprintf(\"Invalid color: %s\", color))\n    }\n  })\n  \n  # Return validated inputs\n  list(\n    base_size = base_size,\n    font_family = font_family,\n    colors = colors\n  )\n}\n\n\n\nDocumentation\n\n\n\nCode\n#' Create a custom theme for corporate plots\n#'\n#' @param base_size Base font size\n#' @param style Either \"light\" or \"dark\"\n#' @param accent_color Primary color for emphasis\n#'\n#' @return A ggplot2 theme object\n#' @examples\n#' ggplot(data) + theme_corporate()\n#' ggplot(data) + theme_corporate(style = \"dark\")\ntheme_corporate &lt;- function(\n    base_size = 12,\n    style = c(\"light\", \"dark\"),\n    accent_color = \"#1f77b4\"\n) {\n  # Function body as before\n}\n\n\n\nVersion Control\n\n\n\nCode\ntheme_versioned &lt;- function(version = \"1.0\") {\n  if (version == \"1.0\") {\n    theme_minimal()\n  } else if (version == \"2.0\") {\n    theme_minimal() + \n      theme(text = element_text(size = 12))\n  } else {\n    warning(\"Unknown version, using latest\")\n    theme_minimal()\n  }\n}",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#tips-for-theme-function-development",
+    "href": "tips/Custom theme functions.html#tips-for-theme-function-development",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "Tips for Theme Function Development",
+    "text": "Tips for Theme Function Development\n\nAlways start with a complete base theme\nUse %+replace% for proper theme inheritance\nImplement robust error handling\nDocument all parameters and their effects\nConsider creating theme modifiers for specific purposes\nTest themes with different plot types and scales\nUse relative sizing with rel() for better scaling\nInclude sensible defaults for all parameters",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Custom theme functions.html#common-pitfalls-to-avoid",
+    "href": "tips/Custom theme functions.html#common-pitfalls-to-avoid",
+    "title": "Creating Custom Theme Functions in ggplot2",
+    "section": "Common Pitfalls to Avoid",
+    "text": "Common Pitfalls to Avoid\n\nNot handling missing fonts\nForgetting to validate color inputs\nUsing absolute sizes instead of relative ones\nNot considering different output formats\nOverriding too many theme elements\nNot providing adequate documentation\nMaking themes too specific to one use case\nNot considering accessibility",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Custom theme functions"
+    ]
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html",
+    "href": "tips/Multiple Color Scales with ggnewscale.html",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "",
+    "text": "The ggnewscale package allows you to use multiple color and fill scales in a single ggplot2 visualization. This guide explores various techniques and applications.\n\n\nCode\nlibrary(hexbin)\nlibrary(tidyverse)\nlibrary(ggnewscale)\nlibrary(palmerpenguins)"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#introduction",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#introduction",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "",
+    "text": "The ggnewscale package allows you to use multiple color and fill scales in a single ggplot2 visualization. This guide explores various techniques and applications.\n\n\nCode\nlibrary(hexbin)\nlibrary(tidyverse)\nlibrary(ggnewscale)\nlibrary(palmerpenguins)"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#basic-usage",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#basic-usage",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Basic Usage",
+    "text": "Basic Usage\n\nDifferent Color Scales for Points and Lines\n\n\nCode\n# Create example data\nset.seed(123)\npoint_data &lt;- tibble(\n  x = rnorm(100),\n  y = rnorm(100),\n  group = sample(letters[1:3], 100, replace = TRUE)\n)\n\n# Add trend lines\ntrend_data &lt;- tibble(\n  x = seq(-3, 3, length.out = 100),\n  y = x * 0.5,\n  confidence = abs(x)\n)\n\n# Plot with two color scales\nggplot() +\n  # First color scale for points\n  geom_point(data = point_data,\n             aes(x = x, y = y, color = group)) +\n  scale_color_viridis_d(name = \"Groups\") +\n  \n  # New color scale for line\n  new_scale_color() +\n  geom_line(data = trend_data,\n            aes(x = x, y = y, color = confidence),\n            linewidth = 1) +\n  scale_color_gradient(\n    name = \"Confidence\",\n    low = \"blue\", high = \"red\"\n  ) +\n  labs(title = \"Multiple Color Scales Example\",\n       subtitle = \"Points and line use different scales\")"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#working-with-fill-scales",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#working-with-fill-scales",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Working with Fill Scales",
+    "text": "Working with Fill Scales\n\nMultiple Fill Scales in Bar Plots\n\n\nCode\n# Prepare data for stacked bars\npenguin_summary &lt;- penguins %&gt;%\n  group_by(species, sex) %&gt;%\n  summarise(\n    mean_mass = mean(body_mass_g, na.rm = TRUE),\n    mean_flipper = mean(flipper_length_mm, na.rm = TRUE),\n    .groups = \"drop\"\n  )\n\n# Create plot with different fill scales\nggplot() +\n  # First set of bars\n  geom_col(data = penguin_summary,\n           aes(x = species, y = mean_mass, fill = sex),\n           position = \"dodge\") +\n  scale_fill_brewer(name = \"Sex\", palette = \"Set1\") +\n  \n  # New fill scale for second layer\n  new_scale_fill() +\n  geom_point(data = penguin_summary,\n             aes(x = species, y = mean_flipper * 20, \n                 fill = mean_flipper),\n             size = 5, shape = 21) +\n  scale_fill_viridis_c(name = \"Flipper Length\") +\n  \n  # Add second axis for flipper length\n  scale_y_continuous(\n    name = \"Body Mass (g)\",\n    sec.axis = sec_axis(~./20, name = \"Flipper Length (mm)\")\n  ) +\n  labs(title = \"Penguin Measurements\",\n       subtitle = \"Using different fill scales for bars and points\")"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#advanced-applications",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#advanced-applications",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Advanced Applications",
+    "text": "Advanced Applications\n\nCombining Multiple Aesthetics\n\n\nCode\n# Create complex visualization with multiple scales\nggplot() +\n  # Base layer with first color scale\n  geom_point(data = penguins,\n             aes(x = bill_length_mm, y = bill_depth_mm,\n                 color = species),\n             size = 3) +\n  scale_color_brewer(name = \"Species\", palette = \"Set1\") +\n  \n  # New color scale for density contours\n  new_scale_color() +\n  stat_density_2d(data = penguins,\n                  aes(x = bill_length_mm, y = bill_depth_mm,\n                      color = after_stat(level)),\n                  linewidth = 0.5) +\n  scale_color_viridis_c(name = \"Density\") #+\n\n\n\n\n\n\n\n\n\nCode\n  # New fill scale for background tiles\n  # new_scale_fill() +\n  # stat_density_2d(data = penguins,\n  #                 aes(x = bill_length_mm, y = bill_depth_mm,\n  #                     fill = after_stat(level)),\n  #                 geom = \"raster\",\n  #                 alpha = 0.2) +\n  # scale_fill_gradient(name = \"Background\\nDensity\",\n  #                    low = \"white\", high = \"navy\") +\n  # labs(title = \"Multiple Aesthetic Scales\",\n  #      subtitle = \"Points, contours, and tiles each use different scales\")\n\n\n\n\nTemporal Data with Multiple Scales\n\n\nCode\n# Create example time series data\nset.seed(123)\ntime_data &lt;- tibble(\n  date = seq(as.Date(\"2023-01-01\"), as.Date(\"2023-12-31\"), by = \"day\"),\n  value = cumsum(rnorm(365)),\n  anomaly = rnorm(365),\n  event = sample(c(\"A\", \"B\", \"C\"), 365, replace = TRUE, prob = c(0.8, 0.15, 0.05))\n)\n\n# Create multi-scale time series plot\nggplot() +\n  # Background tiles for anomalies\n  geom_tile(data = time_data,\n            aes(x = date, y = 1, fill = anomaly),\n            height = 2) +\n  scale_fill_gradient2(name = \"Anomaly\",\n                      low = \"blue\", mid = \"white\", high = \"red\") +\n  \n  # New color scale for line\n  new_scale_color() +\n  geom_line(data = time_data,\n            aes(x = date, y = value, color = abs(value)),\n            linewidth = 1) +\n  scale_color_viridis_c(name = \"Value\\nMagnitude\") +\n  \n  # New fill scale for events\n  new_scale_fill() +\n  geom_point(data = subset(time_data, event != \"A\"),\n             aes(x = date, y = value, fill = event),\n             shape = 21, size = 3) +\n  scale_fill_manual(name = \"Event Type\",\n                   values = c(\"B\" = \"yellow\", \"C\" = \"orange\")) +\n  labs(title = \"Time Series with Multiple Scales\",\n       subtitle = \"Background, line, and events use different scales\")"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#common-pitfalls-and-solutions",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#common-pitfalls-and-solutions",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Common Pitfalls and Solutions",
+    "text": "Common Pitfalls and Solutions\n\n1. Scale Order Issues\n\n\nCode\n# Problem: Incorrect scale order\nbad_order &lt;- ggplot() +\n  geom_point(data = point_data,\n             aes(x = x, y = y, color = group)) +\n  new_scale_color() +  # New scale before first scale definition\n  scale_color_viridis_d()\n\n# Solution: Correct order\ngood_order &lt;- ggplot() +\n  geom_point(data = point_data,\n             aes(x = x, y = y, color = group)) +\n  scale_color_viridis_d() +\n  new_scale_color() +\n  geom_line(data = trend_data,\n            aes(x = x, y = y, color = confidence))\n\n# Compare\nbad_order + labs(title = \"Incorrect Scale Order\")\n\n\n\n\n\n\n\n\n\nCode\ngood_order + labs(title = \"Correct Scale Order\")\n\n\n\n\n\n\n\n\n\n\n\n2. Legend Placement\n\n\nCode\n# Problem: Overlapping legends\nmessy_legends &lt;- ggplot() +\n  geom_point(data = point_data,\n             aes(x = x, y = y, color = group)) +\n  scale_color_viridis_d(name = \"Groups\") +\n  new_scale_color() +\n  geom_line(data = trend_data,\n            aes(x = x, y = y, color = confidence))\n\n# Solution: Organized legends\nclean_legends &lt;- ggplot() +\n  geom_point(data = point_data,\n             aes(x = x, y = y, color = group)) +\n  scale_color_viridis_d(name = \"Groups\") +\n  new_scale_color() +\n  geom_line(data = trend_data,\n            aes(x = x, y = y, color = confidence)) +\n  theme(\n    legend.position = \"right\",\n    legend.box = \"vertical\",\n    legend.margin = margin(5, 5, 5, 5)\n  )\n\n# Compare\nmessy_legends + labs(title = \"Messy Legend Placement\")\n\n\n\n\n\n\n\n\n\nCode\nclean_legends + labs(title = \"Clean Legend Placement\")"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#best-practices",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#best-practices",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Best Practices",
+    "text": "Best Practices\n\n1. Clear Visual Hierarchy\n\n\nCode\n# Create clear visual hierarchy\nggplot() +\n  # Background layer\n  geom_hex(data = penguins,\n           aes(x = bill_length_mm, y = bill_depth_mm,\n               fill = after_stat(count)),\n           alpha = 0.3) +\n  scale_fill_viridis_c(name = \"Count\") +\n  \n  # New color scale for points\n  new_scale_color() +\n  geom_point(data = penguins,\n             aes(x = bill_length_mm, y = bill_depth_mm,\n                 color = species),\n             size = 3) +\n  scale_color_brewer(name = \"Species\", palette = \"Set1\") +\n  labs(title = \"Clear Visual Hierarchy\",\n       subtitle = \"Background hexbins with highlighted points\")\n\n\n\n\n\n\n\n\n\n\n\n2. Consistent Scale Types\n\n\nCode\n# Use consistent scale types for related data\npenguin_summary &lt;- penguins %&gt;%\n  group_by(species) %&gt;%\n  summarise(across(ends_with(\"mm\"), \n                  list(mean = mean, sd = sd),\n                  na.rm = TRUE))\n\nggplot() +\n  # First measure\n  geom_pointrange(data = penguin_summary,\n                 aes(x = species,\n                     y = bill_length_mm_mean,\n                     ymin = bill_length_mm_mean - bill_length_mm_sd,\n                     ymax = bill_length_mm_mean + bill_length_mm_sd,\n                     color = species)) +\n  scale_color_brewer(name = \"Species (Length)\", palette = \"Set1\") +\n  \n  # New scale for second measure\n  new_scale_color() +\n  geom_pointrange(data = penguin_summary,\n                 aes(x = species,\n                     y = flipper_length_mm_mean / 3,\n                     ymin = flipper_length_mm_mean/3 - flipper_length_mm_sd/3,\n                     ymax = flipper_length_mm_mean/3 + flipper_length_mm_sd/3,\n                     color = species)) +\n  scale_color_brewer(name = \"Species (Flipper)\", palette = \"Set2\") +\n  scale_y_continuous(\n    name = \"Bill Length (mm)\",\n    sec.axis = sec_axis(~.*3, name = \"Flipper Length (mm)\")\n  ) +\n  labs(title = \"Consistent Scale Types\",\n       subtitle = \"Similar data uses similar scale types\")"
+  },
+  {
+    "objectID": "tips/Multiple Color Scales with ggnewscale.html#tips-for-complex-visualizations",
+    "href": "tips/Multiple Color Scales with ggnewscale.html#tips-for-complex-visualizations",
+    "title": "Multiple Color Scales with ggnewscale",
+    "section": "Tips for Complex Visualizations",
+    "text": "Tips for Complex Visualizations\n\nPlan Your Layers\n\nOrganize layers from background to foreground\nConsider which aesthetics need different scales\nThink about visual hierarchy\n\nLegend Management\n\nUse clear legend titles\nOrganize legend position and layout\nConsider removing redundant legends\n\nScale Selection\n\nChoose appropriate scale types\nUse consistent color schemes\nConsider colorblind-friendly palettes\n\nPerformance\n\nLimit number of scales for clarity\nConsider computational efficiency\nTest with different data sizes"
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html",
+    "href": "tips/Saving and reusing themes.html",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "",
+    "text": "Effectively managing and reusing ggplot2 themes across projects is crucial for maintaining consistent visualizations. This guide covers different approaches to theme persistence and reuse.\n\n\nCode\nlibrary(tidyverse)\nlibrary(here)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#introduction",
+    "href": "tips/Saving and reusing themes.html#introduction",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "",
+    "text": "Effectively managing and reusing ggplot2 themes across projects is crucial for maintaining consistent visualizations. This guide covers different approaches to theme persistence and reuse.\n\n\nCode\nlibrary(tidyverse)\nlibrary(here)",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#method-1-r-package-approach",
+    "href": "tips/Saving and reusing themes.html#method-1-r-package-approach",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Method 1: R Package Approach",
+    "text": "Method 1: R Package Approach\n\nCreating a Theme Package\n\n\nCode\n# File: R/themes.R\n\n#' Corporate theme for data visualizations\n#' \n#' @param base_size Base font size\n#' @param base_family Base font family\n#' @export\ntheme_corporate &lt;- function(base_size = 12, base_family = \"sans\") {\n  theme_minimal(\n    base_size = base_size,\n    base_family = base_family\n  ) %+replace%\n  theme(\n    plot.title = element_text(\n      size = rel(1.3),\n      face = \"bold\",\n      margin = margin(b = 10)\n    ),\n    plot.subtitle = element_text(\n      size = rel(1.1),\n      margin = margin(b = 10)\n    ),\n    plot.caption = element_text(\n      size = rel(0.8),\n      margin = margin(t = 10)\n    )\n  )\n}\n\n#' Set corporate colors\n#' @export\ncorporate_colors &lt;- c(\n  primary = \"#1f77b4\",\n  secondary = \"#ff7f0e\",\n  tertiary = \"#2ca02c\"\n)\n\n#' Apply corporate theme globally\n#' @export\nset_corporate_theme &lt;- function() {\n  theme_set(theme_corporate())\n}\n\n\n\n\nPackage Documentation\n\n\nCode\n# File: DESCRIPTION\nPackage: corpthemes\nTitle: Corporate Themes for ggplot2\nVersion: 0.1.0\nAuthors@R: person(\"Your\", \"Name\", email = \"your.email@example.com\", role = c(\"aut\", \"cre\"))\nDescription: Provides consistent themes and color palettes for corporate visualizations.\nDepends: R (&gt;= 3.5.0)\nImports: \n    ggplot2,\n    grid\nLicense: MIT\nEncoding: UTF-8\nLazyData: true\nRoxygenNote: 7.1.1\n\n\n\n\nUsing the Package\n\n\nCode\n# Install from local source\ndevtools::install_local(\"path/to/corpthemes\")\n\n# Use in any project\nlibrary(corpthemes)\nggplot(mtcars, aes(wt, mpg)) +\n  geom_point() +\n  theme_corporate()\n\n# Or set globally\nset_corporate_theme()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#method-2-theme-configuration-files",
+    "href": "tips/Saving and reusing themes.html#method-2-theme-configuration-files",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Method 2: Theme Configuration Files",
+    "text": "Method 2: Theme Configuration Files\n\nCreating a Theme Configuration\n\n\nCode\n# File: theme_config.R\n\ntheme_config &lt;- list(\n  # Colors\n  colors = list(\n    primary = \"#1f77b4\",\n    secondary = \"#ff7f0e\",\n    background = \"white\",\n    grid = \"gray90\"\n  ),\n  \n  # Typography\n  typography = list(\n    base_size = 12,\n    base_family = \"sans\",\n    title_size = 16,\n    subtitle_size = 14\n  ),\n  \n  # Spacing\n  spacing = list(\n    plot_margin = 20,\n    title_margin = 10,\n    legend_spacing = 5\n  )\n)\n\n# Function to create theme from config\ncreate_theme_from_config &lt;- function(config) {\n  theme_minimal(\n    base_size = config$typography$base_size,\n    base_family = config$typography$base_family\n  ) %+replace%\n  theme(\n    # Text elements\n    plot.title = element_text(\n      size = config$typography$title_size,\n      face = \"bold\",\n      margin = margin(b = config$spacing$title_margin)\n    ),\n    plot.subtitle = element_text(\n      size = config$typography$subtitle_size,\n      margin = margin(b = config$spacing$title_margin)\n    ),\n    # Colors\n    plot.background = element_rect(\n      fill = config$colors$background,\n      color = NA\n    ),\n    panel.grid = element_line(\n      color = config$colors$grid\n    ),\n    # Spacing\n    plot.margin = margin(\n      rep(config$spacing$plot_margin, 4)\n    )\n  )\n}\n\n# Save configuration\nsaveRDS(theme_config, \"theme_config.rds\")\n\n\n\n\nUsing Configuration Files\n\n\nCode\n# In any project\ntheme_config &lt;- readRDS(\"theme_config.rds\")\ntheme_custom &lt;- create_theme_from_config(theme_config)\n\n# Apply theme\nggplot(mtcars, aes(wt, mpg)) +\n  geom_point() +\n  theme_custom",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#method-3-project-level-theme-script",
+    "href": "tips/Saving and reusing themes.html#method-3-project-level-theme-script",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Method 3: Project-level Theme Script",
+    "text": "Method 3: Project-level Theme Script\n\nCreating a Theme Script\n\n\nCode\n# File: R/themes.R\n\n# Base theme function\ncreate_base_theme &lt;- function(\n    base_size = 12,\n    base_family = \"sans\"\n) {\n  theme_minimal(\n    base_size = base_size,\n    base_family = base_family\n  ) %+replace%\n  theme(\n    plot.title = element_text(\n      size = rel(1.3),\n      face = \"bold\"\n    )\n  )\n}\n\n# Theme modifications for specific plot types\nadd_presentation_mods &lt;- function(base_theme) {\n  base_theme +\n    theme(\n      text = element_text(size = rel(1.2)),\n      plot.margin = margin(20, 20, 20, 20)\n    )\n}\n\nadd_publication_mods &lt;- function(base_theme) {\n  base_theme +\n    theme(\n      text = element_text(size = rel(0.9)),\n      plot.margin = margin(10, 10, 10, 10)\n    )\n}\n\n# Color palettes\nproject_colors &lt;- list(\n  main = c(\"#1f77b4\", \"#ff7f0e\", \"#2ca02c\"),\n  diverging = c(\"#d73027\", \"#fee090\", \"#4575b4\"),\n  sequential = c(\"#fee5d9\", \"#fcae91\", \"#fb6a4a\")\n)\n\n# Save objects\nsave(\n  create_base_theme,\n  add_presentation_mods,\n  add_publication_mods,\n  project_colors,\n  file = \"theme_objects.RData\"\n)\n\n\n\n\nUsing Theme Scripts\n\n\nCode\n# Load theme objects\nload(\"R/theme_objects.RData\")\n\n# Create base theme\nbase_theme &lt;- create_base_theme()\n\n# Create presentation version\npresentation_plot &lt;- ggplot(mtcars, aes(wt, mpg)) +\n  geom_point() +\n  base_theme %&gt;%\n  add_presentation_mods()\n\n# Create publication version\npublication_plot &lt;- ggplot(mtcars, aes(wt, mpg)) +\n  geom_point() +\n  base_theme %&gt;%\n  add_publication_mods()",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#method-4-environment-variables-and-project-settings",
+    "href": "tips/Saving and reusing themes.html#method-4-environment-variables-and-project-settings",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Method 4: Environment Variables and Project Settings",
+    "text": "Method 4: Environment Variables and Project Settings\n\nSetting Up Project Configuration\n\n\nCode\n# File: .Renviron\nTHEME_BASE_SIZE=12\nTHEME_FAMILY=\"sans\"\nTHEME_COLOR_PRIMARY=\"#1f77b4\"\n\n# File: .Rprofile\n.First &lt;- function() {\n  # Load theme settings\n  theme_settings &lt;- list(\n    base_size = as.numeric(Sys.getenv(\"THEME_BASE_SIZE\")),\n    base_family = Sys.getenv(\"THEME_FAMILY\"),\n    primary_color = Sys.getenv(\"THEME_COLOR_PRIMARY\")\n  )\n  \n  # Create and set theme\n  custom_theme &lt;- theme_minimal(\n    base_size = theme_settings$base_size,\n    base_family = theme_settings$base_family\n  ) %+replace%\n  theme(\n    plot.title = element_text(\n      color = theme_settings$primary_color,\n      face = \"bold\"\n    )\n  )\n  \n  # Set theme globally\n  ggplot2::theme_set(custom_theme)\n}",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#best-practices",
+    "href": "tips/Saving and reusing themes.html#best-practices",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Best Practices",
+    "text": "Best Practices\n\nVersion Control\n\n\n\nCode\n# Include version in theme objects\ntheme_version &lt;- \"1.0.0\"\n\n# Add version checking\ncheck_theme_version &lt;- function(required_version) {\n  if (package_version(theme_version) &lt; package_version(required_version)) {\n    warning(\"Theme version mismatch. Please update your theme files.\")\n  }\n}\n\n\n\nDocumentation\n\n\n\nCode\n# Create theme documentation\ntheme_docs &lt;- list(\n  version = \"1.0.0\",\n  author = \"Your Name\",\n  last_updated = Sys.Date(),\n  dependencies = c(\"ggplot2\", \"grid\"),\n  usage_examples = \"See README.md\",\n  color_palette = data.frame(\n    name = c(\"primary\", \"secondary\"),\n    hex = c(\"#1f77b4\", \"#ff7f0e\"),\n    usage = c(\"Main elements\", \"Highlights\")\n  )\n)\n\n# Save documentation\nsaveRDS(theme_docs, \"theme_documentation.rds\")\n\n\n\nTesting\n\n\n\nCode\n# Function to test theme appearance\ntest_theme &lt;- function(theme) {\n  # Create test plots\n  p1 &lt;- ggplot(mtcars, aes(wt, mpg)) +\n    geom_point() +\n    theme +\n    labs(title = \"Test Plot 1\")\n  \n  p2 &lt;- ggplot(mtcars, aes(wt, mpg, color = factor(cyl))) +\n    geom_point() +\n    theme +\n    labs(title = \"Test Plot 2\")\n  \n  # Return both plots\n  list(p1, p2)\n}\n\n# Test with different sizes\ntest_sizes &lt;- function(theme_func) {\n  Map(\n    function(size) theme_func(base_size = size),\n    c(8, 12, 16)\n  )\n}",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
+    ]
+  },
+  {
+    "objectID": "tips/Saving and reusing themes.html#tips-for-theme-management",
+    "href": "tips/Saving and reusing themes.html#tips-for-theme-management",
+    "title": "Saving and Reusing ggplot2 Themes Across Projects",
+    "section": "Tips for Theme Management",
+    "text": "Tips for Theme Management\n\nOrganization\n\nKeep themes in a dedicated directory\nUse clear naming conventions\nSeparate theme logic from plot code\n\nPortability\n\nUse relative paths with here()\nDocument dependencies\nInclude example usage\n\nMaintenance\n\nRegular testing\nVersion control\nChange documentation\nBackup strategy\n\nDistribution\n\nPackage format for sharing\nConfiguration files for customization\nClear installation instructions",
+    "crumbs": [
+      "Home",
+      "Helpers",
+      "Saving and reusing themes"
     ]
   }
 ]

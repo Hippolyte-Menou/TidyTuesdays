@@ -1,0 +1,395 @@
+---
+title: "Saving and Reusing ggplot2 Themes Across Projects"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Effectively managing and reusing ggplot2 themes across projects is crucial for maintaining consistent visualizations. This guide covers different approaches to theme persistence and reuse.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(here)
+```
+
+## Method 1: R Package Approach
+
+### Creating a Theme Package
+
+```{r eval=FALSE}
+#| label: package-structure
+# File: R/themes.R
+
+#' Corporate theme for data visualizations
+#' 
+#' @param base_size Base font size
+#' @param base_family Base font family
+#' @export
+theme_corporate <- function(base_size = 12, base_family = "sans") {
+  theme_minimal(
+    base_size = base_size,
+    base_family = base_family
+  ) %+replace%
+  theme(
+    plot.title = element_text(
+      size = rel(1.3),
+      face = "bold",
+      margin = margin(b = 10)
+    ),
+    plot.subtitle = element_text(
+      size = rel(1.1),
+      margin = margin(b = 10)
+    ),
+    plot.caption = element_text(
+      size = rel(0.8),
+      margin = margin(t = 10)
+    )
+  )
+}
+
+#' Set corporate colors
+#' @export
+corporate_colors <- c(
+  primary = "#1f77b4",
+  secondary = "#ff7f0e",
+  tertiary = "#2ca02c"
+)
+
+#' Apply corporate theme globally
+#' @export
+set_corporate_theme <- function() {
+  theme_set(theme_corporate())
+}
+```
+
+### Package Documentation
+
+```{r eval=FALSE}
+#| label: package-docs
+# File: DESCRIPTION
+Package: corpthemes
+Title: Corporate Themes for ggplot2
+Version: 0.1.0
+Authors@R: person("Your", "Name", email = "your.email@example.com", role = c("aut", "cre"))
+Description: Provides consistent themes and color palettes for corporate visualizations.
+Depends: R (>= 3.5.0)
+Imports: 
+    ggplot2,
+    grid
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+```
+
+### Using the Package
+
+```{r eval=FALSE}
+#| label: use-package
+# Install from local source
+devtools::install_local("path/to/corpthemes")
+
+# Use in any project
+library(corpthemes)
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  theme_corporate()
+
+# Or set globally
+set_corporate_theme()
+```
+
+## Method 2: Theme Configuration Files
+
+### Creating a Theme Configuration
+
+```{r}
+#| label: theme-config
+# File: theme_config.R
+
+theme_config <- list(
+  # Colors
+  colors = list(
+    primary = "#1f77b4",
+    secondary = "#ff7f0e",
+    background = "white",
+    grid = "gray90"
+  ),
+  
+  # Typography
+  typography = list(
+    base_size = 12,
+    base_family = "sans",
+    title_size = 16,
+    subtitle_size = 14
+  ),
+  
+  # Spacing
+  spacing = list(
+    plot_margin = 20,
+    title_margin = 10,
+    legend_spacing = 5
+  )
+)
+
+# Function to create theme from config
+create_theme_from_config <- function(config) {
+  theme_minimal(
+    base_size = config$typography$base_size,
+    base_family = config$typography$base_family
+  ) %+replace%
+  theme(
+    # Text elements
+    plot.title = element_text(
+      size = config$typography$title_size,
+      face = "bold",
+      margin = margin(b = config$spacing$title_margin)
+    ),
+    plot.subtitle = element_text(
+      size = config$typography$subtitle_size,
+      margin = margin(b = config$spacing$title_margin)
+    ),
+    # Colors
+    plot.background = element_rect(
+      fill = config$colors$background,
+      color = NA
+    ),
+    panel.grid = element_line(
+      color = config$colors$grid
+    ),
+    # Spacing
+    plot.margin = margin(
+      rep(config$spacing$plot_margin, 4)
+    )
+  )
+}
+
+# Save configuration
+saveRDS(theme_config, "theme_config.rds")
+```
+
+### Using Configuration Files
+
+```{r eval=FALSE}
+#| label: use-config
+# In any project
+theme_config <- readRDS("theme_config.rds")
+theme_custom <- create_theme_from_config(theme_config)
+
+# Apply theme
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  theme_custom
+```
+
+## Method 3: Project-level Theme Script
+
+### Creating a Theme Script
+
+```{r}
+#| label: theme-script
+# File: R/themes.R
+
+# Base theme function
+create_base_theme <- function(
+    base_size = 12,
+    base_family = "sans"
+) {
+  theme_minimal(
+    base_size = base_size,
+    base_family = base_family
+  ) %+replace%
+  theme(
+    plot.title = element_text(
+      size = rel(1.3),
+      face = "bold"
+    )
+  )
+}
+
+# Theme modifications for specific plot types
+add_presentation_mods <- function(base_theme) {
+  base_theme +
+    theme(
+      text = element_text(size = rel(1.2)),
+      plot.margin = margin(20, 20, 20, 20)
+    )
+}
+
+add_publication_mods <- function(base_theme) {
+  base_theme +
+    theme(
+      text = element_text(size = rel(0.9)),
+      plot.margin = margin(10, 10, 10, 10)
+    )
+}
+
+# Color palettes
+project_colors <- list(
+  main = c("#1f77b4", "#ff7f0e", "#2ca02c"),
+  diverging = c("#d73027", "#fee090", "#4575b4"),
+  sequential = c("#fee5d9", "#fcae91", "#fb6a4a")
+)
+
+# Save objects
+save(
+  create_base_theme,
+  add_presentation_mods,
+  add_publication_mods,
+  project_colors,
+  file = "theme_objects.RData"
+)
+```
+
+### Using Theme Scripts
+
+```{r eval=FALSE}
+#| label: use-script
+# Load theme objects
+load("R/theme_objects.RData")
+
+# Create base theme
+base_theme <- create_base_theme()
+
+# Create presentation version
+presentation_plot <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  base_theme %>%
+  add_presentation_mods()
+
+# Create publication version
+publication_plot <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  base_theme %>%
+  add_publication_mods()
+```
+
+## Method 4: Environment Variables and Project Settings
+
+### Setting Up Project Configuration
+
+```{r eval=FALSE}
+#| label: project-config
+# File: .Renviron
+THEME_BASE_SIZE=12
+THEME_FAMILY="sans"
+THEME_COLOR_PRIMARY="#1f77b4"
+
+# File: .Rprofile
+.First <- function() {
+  # Load theme settings
+  theme_settings <- list(
+    base_size = as.numeric(Sys.getenv("THEME_BASE_SIZE")),
+    base_family = Sys.getenv("THEME_FAMILY"),
+    primary_color = Sys.getenv("THEME_COLOR_PRIMARY")
+  )
+  
+  # Create and set theme
+  custom_theme <- theme_minimal(
+    base_size = theme_settings$base_size,
+    base_family = theme_settings$base_family
+  ) %+replace%
+  theme(
+    plot.title = element_text(
+      color = theme_settings$primary_color,
+      face = "bold"
+    )
+  )
+  
+  # Set theme globally
+  ggplot2::theme_set(custom_theme)
+}
+```
+
+## Best Practices
+
+1. **Version Control**
+```{r eval=FALSE}
+#| label: version-control
+# Include version in theme objects
+theme_version <- "1.0.0"
+
+# Add version checking
+check_theme_version <- function(required_version) {
+  if (package_version(theme_version) < package_version(required_version)) {
+    warning("Theme version mismatch. Please update your theme files.")
+  }
+}
+```
+
+2. **Documentation**
+```{r}
+#| label: documentation
+# Create theme documentation
+theme_docs <- list(
+  version = "1.0.0",
+  author = "Your Name",
+  last_updated = Sys.Date(),
+  dependencies = c("ggplot2", "grid"),
+  usage_examples = "See README.md",
+  color_palette = data.frame(
+    name = c("primary", "secondary"),
+    hex = c("#1f77b4", "#ff7f0e"),
+    usage = c("Main elements", "Highlights")
+  )
+)
+
+# Save documentation
+saveRDS(theme_docs, "theme_documentation.rds")
+```
+
+3. **Testing**
+```{r}
+#| label: testing
+# Function to test theme appearance
+test_theme <- function(theme) {
+  # Create test plots
+  p1 <- ggplot(mtcars, aes(wt, mpg)) +
+    geom_point() +
+    theme +
+    labs(title = "Test Plot 1")
+  
+  p2 <- ggplot(mtcars, aes(wt, mpg, color = factor(cyl))) +
+    geom_point() +
+    theme +
+    labs(title = "Test Plot 2")
+  
+  # Return both plots
+  list(p1, p2)
+}
+
+# Test with different sizes
+test_sizes <- function(theme_func) {
+  Map(
+    function(size) theme_func(base_size = size),
+    c(8, 12, 16)
+  )
+}
+```
+
+## Tips for Theme Management
+
+1. **Organization**
+   - Keep themes in a dedicated directory
+   - Use clear naming conventions
+   - Separate theme logic from plot code
+
+2. **Portability**
+   - Use relative paths with `here()`
+   - Document dependencies
+   - Include example usage
+
+3. **Maintenance**
+   - Regular testing
+   - Version control
+   - Change documentation
+   - Backup strategy
+
+4. **Distribution**
+   - Package format for sharing
+   - Configuration files for customization
+   - Clear installation instructions

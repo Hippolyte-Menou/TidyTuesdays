@@ -1,0 +1,319 @@
+---
+title: "Complex Layouts with patchwork: A Comprehensive Guide"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+The patchwork package provides powerful tools for combining multiple ggplot2 plots into complex layouts. This guide covers advanced techniques and common pitfalls.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(patchwork)
+library(palmerpenguins)
+
+# Create some example plots to use throughout
+p1 <- penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Bill Dimensions")
+
+p2 <- penguins %>%
+  ggplot(aes(species, body_mass_g, fill = species)) +
+  geom_violin() +
+  theme_minimal() +
+  labs(title = "Body Mass Distribution")
+
+p3 <- penguins %>%
+  ggplot(aes(flipper_length_mm, fill = species)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Flipper Length Distribution")
+
+p4 <- penguins %>%
+  ggplot(aes(x = species, fill = island)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(title = "Count by Species and Island")
+```
+
+## Basic Layout Operations
+
+### Side-by-Side Plots
+
+```{r}
+#| label: basic-layout
+# Using + operator
+p1 + p2
+
+# Using plot_layout for control
+p1 + p2 + plot_layout(widths = c(2, 1))
+```
+
+### Stacked Plots
+
+```{r}
+#| label: stacked-layout
+# Using / operator
+p1 / p2
+
+# Control heights
+p1 / p2 + plot_layout(heights = c(2, 1))
+```
+
+## Advanced Layout Operations
+
+### Nested Layouts
+
+```{r}
+#| label: nested-layout
+# Create complex nested layout
+(p1 + p2) / (p3 + p4)
+
+# With different proportions
+((p1 + p2) / p3) | p4 +
+  plot_layout(widths = c(2, 1))
+```
+
+### Grid Layouts
+
+```{r}
+#| label: grid-layout
+# Using plot_layout with ncol/nrow
+p1 + p2 + p3 + p4 +
+  plot_layout(ncol = 2)
+
+# Using area parameter for spanning
+layout <- "
+AAB
+AAB
+CCC
+"
+p1 + p2 + p3 + plot_layout(design = layout)
+```
+
+## Customizing Layouts
+
+### Controlling Spacing
+
+```{r}
+#| label: spacing
+# Adjust plots spacing
+p1 + p2 + plot_layout(widths = c(1, 1)) &
+  theme(plot.margin = margin(10, 10, 10, 10))
+
+# Add specific gaps
+p1 + p2 + plot_layout(widths = c(1, 1), guides = "collect") +
+  plot_spacer() +
+  plot_layout(widths = c(4, 4, 1))
+```
+
+### Aligning Plot Elements
+
+```{r}
+#| label: alignment
+# Align plots with different scales
+p1 + (p2 / p3) +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+
+# Fix aspect ratio
+p1 + p2 +
+  plot_layout(widths = c(1, 1)) &
+  coord_fixed(ratio = 1)
+```
+
+## Working with Annotations
+
+### Adding Global Titles
+
+```{r}
+#| label: annotations
+# Add title to combined plot
+(p1 + p2) / (p3 + p4) +
+  plot_annotation(
+    title = "Penguin Measurements",
+    subtitle = "Various dimensions across species",
+    caption = "Data: palmerpenguins package",
+    tag_levels = "A"  # Add figure labels
+  )
+```
+
+### Custom Annotations
+
+```{r}
+#| label: custom-annotations
+# Create text grob
+library(grid)
+text_grob <- textGrob("Important Feature", gp = gpar(col = "red"))
+
+# Add annotation to specific location
+p1 + p2 +
+  inset_element(text_grob, 0.6, 0.8, 0.9, 0.9, align_to = 'full')
+```
+
+## Complex Real-World Examples
+
+### Dashboard-Style Layout
+
+```{r}
+#| label: dashboard
+# Create summary stats plot
+p_stats <- penguins %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mean_mass = mean(body_mass_g, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(species, mean_mass, fill = species)) +
+  geom_col() +
+  theme_minimal() +
+  labs(title = "Average Mass by Species")
+
+# Create dashboard layout
+layout <- "
+AAAB
+AAAB
+CCCD
+"
+
+p1 + p_stats + p3 + p4 +
+  plot_layout(design = layout) +
+  plot_annotation(
+    title = "Penguin Analysis Dashboard",
+    subtitle = "Key metrics and distributions",
+    theme = theme(
+      plot.title = element_text(size = 16, face = "bold"),
+      plot.subtitle = element_text(size = 12)
+    )
+  )
+```
+
+### Publication-Ready Figure
+
+```{r}
+#| label: publication
+# Create publication layout with shared legend
+((p1 + p2) / (p3 + p4)) +
+  plot_layout(guides = "collect") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 10),
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 7)
+  ) +
+  plot_annotation(
+    title = "Figure 1: Penguin Morphological Characteristics",
+    subtitle = "Measurements across different species",
+    caption = "Data collected from three islands in the Palmer Archipelago",
+    tag_levels = "A"
+  )
+```
+
+## Common Pitfalls and Solutions
+
+### 1. Legend Issues
+
+```{r}
+#| label: legend-issues
+# Problem: Multiple legends
+problem_plot <- p1 + p2  # Duplicate legends
+
+# Solution: Collect legends
+solution_plot <- p1 + p2 +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+
+problem_plot
+solution_plot
+```
+
+### 2. Alignment Problems
+
+```{r}
+#| label: alignment-issues
+# Problem: Misaligned axes
+problem_align <- p1 + p2  # Different scales
+
+# Solution: Fixed coordinates or scales
+solution_align <- p1 + p2 &
+  scale_y_continuous(limits = c(0, 6000))
+
+problem_align
+solution_align
+```
+
+### 3. Spacing Issues
+
+```{r}
+#| label: spacing-issues
+# Problem: Uneven spacing
+problem_spacing <- (p1 + p2) / p3
+
+# Solution: Control heights and add spacing
+solution_spacing <- (p1 + p2) / p3 +
+  plot_layout(heights = c(1, 1)) &
+  theme(plot.margin = margin(10, 10, 10, 10))
+
+problem_spacing
+solution_spacing
+```
+
+## Best Practices
+
+1. **Plan Your Layout**
+   - Sketch the layout first
+   - Consider aspect ratios
+   - Think about shared elements
+
+2. **Maintain Consistency**
+   - Use consistent themes
+   - Align similar elements
+   - Keep scales comparable
+
+3. **Handle Legends Efficiently**
+   - Collect when possible
+   - Consider placement carefully
+   - Remove redundant information
+
+4. **Control Spacing**
+   - Use appropriate margins
+   - Add spacers when needed
+   - Consider text alignment
+
+5. **Document Your Layouts**
+```{r}
+#| label: documentation
+# Example of documented layout
+create_analysis_layout <- function(p1, p2, p3, p4) {
+  layout <- "
+  AAB
+  AAB
+  CCC
+  "
+  
+  (p1 + p2 + p3) +
+    plot_layout(design = layout) +
+    plot_annotation(
+      title = "Analysis Layout",
+      caption = "Created: {format(Sys.time(), '%Y-%m-%d')}"
+    )
+}
+```
+
+## Tips for Complex Layouts
+
+1. Build layouts incrementally
+2. Test with different window sizes
+3. Use nested operations for complex designs
+4. Consider aspect ratios early
+5. Plan legend placement carefully
+6. Use consistent themes across plots
+7. Add appropriate spacing between elements
+8. Document layout decisions

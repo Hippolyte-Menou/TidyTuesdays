@@ -1,0 +1,296 @@
+---
+title: "Data Emphasis Techniques with gghighlight"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+The gghighlight package provides powerful tools for emphasizing specific data points or groups in ggplot2 visualizations. This guide explores various emphasis techniques.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(gghighlight)
+library(gapminder)
+library(palmerpenguins)
+```
+
+## Basic Highlighting
+
+### Simple Value-based Highlighting
+
+```{r}
+#| label: basic-highlight
+# Highlight specific values
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(species == "Gentoo") +
+  labs(title = "Highlighting Single Species",
+       subtitle = "Gentoo penguins emphasized")
+
+# Highlight based on numeric condition
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(bill_length_mm > 50) +
+  labs(title = "Highlighting Large Bills",
+       subtitle = "Bills longer than 50mm emphasized")
+```
+
+### Multiple Conditions
+
+```{r}
+#| label: multiple-conditions
+# Combine multiple conditions
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(
+    species == "Gentoo" & bill_length_mm > 50,
+    label_key = species
+  ) +
+  labs(title = "Complex Highlighting",
+       subtitle = "Large Gentoo bills emphasized")
+```
+
+## Advanced Highlighting Techniques
+
+### Using Computed Statistics
+
+```{r}
+#| label: computed-stats
+# Highlight based on mean values
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(gdpPercap, lifeExp, color = continent)) +
+  geom_point() +
+  gghighlight(
+    mean(lifeExp) > 70,
+  ) +
+  scale_x_log10() +
+  labs(title = "High Life Expectancy Continents",
+       subtitle = "Highlighting continents with mean life expectancy > 70")
+```
+
+### Dynamic Thresholds
+
+```{r}
+#| label: dynamic-thresholds
+# Calculate dynamic threshold
+penguins %>%
+  ggplot(aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  gghighlight(
+    body_mass_g > mean(body_mass_g, na.rm = TRUE),
+    label_key = species
+  ) +
+  labs(title = "Above Average Mass",
+       subtitle = "Points above mean body mass highlighted")
+```
+
+## Time Series Highlighting
+
+### Highlighting Trends
+
+```{r}
+#| label: time-series
+# Prepare time series data
+economics_long %>%
+  filter(variable %in% c("pce", "psavert")) %>%
+  ggplot(aes(date, value, color = variable)) +
+  geom_line() +
+  gghighlight(max(value) > 10000) +
+  labs(title = "Economic Indicators",
+       subtitle = "Highlighting high-value series")
+
+# Highlight specific time periods
+economics_long %>%
+  filter(variable == "unemploy") %>%
+  ggplot(aes(date, value)) +
+  geom_line() +
+  gghighlight(
+    date >= as.Date("2008-01-01") & date <= as.Date("2010-01-01"),
+    unhighlighted_params = list(color = alpha("gray", 0.5))
+  ) +
+  labs(title = "Unemployment Over Time",
+       subtitle = "2008-2010 period highlighted")
+```
+
+## Customizing Highlight Appearance
+
+### Modifying Unhighlighted Points
+
+```{r}
+#| label: customize-unhighlighted
+# Control unhighlighted appearance
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point(size = 3) +
+  gghighlight(
+    species == "Gentoo",
+    unhighlighted_params = list(color = alpha("gray80", 0.5), size = 2)
+  ) +
+  labs(title = "Custom Unhighlighted Style")
+```
+
+### Adding Labels
+
+```{r}
+#| label: custom-labels
+# Add informative labels
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(gdpPercap, lifeExp, color = country)) +
+  geom_point() +
+  gghighlight(
+    gdpPercap > 30000,
+    label_key = country,
+    label_params = list(size = 3, hjust = -0.1),
+    use_direct_label = TRUE
+  ) +
+  scale_x_log10() +
+  labs(title = "High GDP Countries",
+       subtitle = "Countries with GDP per capita > $30,000")
+```
+
+## Complex Applications
+
+### Faceted Highlights
+
+```{r}
+#| label: faceted-highlights
+# Highlight within facets
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = sex)) +
+  geom_point() +
+  gghighlight(bill_depth_mm > mean(bill_depth_mm, na.rm = TRUE)) +
+  facet_wrap(~species) +
+  labs(title = "Above Average Bill Depth",
+       subtitle = "Highlighted separately within each species")
+```
+
+### Multiple Geoms
+
+```{r}
+#| label: multiple-geoms
+# Highlight with multiple geometries
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_violin() +
+  geom_jitter(aes(color = species), width = 0.2) +
+  gghighlight(
+    mean(body_mass_g, na.rm = TRUE) > 4500) +
+  labs(title = "Heavy Species Distribution",
+       subtitle = "Species with mean mass > 4500g highlighted")
+```
+
+## Best Practices
+
+### 1. Clear Visual Hierarchy
+
+```{r}
+#| label: visual-hierarchy
+# Create clear contrast
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point(size = 3) +
+  gghighlight(
+    species == "Gentoo",
+    unhighlighted_params = list(colour = alpha("gray90", 0.5), size = 2),
+    label_key = species,
+    use_direct_label = TRUE
+  ) +
+  theme_minimal() +
+  labs(title = "Clear Visual Hierarchy Example")
+```
+
+### 2. Informative Labels
+
+```{r}
+#| label: informative-labels
+# Add context through labels
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(gdpPercap, lifeExp, color = continent)) +
+  geom_point() +
+  gghighlight(
+    mean(lifeExp) > 75,
+    label_key = continent,
+    label_params = list(
+      vjust = -0.5,
+      size = 4,
+      fontface = "bold"
+    )
+  ) +
+  scale_x_log10() +
+  labs(
+    title = "High Life Expectancy Regions",
+    subtitle = "Regions with mean life expectancy > 75 years",
+    caption = "Data: Gapminder (2007)"
+  )
+```
+
+## Common Pitfalls and Solutions
+
+### 1. Too Much Highlighting
+
+```{r}
+#| label: highlight-overuse
+# Bad: Too many points highlighted
+bad_highlight <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(bill_length_mm > 40)  # Highlights too many points
+
+# Better: More selective highlighting
+good_highlight <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(bill_length_mm > quantile(bill_length_mm, 0.9, na.rm = TRUE))
+
+# Compare
+bad_highlight + labs(title = "Too Many Points Highlighted")
+good_highlight + labs(title = "Selective Highlighting")
+```
+
+### 2. Poor Contrast
+
+```{r}
+#| label: contrast-issues
+# Bad: Poor contrast
+bad_contrast <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(
+    species == "Gentoo",
+    unhighlighted_colour = alpha("gray60", 0.8)  # Not enough contrast
+  )
+
+# Better: Clear contrast
+good_contrast <- ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) +
+  geom_point() +
+  gghighlight(
+    species == "Gentoo",
+    unhighlighted_colour = alpha("gray90", 0.3)  # Better contrast
+  )
+
+# Compare
+bad_contrast + labs(title = "Poor Contrast")
+good_contrast + labs(title = "Good Contrast")
+```
+
+## Tips for Effective Highlighting
+
+1. **Be Selective**
+- Highlight only what's important
+- Avoid highlighting too many elements
+- Consider using quantiles for thresholds
+
+2. **Maintain Context**
+- Keep unhighlighted points visible
+- Use appropriate transparency levels
+- Add informative labels
+
+3. **Consider Accessibility**
+- Use sufficient color contrast
+- Don't rely solely on color
+- Test with colorblind-friendly palettes
+
+4. **Add Clear Documentation**
+- Use informative titles and subtitles
+- Explain highlight criteria
+- Include relevant context

@@ -1,0 +1,332 @@
+---
+title: "Common Gotchas with Text, Margins, and Spacing in ggplot2"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Text alignment, margins, and spacing are common sources of frustration in ggplot2. This guide covers frequent issues and their solutions.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(palmerpenguins)
+
+# Create a base plot for examples
+base_plot <- penguins %>%
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point()
+```
+
+## Text Alignment Gotchas
+
+### 1. Long Axis Labels Getting Cut Off
+
+```{r}
+#| label: axis-label-cutoff
+# Problem: Long labels getting cut off
+problematic_plot <- mpg %>%
+  mutate(manufacturer = str_to_title(manufacturer)) %>%
+  ggplot(aes(manufacturer, hwy)) +
+  geom_boxplot() +
+  labs(x = "Manufacturer (with very long axis label that gets cut off)")
+
+# Solution 1: Adjust margin
+solution_1 <- problematic_plot +
+  theme(axis.title.x = element_text(margin = margin(t = 20)))
+
+# Solution 2: Text wrapping
+solution_2 <- problematic_plot +
+  scale_x_discrete(label = function(x) str_wrap(x, width = 10)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Compare
+problematic_plot
+solution_1
+solution_2
+```
+
+### 2. Facet Label Alignment Issues
+
+```{r}
+#| label: facet-alignment
+# Problem: Misaligned facet labels
+problematic_facets <- penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~island) +
+  theme(strip.text = element_text(hjust = 0))  # Wrong alignment
+
+# Solution: Proper centering and spacing
+fixed_facets <- problematic_facets +
+  theme(
+    strip.text = element_text(
+      hjust = 0.5,  # Center text
+      margin = margin(t = 5, b = 5)  # Add vertical space
+    ),
+    strip.background = element_rect(
+      fill = "gray95",
+      color = "gray80"
+    )
+  )
+
+# Compare
+problematic_facets
+fixed_facets
+```
+
+### 3. Legend Title Wrapping
+
+```{r}
+#| label: legend-wrapping
+# Problem: Long legend title
+problematic_legend <- base_plot +
+  labs(color = "Species of Penguins with Very Long Legend Title That Wraps Awkwardly")
+
+# Solution: Control wrapping and spacing
+fixed_legend <- base_plot +
+  labs(color = str_wrap("Species of Penguins with Very Long Legend Title That Wraps Nicely", width = 20)) +
+  theme(
+    legend.title = element_text(lineheight = 0.9),
+    legend.margin = margin(t = 5, b = 5)
+  )
+
+# Compare
+problematic_legend
+fixed_legend
+```
+
+## Margin Gotchas
+
+### 1. Plot Margins Too Tight
+
+```{r}
+#| label: plot-margins
+# Problem: Tight margins cutting off elements
+tight_margins <- base_plot +
+  labs(title = "Title Gets Cut Off With Tight Margins",
+       caption = "Caption also gets cut off") +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "pt"))
+
+# Solution: Proper margin spacing
+fixed_margins <- base_plot +
+  labs(title = "Title Has Room to Breathe",
+       caption = "Caption has proper spacing") +
+  theme(
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
+    plot.title = element_text(margin = margin(b = 10)),
+    plot.caption = element_text(margin = margin(t = 10))
+  )
+
+# Compare
+tight_margins
+fixed_margins
+```
+
+### 2. Overlapping Multi-line Titles
+
+```{r}
+#| label: title-spacing
+# Problem: Overlapping title and subtitle
+overlapping_titles <- base_plot +
+  labs(
+    title = "Main Title",
+    subtitle = "Subtitle that overlaps with the title because of insufficient spacing"
+  ) +
+  theme(
+    plot.title = element_text(margin = margin(b = 0)),
+    plot.subtitle = element_text(margin = margin(t = 0))
+  )
+
+# Solution: Proper title spacing
+fixed_titles <- base_plot +
+  labs(
+    title = "Main Title",
+    subtitle = "Subtitle with proper spacing from the title"
+  ) +
+  theme(
+    plot.title = element_text(margin = margin(b = 10)),
+    plot.subtitle = element_text(margin = margin(t = 5, b = 15))
+  )
+
+# Compare
+overlapping_titles
+fixed_titles
+```
+
+### 3. Legend Spacing Issues
+
+```{r}
+#| label: legend-spacing
+# Problem: Cramped legend
+cramped_legend <- base_plot +
+  theme(
+    legend.margin = margin(0, 0, 0, 0),
+    legend.spacing = unit(0, "pt"),
+    legend.key.size = unit(10, "pt")
+  )
+
+# Solution: Proper legend spacing
+fixed_legend_spacing <- base_plot +
+  theme(
+    legend.margin = margin(5, 5, 5, 5),
+    legend.spacing = unit(5, "pt"),
+    legend.key.size = unit(15, "pt"),
+    legend.text = element_text(margin = margin(l = 5))
+  )
+
+# Compare
+cramped_legend
+fixed_legend_spacing
+```
+
+## Spacing Gotchas
+
+### 1. Axis Text Overlapping
+
+```{r}
+#| label: axis-overlap
+# Problem: Overlapping axis text
+overlapping_axis <- mpg %>%
+  ggplot(aes(manufacturer, hwy)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45))  # Missing hjust
+
+# Solution: Proper text adjustment
+fixed_axis <- mpg %>%
+  ggplot(aes(manufacturer, hwy)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,  # Right-align rotated text
+      vjust = 1,  # Vertical adjustment
+      margin = margin(t = 5)  # Space from axis
+    )
+  )
+
+# Compare
+overlapping_axis
+fixed_axis
+```
+
+### 2. Facet Spacing Issues
+
+```{r}
+#| label: facet-spacing
+# Problem: Poor facet spacing
+poor_facet_spacing <- penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species + island) +
+  theme(panel.spacing = unit(0, "pt"))
+
+# Solution: Better facet spacing
+fixed_facet_spacing <- penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~species + island) +
+  theme(
+    panel.spacing = unit(2, "lines"),
+    strip.text = element_text(margin = margin(t = 5, b = 5))
+  )
+
+# Compare
+poor_facet_spacing
+fixed_facet_spacing
+```
+
+## Common Solutions Cheat Sheet
+
+1. **Text Alignment**
+```{r}
+#| label: cheatsheet-text
+text_fixes <- list(
+  # Long axis labels
+  axis_text = theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1,
+      vjust = 1
+    )
+  ),
+  
+  # Centered facet labels
+  facet_text = theme(
+    strip.text = element_text(
+      hjust = 0.5,
+      margin = margin(t = 5, b = 5)
+    )
+  ),
+  
+  # Wrapped legend title
+  legend_text = theme(
+    legend.title = element_text(
+      lineheight = 0.9,
+      margin = margin(b = 5)
+    )
+  )
+)
+```
+
+2. **Margins**
+```{r}
+#| label: cheatsheet-margins
+margin_fixes <- list(
+  # Safe plot margins
+  plot_margins = theme(
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
+  ),
+  
+  # Title spacing
+  title_margins = theme(
+    plot.title = element_text(margin = margin(b = 10)),
+    plot.subtitle = element_text(margin = margin(t = 5, b = 15)),
+    plot.caption = element_text(margin = margin(t = 10))
+  ),
+  
+  # Legend spacing
+  legend_margins = theme(
+    legend.margin = margin(5, 5, 5, 5),
+    legend.spacing = unit(5, "pt"),
+    legend.key.size = unit(15, "pt")
+  )
+)
+```
+
+3. **Spacing**
+```{r}
+#| label: cheatsheet-spacing
+spacing_fixes <- list(
+  # Panel spacing
+  panel_spacing = theme(
+    panel.spacing = unit(2, "lines")
+  ),
+  
+  # Axis spacing
+  axis_spacing = theme(
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.title.y = element_text(margin = margin(r = 10))
+  ),
+  
+  # Legend key spacing
+  legend_spacing = theme(
+    legend.key.spacing = unit(5, "pt"),
+    legend.text = element_text(margin = margin(l = 5))
+  )
+)
+```
+
+## Best Practices
+
+1. Always check plot margins first when elements are cut off
+2. Use `hjust` and `vjust` for fine-tuning text alignment
+3. Add appropriate spacing between plot elements
+4. Test plots at different sizes
+5. Consider different output formats
+6. Use relative units when possible
+7. Think about text wrapping for long labels
+8. Keep consistency across related plots

@@ -35,8 +35,30 @@ website:
           - text: "Hi!"
       - section: "Helpers"
         contents:
-          - text: "Legend styling"
-          - text: "Tips and tricks"
+          - text: "Advanced facetting techniques"
+            href: tips/Advanced facetting techniques.qmd
+          - text: "Custom theme functions"  
+            href: tips/Custom theme functions.qmd
+          - text: "Advanced geometries with ggforce"  
+            href: tips/Advanced geometries with ggforce.qmd
+          - text: "Data Emphasis"  
+            href: tips/Data Emphasis.qmd
+          - text: "Advanced Nested Faceting with ggh4x"  
+            href: tips/Advanced Nested Faceting with ggh4x.qmd
+          - text: "Multiple Color Scales with ggnewscale"  
+            href: tips/Multiple Color Scales with ggnewscale.qm
+          - text: "Common gotchas with text"  
+            href: tips/Common gotchas with text.qmd
+          - text: "Ordered Barcharts"  
+            href: tips/Ordered Barcharts.qmd
+          - text: "Complex Layouts with patchwork"  
+            href: tips/Complex Layouts with patchwork.qmd
+          - text: "Saving and reusing themes"  
+            href: tips/Saving and reusing themes.qmd
+          - text: "Custom Color Palettes"  
+            href: tips/Custom Color Palettes.qmd
+          - text: "Theme elements"  
+            href: tips/Theme elements.qmd
 
 editor: visual
 
@@ -48,5 +70,7 @@ format:
     code-fold: true
 
 execute:
+  error: true
   warning: false
   message: false
+  freeze: auto

@@ -1,0 +1,282 @@
+---
+title: "Implementing Custom Color Palettes in R"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+While R has many built-in palettes, creating and implementing custom color palettes can be tricky. This guide focuses on how to effectively implement custom palettes and avoid common pitfalls.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(scales)
+library(palmerpenguins)
+```
+
+## Finding Color Palettes
+
+The [R Color Palette Finder](https://emilhvitfeldt.github.io/r-color-palettes/) is an invaluable resource showing 2000+ palettes from various R packages. Key features:
+
+-   Interactive visualization of all palettes
+-   Code snippets for implementation
+-   Filtering by colorblind friendliness
+-   Categories (sequential, diverging, qualitative)
+-   Package-specific collections
+
+## Implementing Custom Palettes
+
+### Basic Implementation
+
+```{r}
+#| label: basic-implementation
+# Method 1: Direct color vector
+my_colors <- c("#E69F00", "#56B4E9", "#009E73")
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_manual(values = my_colors)
+
+# Method 2: Named vector (for more control)
+species_colors <- c(
+  "Adelie" = "#E69F00",
+  "Chinstrap" = "#56B4E9",
+  "Gentoo" = "#009E73"
+)
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_manual(values = species_colors)
+```
+
+### Common Errors and Solutions
+
+```{r}
+#| label: error-examples
+#| error: true
+# Error 1: Not enough colors
+few_colors <- c("#E69F00", "#56B4E9")
+try({
+  ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+    geom_point() +
+    scale_color_manual(values = few_colors)
+})
+
+# Solution: Check number of categories
+n_categories <- n_distinct(penguins$species)
+colors_needed <- colorRampPalette(c("#E69F00", "#56B4E9", "#009E73"))(n_categories)
+
+# Error 2: Colors don't match factor levels
+mismatched_colors <- c(
+  "Wrong" = "#E69F00",
+  "Names" = "#56B4E9",
+  "Here" = "#009E73"
+)
+try({
+  ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+    geom_point() +
+    scale_color_manual(values = mismatched_colors)
+})
+
+# Solution: Check factor levels
+levels(penguins$species)
+```
+
+### Creating Reusable Palette Functions
+
+```{r}
+#| label: palette-functions
+# Function that handles different numbers of categories
+flexible_palette <- function(n) {
+  if (n <= 3) {
+    return(c("#E69F00", "#56B4E9", "#009E73")[1:n])
+  } else {
+    # Create additional colors if needed
+    return(colorRampPalette(c("#E69F00", "#56B4E9", "#009E73"))(n))
+  }
+}
+
+# Function that includes error checking
+robust_palette <- function(data, variable) {
+  n_cats <- n_distinct(data[[variable]])
+  if (n_cats > 8) {
+    warning("More than 8 categories may be hard to distinguish")
+  }
+  
+  base_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442",
+                   "#0072B2", "#D55E00", "#CC79A7", "#999999")
+  
+  if (n_cats <= length(base_colors)) {
+    return(base_colors[1:n_cats])
+  } else {
+    return(colorRampPalette(base_colors)(n_cats))
+  }
+}
+
+# Usage
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_manual(values = robust_palette(penguins, "species"))
+```
+
+## Common Implementation Challenges
+
+1.  **Inconsistent Number of Categories**
+
+```{r}
+#| label: category-handling
+# Function to handle missing/extra categories
+make_safe_palette <- function(data, variable, default_colors) {
+  actual_levels <- levels(data[[variable]])
+  if (is.null(actual_levels)) actual_levels <- unique(data[[variable]])
+  
+  # Check if we have colors for all levels
+  if (length(default_colors) < length(actual_levels)) {
+    warning("Not enough colors provided, extending palette")
+    default_colors <- colorRampPalette(default_colors)(length(actual_levels))
+  }
+  
+  # Create named vector matching levels
+  setNames(default_colors[1:length(actual_levels)], actual_levels)
+}
+
+# Example with filtering
+penguins_subset <- penguins %>% filter(species != "Gentoo")
+species_palette <- make_safe_palette(
+  penguins_subset, 
+  "species",
+  c("#E69F00", "#56B4E9", "#009E73")
+)
+
+ggplot(penguins_subset, 
+       aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_manual(values = species_palette)
+```
+
+2.  **Fill vs. Color Scales**
+
+```{r}
+#| label: fill-color
+# Using same palette for both fill and color
+my_palette <- c("#E69F00", "#56B4E9", "#009E73")
+
+ggplot(penguins, aes(x = species)) +
+  geom_bar(aes(fill = species)) +
+  geom_text(aes(color = species, 
+                label = after_stat(count),
+                y = after_stat(count) + 3),
+            stat = "count") +
+  scale_fill_manual(values = my_palette) +
+  scale_color_manual(values = my_palette)
+```
+
+3.  **Continuous vs. Discrete Scales**
+
+```{r}
+#| label: continuous-discrete
+# Creating a continuous palette
+continuous_palette <- colorRampPalette(c("#E69F00", "#009E73"))
+
+# Compare discrete vs continuous usage
+p1 <- ggplot(penguins, 
+            aes(x = bill_length_mm, y = bill_depth_mm, color = body_mass_g)) +
+  geom_point() +
+  scale_color_gradientn(colors = continuous_palette(100)) +
+  ggtitle("Continuous Scale")
+
+p2 <- ggplot(penguins, 
+            aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_manual(values = continuous_palette(3)) +
+  ggtitle("Discrete Scale")
+
+library(patchwork)
+p1 + p2
+```
+
+## Troubleshooting Tips
+
+1.  **Check Factor Levels**
+
+```{r}
+# Print levels to debug color matching
+str(penguins$species)
+levels(penguins$species)
+```
+
+2.  **Verify Color Specifications**
+
+```{r}
+# Function to validate hex colors
+is_valid_hex <- function(x) {
+  grepl("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", x)
+}
+
+# Test colors
+test_colors <- c("#E69F00", "#56B4E9", "invalid", "red")
+data.frame(
+  color = test_colors,
+  is_valid = sapply(test_colors, is_valid_hex)
+)
+```
+
+3.  **Debug Scale Mappings**
+
+```{r}
+# Function to show color-value mappings
+show_palette_mapping <- function(data, variable, palette) {
+  if(is.factor(data[[variable]])) {
+    levels <- levels(data[[variable]])
+  } else {
+    levels <- unique(data[[variable]])
+  }
+  
+  if(length(palette) < length(levels)) {
+    warning("Not enough colors in palette")
+  }
+  
+  data.frame(
+    value = levels,
+    color = palette[1:length(levels)]
+  )
+}
+
+# Example usage
+show_palette_mapping(penguins, "species", my_colors)
+```
+
+## Best Practices
+
+1.  Always create palette functions that handle:
+    -   Variable numbers of categories
+    -   Missing or filtered categories
+    -   Continuous vs. discrete scales
+    -   Fill and color scales consistently
+2.  Document your palette choices:
+
+```{r}
+#| label: documentation
+# Example of well-documented palette
+company_palette <- list(
+  primary = c("#E69F00", "#56B4E9", "#009E73"),
+  sequential = colorRampPalette(c("#E69F00", "#009E73")),
+  discrete = function(n) {
+    if (n <= 3) return(c("#E69F00", "#56B4E9", "#009E73")[1:n])
+    colorRampPalette(c("#E69F00", "#56B4E9", "#009E73"))(n)
+  }
+)
+
+# Add metadata
+attr(company_palette, "creation_date") <- Sys.Date()
+attr(company_palette, "colorblind_safe") <- TRUE
+```
+
+3.  Test your palettes with:
+    -   Different numbers of categories
+    -   Both continuous and discrete scales
+    -   Various plot types
+    -   Colorblind simulation tools
