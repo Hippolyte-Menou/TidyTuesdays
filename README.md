@@ -1,1 +1,42 @@
-# TidyTuesdays
+# Data Stories & Visualizations
+
+Welcome! I'm Hippolyte Menou, and this is where I explore and visualize interesting datasets, primarily through the #TidyTuesday community project. As a data enthusiast, I believe in the power of combining rigorous analysis with compelling visual storytelling.
+
+## What You'll Find Here
+
+### TidyTuesday Data Stories
+
+Each week, I dive deep into diverse datasets from the TidyTuesday project, creating comprehensive analyses that go beyond just numbers. From European drug development patterns to American university tuition trends, these stories combine statistical insight with clear, engaging visualizations to uncover meaningful patterns and trends.
+
+### Standalone Visualizations
+
+Sometimes a single, well-crafted visualization can tell a powerful story. Here you'll find my focused visual pieces, where I experiment with different visualization techniques and design approaches using R and ggplot2. Recent examples include:
+
+-   French train delays across international routes
+
+-   Evolution of US college tuition costs
+
+-   European orphan drug development trends
+
+```         
+### Tips & Tricks
+```
+
+Throughout my data visualization journey, I've accumulated various techniques and solutions for common challenges in R and ggplot2. I share these insights here, from efficient data wrangling approaches to creating publication-ready visualizations. Some popular topics include:
+
+-   Creating consistent visual themes
+-   Handling complex temporal data
+-   Optimizing code for reusability
+-   Advanced ggplot2 customization
+
+## My Approach
+
+Every visualization on this site follows these core principles:
+
+1.  Data integrity first
+
+2.  Clear and purposeful design choices
+
+3.  Attention to detail in presentation
+
+4.  Reproducible code and methods
