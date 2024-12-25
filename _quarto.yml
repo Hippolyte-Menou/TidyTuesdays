@@ -24,6 +24,8 @@ website:
         contents:
           - text: "2018-04-03 - US Tuition Costs"
             href: 2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.qmd
+          - text: "2019-01-15 - Space Launches"
+            href: 2019-01-15 - Space Launches/2019-01-15 - Space Launches.qmd
           - text: "2019-02-26 - French Train Delays"
             href: 2019-02-26 - French Train Delays/2019-02-26 - French Train Delays.qmd
           - text: "2023-02-21 - Bob Ross Paintings"
@@ -73,4 +75,4 @@ execute:
   error: true
   warning: false
   message: false
-  # freeze: auto
+  freeze: auto
