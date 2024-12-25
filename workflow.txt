@@ -17,3 +17,5 @@ renv::update()
 renv::restore()
 
 git add renv.lock && git commit -m "Update renv.lock" && git push origin main
+
+fatal: Unable to create 'C:/Users/hippo/OneDrive/Documents/R Data projects/TidyTuesdays/.git/index.lock': File exists.
