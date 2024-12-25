@@ -1,5 +1,6 @@
 git init  # First time only
 git remote add origin https://github.com/Hippolyte-Menou/TidyTuesdays.git  # First time only
+
 quarto render
 git add docs/
 git commit -m "Update website with new changes"
@@ -7,5 +8,12 @@ git push origin main
 
 
 quarto render && git add . && git commit -m "Update website with new changes" && git push origin main
+
+
+
+
+renv::snapshot()
+renv::update()
+renv::restore()
 
 git add renv.lock && git commit -m "Update renv.lock" && git push origin main
