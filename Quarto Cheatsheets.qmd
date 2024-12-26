@@ -1,0 +1,142 @@
+---
+title: "Quarto Cheatsheet"
+author: "Hippolyte Menou"
+---
+
+In Quarto, code blocks can be customized using various parameters to control their behavior and appearance. These parameters are specified using the `#|` syntax within the code block. Here are some of the key parameters you can use:
+
+1. **`label`**: A label for the code block, which can be used for referencing.
+
+```{r}
+#| label: fig-theme-setting
+```
+
+2. **`echo`**: Controls whether the code itself is displayed in the output.
+
+```{r}
+#| echo: false
+```
+
+3. **`include`**: Controls whether the code and its output are included in the final document.
+
+```{r}
+#| include: true
+```
+
+4. **`eval`**: Controls whether the code is evaluated.
+
+```{r}
+#| eval: false
+```
+
+5. **`results`**: Controls how the results of the code are displayed (e.g., `"asis"`, `"hold"`, `"hide"`, `"markup"`).
+
+```{r}
+#| results: "asis"
+```
+
+6. **`warning`** and **`message`**: Controls whether warnings and messages are displayed.
+
+```{r}
+#| warning: false
+#| message: false
+```
+
+7. **`error`**: Controls whether errors are displayed.
+
+```{r}
+#| error: true
+```
+
+8. **`fig.cap`**: A caption for the figure.
+
+```{r}
+#| fig.cap: "Air Quality"
+```
+
+9. **`fig.height`** and **`fig.width`**: Controls the height and width of the figure.
+
+```{r}
+#| fig.height: 6
+#| fig.width: 8
+```
+
+10. **`fig.align`**: Controls the alignment of the figure (e.g., `"left"`, `"center"`, `"right"`).
+
+```{r}
+#| fig.align: "center"
+```
+
+11. **`out.width`** and **`out.height`**: Controls the width and height of the output.
+
+```{r}
+#| out.width: "50%"
+#| out.height: "300px"
+```
+
+12. **`cache`**: Controls whether the results of the code block are cached.
+
+```{r}
+#| cache: true
+```
+
+13. **`collapse`**: Controls whether the code and output are collapsed into a single block.
+
+```{r}
+#| collapse: true
+```
+
+14. **`code-fold`**: Controls whether the code is folded (hidden) by default.
+
+```{r}
+#| code-fold: true
+```
+
+15. **`code-summary`**: Provides a summary of the code when it is folded.
+
+```{r}
+#| code-summary: "This code generates a plot."
+```
+
+16. **`code-line-numbers`**: Controls whether line numbers are shown in the code block.
+
+```{r}
+#| code-line-numbers: true
+```
+
+17. **`code-tools`**: Controls whether code tools (e.g., copy button) are shown.
+
+```{r}
+#| code-tools: true
+```
+
+18. **`code-overflow`**: Controls how code overflow is handled (e.g., `"scroll"`, `"wrap"`).
+
+```{r}
+#| code-overflow: "scroll"
+```
+
+19. **`code-link`**: Enables hyper-linking of functions within code blocks to their online documentation.
+
+```{r}
+#| code-link: true
+```
+
+20. **`layout-ncol`**: Controls the number of columns in a layout for figures.
+
+```{r}
+#| layout-ncol: 2
+```
+
+21. **`layout-nrow`**: Controls the number of rows in a layout for figures.
+
+```{r}
+#| layout-nrow: 2
+```
+
+22. **`df-print`**: Controls the default data frame printing method (e.g., `"default"`, `"kable"`, `"tibble"`, `"paged"`).
+
+```{r}
+#| df-print: "kable"
+```
+

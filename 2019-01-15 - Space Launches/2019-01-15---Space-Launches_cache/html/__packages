@@ -1,0 +1,14 @@
+DT
+ggplot2
+ggimage
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate
+patchwork
+extrafont

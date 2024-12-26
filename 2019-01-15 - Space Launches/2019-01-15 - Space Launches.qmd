@@ -12,7 +12,7 @@ format: html
 ## *Launches (launches.csv)*
 
 | *variable* | *definition* |
-|----|----|
+|------------------------------------|------------------------------------|
 | *tag* | *Harvard or [COSPAR](https://en.wikipedia.org/wiki/International_Designator) id of launch* |
 | *JD* | [*Julian Date*](https://en.wikipedia.org/wiki/Julian_day) *of launch* |
 | *launch_date* | *date of launch* |
@@ -51,28 +51,40 @@ format: html
 
 # *Data Preparation*
 
-```{r Import libraries}
+```{r}
+#| label: Import libraries
+#| warning: False
+#| message: False
+
+library(DT)
+library(ggimage)
 library(tidyverse)
 library(patchwork)
 library(extrafont)
 ```
 
-```{r Import data}
-#/ warning: F
+```{r}
+#| label: Import Data
+#| warning: False
+#| message: False
+
 agencies <- read_csv("agencies.csv")
 launches <- read_csv("launches.csv")
 
-country_names <- c("BR" = "Brazil", "CN" = "China", "CYM" = "Consortium", "F" = "France", "I" = "Italy", "I-ELDO" = "Italy", "I-ESA" = "Italy", "IL" = "Israel", "IN" = "India", "IR" = "Iran", "J" = "Japan",  "KP" = "North Korea", "KR" = "South Korea", "RU" = "Soviet Union/Russia", "SU" = "Soviet Union/Russia", "UK" = "United Kingdom", "US" = "United States"
+country_names <- c("BR" = "Brazil", "CN" = "China", "CYM" = "Sea Launch", "F" = "France", "I" = "Italy", "I-ELDO" = "Italy", "I-ESA" = "Italy", "IL" = "Israel", "IN" = "India", "IR" = "Iran", "J" = "Japan",  "KP" = "North Korea", "KR" = "South Korea", "RU" = "Soviet Union - Russia", "SU" = "Soviet Union - Russia", "UK" = "United Kingdom", "US" = "United States"
 )
 
 launches <- launches %>% 
   mutate(country_name = country_names[state_code])
 
-agencies %>% glimpse
-launches %>% glimpse
+launches %>% sample_n(500) %>% arrange(launch_date) %>% datatable(options = list(pageLength = 10, filter = 'top', searching=T))
 ```
 
-```{r Theme}
+```{r}
+#| label: Theme setting
+#| warning: False
+#| message: False
+
 loadfonts(device = "win")
 
 theme_set(theme_minimal())
@@ -81,7 +93,7 @@ theme_update(
   plot.title = element_text(
     family = "DejaVu Math TeX Gyre",
     face = "bold",
-    size = 16,           
+    size = 32,           
     colour = "black",        
     angle = 0,
     hjust = 0.5,
@@ -100,44 +112,107 @@ theme_update(
 
 ```{r}
 #| label: Launches by country
+#| collapse: true
+#| fig.height: 9
+#| fig.width: 16
+
+countries_colors <- c("United States" = "#1a80bb",
+                      "France" = "#8cc5e3",
+                      "Soviet Union - Russia" = "#a00000",
+                      "China" = "#d8a6a6",
+                      "Other Countries" = "grey40")
 
 launches_by_country <- launches %>% 
   group_by(country_name) %>% 
   summarise(count = n())
 
 total_country <- nrow(launches_by_country)
-keep_n <- 4
+keep_n <- 4  # Number of top countries to show in main plot
 
+# Create base theme for shared styling
+theme_space_launches <- function() {
+  theme_minimal() %+replace%
+    theme(  # Shared elements between both plots
+      legend.position = "none",
+      panel.grid.minor = element_blank(),
+      panel.grid.major.y = element_blank(),
+      axis.title = element_blank(),
+      plot.background = element_rect(fill = "#f8f8f8"),
+      plot.title = element_text(face = "bold", margin = margin(b = 10), hjust = 0.5))
+}
+
+
+# Main plot
 launches_by_country_top_plot <- launches_by_country %>% 
-  mutate(country_name = fct_lump_n(country_name, n = keep_n, w = count),
+  mutate(country_name = fct_lump_n(country_name, n = keep_n, w = count, other_level = "Other Countries"),  # Combine all countries beyond top 4 into "Other Countries"
          country_name = fct_reorder(country_name, count)) %>% 
-  ggplot(aes(x = country_name, y = count)) +
-  geom_col() +
+  
+  ggplot(aes(x = country_name, y = count, fill = country_name)) +
+  geom_col(width = 0.7) +
   coord_flip() +
-  scale_y_continuous(position = "right") +
-  labs(title = "Number of Space Launches by Country",
-       x = "",
-       y = "Number of Launches") 
+  
+  # Add country flags next to bars
+  geom_image(aes(image = paste0("flags/", country_name, ".png")), y = -100, size = 0.08) +
+  
+  scale_y_continuous(position = "right",
+                     labels = scales::comma,
+                     breaks = seq(0, 3000, by = 500)) +
+  
+  scale_fill_manual(values = countries_colors) + 
+  
+  # Add visual connectors to inset plot
+  geom_rect(xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 300, color = "#333333", fill = NA, size = 0.7, linetype = "dashed") +  # Rectangle around "Other Countries" bar
+  
+  geom_segment(x = 0.5, y = 300, xend = 0.4, yend = 890, color = "#333333", linetype = "dashed") + 
+  geom_segment(x = 1.5, y = 300, xend = 3, yend = 890, color = "#333333", linetype = "dashed") + 
+  
+  labs(title = "Global Space Race: Launch Statistics by Country",
+       subtitle = "Total number of orbital launches from 1957 to 2018",
+       caption = "Data source: Jonathan McDowell's JSR Launch Vehicle Database") +
+  
+  # Theme
+  theme_space_launches() +
+  theme(panel.background = element_rect(fill = "#f8f8f8", color = NA),
+        axis.text = element_text(size = 24, color = "#333333"),
+        axis.text.x = element_text(margin = margin(t = 10)),
+        plot.title = element_text(size = 32),
+        plot.subtitle = element_text(size = 24, color = "#666666", margin = margin(b = 20), hjust = 0.5),
+        plot.caption = element_text(size = 16, color = "#666666", margin = margin(t = 20)),
+        plot.margin = margin(80, 20, 20, 20))
 
+# Inset plot with other countries
 launches_by_country_inset_plot <- launches_by_country %>% 
   arrange(count) %>% 
-  head(total_country-keep_n) %>% 
+  head(total_country - keep_n) %>% 
   mutate(country_name = fct_reorder(country_name, count)) %>% 
-  ggplot(aes(x = country_name, y=count)) + 
-  geom_col() + 
-  scale_y_continuous(position="right") +
+  ggplot(aes(x = country_name, y = count, fill = country_name)) + 
+  geom_col(width = 0.7) + 
+  scale_y_continuous(position = "right", 
+                     breaks = seq(0, 120, by = 20),
+                     labels = scales::comma) +
+  scale_fill_viridis_d(option = "mako", begin = 0.7, end = 0.3) +
   coord_flip() +
-  labs(title = "",
-       x = "",
-       y = "") + 
-  theme(
-    plot.background = element_rect(color = "grey30", size = 0.2)
-  )
+  labs(title = "Other Countries' Launch Statistics",
+       caption = "Note: Sea Launch program (1999-2014) involved multiple countries") +
+  theme_space_launches() +
+  theme(plot.background = element_rect(fill = "#f8f8f8", color = "#333333", size = 0.5),
+        plot.margin = unit(c(10, 15, 10, 10), "pt"),
+        axis.text = element_text(size = 14, color = "#333333"),
+        plot.title = element_text(size = 16),
+        plot.caption = element_text(size = 12, color = "#666666", margin = margin(t = 10)))
 
+# Combine main plot with inset plot
 launches_by_country_top_plot + 
   inset_element(launches_by_country_inset_plot, 
-                l = 0.6, r = 1.0,  t = 0.5, b = 0, clip = FALSE)
+                l = 0.3, r = 1.0, t = 0.5, b = 0, clip = FALSE)
 
 ```
 
-## The fall of the SU
+## *The fall of the Soviet Union*
+
+```{r}
+#| label: The Fall of the Soviet Union
+
+
+
+```

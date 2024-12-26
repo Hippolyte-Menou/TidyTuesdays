@@ -1,0 +1,17 @@
+glue
+scales
+ggtext
+ggdist
+readxl
+paletteer
+patchwork
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate

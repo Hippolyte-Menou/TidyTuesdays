@@ -15,6 +15,7 @@ website:
         text: "Github"
         href: https://github.com/Hippolyte-Menou/TidyTuesdays
 
+
   sidebar:
     style: "docked"
     contents:
@@ -53,6 +54,8 @@ website:
             href: tips/Custom theme functions.qmd
           - text: "Data Emphasis"  
             href: tips/Data Emphasis.qmd
+          - text: "Images using ggimage"
+            href: tips/Images using ggimage.qmd
           - text: "Multiple Color Scales with ggnewscale"  
             href: tips/Multiple Color Scales with ggnewscale.qm
           - text: "Ordered Barcharts"  
@@ -66,12 +69,28 @@ editor: visual
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: yeti
+      dark: superhero
+    code-theme: "monokai"
     css: styles.css
     toc: true
+    toc-title: "Contents"
+    toc-depth: 3
+    toc-back-to-top: true
     code-fold: true
+    code-summary: "Show the code"
+    code-copy: true
+    code-copy-label: "Copy Code"
+    code-copy-message: "Code copied to clipboard"
+    code-copy-error: "Error copying code"
+    code-copy-success: "Code copied successfully"
+    code-copy-timeout: 5000
+
+    
 
 execute:
+  cache: true
   error: true
   warning: false
   message: false

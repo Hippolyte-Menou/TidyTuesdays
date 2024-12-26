@@ -1,0 +1,265 @@
+---
+title: "Enhancing Plots with Images using ggimage"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+ggimage allows you to incorporate images into ggplot2 visualizations, enabling richer and more engaging plots. This guide explores various techniques for using images in plots.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(ggimage)
+library(palmerpenguins)
+```
+
+## Basic Image Usage
+
+### Single Image Points
+
+```{r}
+#| label: basic-image
+# Create sample data with image paths
+penguins_img <- penguins %>%
+  mutate(
+    image = case_when(
+      species == "Adelie" ~ "/api/placeholder/40/40",
+      species == "Gentoo" ~ "/api/placeholder/40/40",
+      species == "Chinstrap" ~ "/api/placeholder/40/40"
+    )
+  )
+
+# Basic plot with images
+ggplot(penguins_img, aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(aes(image = image), size = 0.05) +
+  labs(title = "Penguin Bills with Species Images")
+```
+
+### Sized Images
+
+```{r}
+#| label: sized-images
+# Vary image size by body mass
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(
+    aes(image = image, size = body_mass_g),
+    alpha = 0.8
+  ) +
+  scale_size_continuous(range = c(0.03, 0.08)) +
+  labs(title = "Images Sized by Body Mass")
+```
+
+## Advanced Image Applications
+
+### Image Filling
+
+```{r}
+#| label: image-filling
+# Create bar plot with image filling
+penguins %>%
+  count(species) %>%
+  mutate(
+    image = case_when(
+      species == "Adelie" ~ "/api/placeholder/40/40",
+      species == "Gentoo" ~ "/api/placeholder/40/40",
+      species == "Chinstrap" ~ "/api/placeholder/40/40"
+    )
+  ) %>%
+  ggplot(aes(species, n)) +
+  geom_col_pattern(
+    aes(pattern_filename = image),
+    pattern = "image",
+    pattern_type = "tile",
+    fill = "white"
+  ) +
+  labs(title = "Species Counts with Image Fills")
+```
+
+### Image Annotations
+
+```{r}
+#| label: image-annotations
+# Add image annotations to plot
+ggplot(penguins_img, aes(bill_length_mm, bill_depth_mm)) +
+  geom_point(aes(color = species), alpha = 0.6) +
+  annotation_image(
+    "/api/placeholder/100/100",
+    xmin = 35, xmax = 45,
+    ymin = 18, ymax = 20
+  ) +
+  labs(title = "Plot with Image Annotation")
+```
+
+## Combining with Other ggplot2 Features
+
+### Faceted Image Plots
+
+```{r}
+#| label: faceted-images
+# Create faceted plot with images
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(aes(image = image), size = 0.05) +
+  facet_wrap(~island) +
+  labs(title = "Faceted Image Plot")
+```
+
+### Mixed Geometries
+
+```{r}
+#| label: mixed-geometries
+# Combine images with other geometries
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_density_2d(aes(color = species)) +
+  geom_image(
+    aes(image = image),
+    size = 0.05,
+    alpha = 0.8
+  ) +
+  labs(title = "Images with Density Contours")
+```
+
+## Styling and Customization
+
+### Image Transformations
+
+```{r}
+#| label: image-transforms
+# Rotate and flip images
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(
+    aes(image = image, angle = bill_length_mm),
+    size = 0.05
+  ) +
+  labs(title = "Rotated Images")
+```
+
+### Alpha Blending
+
+```{r}
+#| label: alpha-blending
+# Control image transparency
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(
+    aes(image = image, alpha = body_mass_g),
+    size = 0.05
+  ) +
+  scale_alpha_continuous(range = c(0.3, 1)) +
+  labs(title = "Images with Varying Transparency")
+```
+
+## Best Practices
+
+### 1. Image Sizing
+
+```{r}
+#| label: image-sizing
+# Function to determine appropriate image size
+calculate_image_size <- function(data, base_size = 0.05) {
+  n_points <- nrow(data)
+  if(n_points > 1000) {
+    base_size * 0.5
+  } else if(n_points > 100) {
+    base_size * 0.8
+  } else {
+    base_size
+  }
+}
+
+# Apply dynamic sizing
+ggplot(penguins_img, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(
+    aes(image = image),
+    size = calculate_image_size(penguins_img)
+  ) +
+  labs(title = "Appropriately Sized Images")
+```
+
+### 2. Performance Optimization
+
+```{r}
+#| label: performance
+# Sample data for large datasets
+set.seed(123)
+large_data <- penguins_img %>%
+  sample_n(min(n(), 100))  # Limit number of images
+
+ggplot(large_data, 
+       aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(aes(image = image), size = 0.05) +
+  labs(title = "Performance Optimized Plot")
+```
+
+## Common Pitfalls and Solutions
+
+### 1. Image Overlapping
+
+```{r}
+#| label: overlapping
+# Bad: Overlapping images
+bad_overlap <- ggplot(penguins_img, 
+                     aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(aes(image = image), size = 0.1)
+
+# Better: Use alpha and appropriate sizing
+good_overlap <- ggplot(penguins_img,
+                      aes(bill_length_mm, bill_depth_mm)) +
+  geom_image(
+    aes(image = image),
+    size = 0.05,
+    alpha = 0.7
+  )
+
+# Compare
+bad_overlap + labs(title = "Overlapping Images")
+good_overlap + labs(title = "Better Image Spacing")
+```
+
+### 2. Memory Management
+
+```{r}
+#| label: memory-management
+# Function to manage large datasets
+plot_with_images <- function(data, max_images = 100) {
+  if(nrow(data) > max_images) {
+    data <- data %>%
+      sample_n(max_images)
+    message("Data sampled to ", max_images, " points")
+  }
+  
+  ggplot(data, aes(bill_length_mm, bill_depth_mm)) +
+    geom_image(aes(image = image), size = 0.05)
+}
+
+# Use the function
+plot_with_images(penguins_img) +
+  labs(title = "Memory-Efficient Plot")
+```
+
+## Tips for Effective Image Usage
+
+1.  **Image Preparation**
+    -   Use appropriately sized images
+    -   Consider aspect ratios
+    -   Optimize image files
+2.  **Visual Clarity**
+    -   Control overlap
+    -   Use appropriate transparency
+    -   Consider plot density
+3.  **Performance**
+    -   Limit number of images
+    -   Sample large datasets
+    -   Cache processed images
+4.  **Accessibility**
+    -   Include alt text
+    -   Consider colorblind-friendly annotations
+    -   Maintain readability
