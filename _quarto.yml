@@ -75,4 +75,4 @@ execute:
   error: true
   warning: false
   message: false
-  freeze: auto
+  # freeze: auto
