@@ -9,6 +9,12 @@
 /_freeze/
 /.quarto/
 
+# Ignore folders ending in _cache
+*_cache/
+
+# Ignore folders ending in _files
+*_files/
+
 # Ignore renv-specific directory
 /renv/
 
