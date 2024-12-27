@@ -11,19 +11,20 @@ quarto render && git add . && git commit -m "Update website with new changes" &&
 
 
 
-
+rm renv.lock
+renv::init()
 renv::snapshot()
-renv::update()
-renv::restore()
 
 git add renv.lock && git commit -m "Update renv.lock" && git push origin main
 
-fatal: Unable to create 'C:/Users/hippo/OneDrive/Documents/R Data projects/TidyTuesdays/.git/index.lock': File exists.
 
 
+list_files.py
+1. Add to _quarto.html
+2. Add to TidyTuesdays.qmd
 
-1. Add qmd to _quarto.html
-2. Add qmd to TidyTuesdays.qmd
+sed -n '/^---$/,/^---$/!p' TidyTuesdays.qmd > README.md
+
 
 
 

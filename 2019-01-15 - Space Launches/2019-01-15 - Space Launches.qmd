@@ -12,7 +12,7 @@ format: html
 ## *Launches (launches.csv)*
 
 | *variable* | *definition* |
-|------------------------------------|------------------------------------|
+|----|----|
 | *tag* | *Harvard or [COSPAR](https://en.wikipedia.org/wiki/International_Designator) id of launch* |
 | *JD* | [*Julian Date*](https://en.wikipedia.org/wiki/Julian_day) *of launch* |
 | *launch_date* | *date of launch* |

@@ -15,6 +15,9 @@ website:
         text: "Github"
         href: https://github.com/Hippolyte-Menou/TidyTuesdays
     right:
+      - icon: question-circle
+        text: "How to"
+        href: how_to.qmd
       - icon: info-circle
         text: "About"
         href: about.qmd
@@ -42,32 +45,34 @@ website:
           - text: "Hi!"
       - section: "Helpers"
         contents:
-          - text: "Advanced Facetting Techniques"
-            href: tips/Advanced facetting techniques.qmd
-          - text: "Advanced Geometries with ggforce"  
-            href: tips/Advanced geometries with ggforce.qmd
-          - text: "Advanced Nested Faceting with ggh4x"  
-            href: tips/Advanced Nested Faceting with ggh4x.qmd
-          - text: "Common Gotchas with text"  
-            href: tips/Common gotchas with text.qmd
-          - text: "Complex Layouts with patchwork"  
-            href: tips/Complex Layouts with patchwork.qmd
-          - text: "Custom Color Palettes"  
-            href: tips/Custom Color Palettes.qmd
-          - text: "Custom Theme Functions"  
-            href: tips/Custom theme functions.qmd
-          - text: "Data Emphasis"  
-            href: tips/Data Emphasis.qmd
+          - text: "Advanced facetting techniques"
+            href: tips\Advanced facetting techniques.qmd
+          - text: "Advanced geometries with ggforce"
+            href: tips\Advanced geometries with ggforce.qmd
+          - text: "Advanced Nested Faceting with ggh4x"
+            href: tips\Advanced Nested Faceting with ggh4x.qmd
+          - text: "All the ggplot2 Theme Arguments"
+            href: tips\All the ggplot2 Theme Arguments.qmd
+          - text: "Common gotchas with text"
+            href: tips\Common gotchas with text.qmd
+          - text: "Complex Layouts with patchwork"
+            href: tips\Complex Layouts with patchwork.qmd
+          - text: "Custom Color Palettes"
+            href: tips\Custom Color Palettes.qmd
+          - text: "Custom theme functions"
+            href: tips\Custom theme functions.qmd
+          - text: "Data Emphasis"
+            href: tips\Data Emphasis.qmd
           - text: "Images with ggimage"
-            href: tips/Images with ggimage.qmd
-          - text: "Multiple Color Scales with ggnewscale"  
-            href: tips/Multiple Color Scales with ggnewscale.qm
-          - text: "Ordered Barcharts"  
-            href: tips/Ordered Barcharts.qmd
-          - text: "Saving and Reusing Themes"  
-            href: tips/Saving and reusing themes.qmd
-          - text: "Theme Elements"  
-            href: tips/Theme elements.qmd
+            href: tips\Images with ggimage.qmd
+          - text: "Multiple Color Scales with ggnewscale"
+            href: tips\Multiple Color Scales with ggnewscale.qmd
+          - text: "Ordered Barcharts"
+            href: tips\Ordered Barcharts.qmd
+          - text: "Saving and reusing themes"
+            href: tips\Saving and reusing themes.qmd
+          - text: "Theme elements"
+            href: tips\Theme elements.qmd
 
 
 editor: visual
@@ -99,5 +104,5 @@ execute:
   warning: false
   message: false
   # freeze: auto
-  # cache: true
+  cache: false
 
