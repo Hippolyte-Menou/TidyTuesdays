@@ -38,40 +38,16 @@ website:
           - text: "Hi!"
       - section: "Helpers"
         contents:
-          - text: "Advanced Facetting Techniques"
-            href: tips/Advanced facetting techniques.qmd
-          - text: "Advanced Geometries with ggforce"  
-            href: tips/Advanced geometries with ggforce.qmd
-          - text: "Advanced Nested Faceting with ggh4x"  
-            href: tips/Advanced Nested Faceting with ggh4x.qmd
-          - text: "Common Gotchas with text"  
-            href: tips/Common gotchas with text.qmd
-          - text: "Complex Layouts with patchwork"  
-            href: tips/Complex Layouts with patchwork.qmd
-          - text: "Custom Color Palettes"  
-            href: tips/Custom Color Palettes.qmd
-          - text: "Custom Theme Functions"  
-            href: tips/Custom theme functions.qmd
-          - text: "Data Emphasis"  
-            href: tips/Data Emphasis.qmd
-          - text: "Images using ggimage"
-            href: tips/Images using ggimage.qmd
-          - text: "Multiple Color Scales with ggnewscale"  
-            href: tips/Multiple Color Scales with ggnewscale.qm
-          - text: "Ordered Barcharts"  
-            href: tips/Ordered Barcharts.qmd
-          - text: "Saving and Reusing Themes"  
-            href: tips/Saving and reusing themes.qmd
-          - text: "Theme Elements"  
-            href: tips/Theme elements.qmd
+          - tips/*.qmd
+
 
 editor: visual
 
 format:
   html:
     theme:
-      light: yeti
-      dark: superhero
+      light: [yeti, theme-light.scss]
+      dark: [superhero, theme-dark.scss]
     code-theme: "monokai"
     css: styles.css
     toc: true
@@ -90,8 +66,9 @@ format:
     
 
 execute:
-  cache: true
   error: true
   warning: false
   message: false
   # freeze: auto
+  # cache: true
+

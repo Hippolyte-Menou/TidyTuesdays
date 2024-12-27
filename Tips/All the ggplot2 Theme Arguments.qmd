@@ -1,0 +1,641 @@
+---
+title: "All the ggplot2 Theme Arguments"
+format: html
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(ggplot2)
+```
+
+```{r}
+#| label: legend
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+theme_legend <-
+  theme( # Position globale de la légende
+    legend.position = "bottom",     # "right", "left", "bottom", "top", "none", ou c(x, y)
+    legend.direction = "horizontal", # "vertical" ou "horizontal"
+    legend.justification = "center", # Point d'ancrage de la légende
+    legend.margin = margin(t = 1, r = 1, b = 1, l = 1, unit = "pt"), # Marges
+    legend.box = "vertical",      # "vertical", "horizontal"
+    legend.box.just = "left",     # Justification du box
+    legend.spacing = unit(1, "cm"), # Espace entre éléments
+    legend.spacing.x = unit(1, "cm"), # Espace horizontal
+    legend.spacing.y = unit(1, "cm"), # Espace vertical
+  ) + 
+  theme( # Style du titre de la Légende
+    legend.title = element_text(
+      family = "arial",
+      face = "bold",      # "plain", "bold", "italic", "bold.italic"
+      size = 12,
+      colour = "black",
+      angle = 0,
+      hjust = 0.5,
+      vjust = 0.5,
+      lineheight = 1.0),
+    legend.title.align = 0.5     # Alignement du titre (0-1)
+  ) +
+  theme( # Style du texte de la Légende
+    legend.text = element_text(
+      family = "Arial",
+      face = "plain",
+      size = 10,
+      colour = "black",
+      angle = 0,
+      hjust = 0, # Alignement du texte (0-1)
+      vjust = 0.5,
+      lineheight = 1.0
+    )
+  ) + 
+  theme( # Apparence des Clés (Symboles)
+    legend.key = element_rect(
+      fill = "white",
+      colour = "black",
+      size = 0.5,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(1.2, "lines"),
+    legend.key.height = unit(1, "cm"),
+    legend.key.width = unit(1, "cm")
+  ) + 
+  theme( # Fond et Bordure
+    legend.background = element_rect(
+      fill = "white",
+      colour = "black",
+      size = 0.5,
+      linetype = "solid"
+    ),
+    legend.box.background = element_rect(
+      fill = "white",
+      colour = "black"
+    )
+  )
+
+# Modification du type de guide
+guides(
+  color = guide_legend(),  # guide standard
+  fill = guide_colorbar(), # barre de couleur
+  size = guide_legend(
+    title = "Taille",
+    title.position = "top",
+    nrow = 2,              # nombre de lignes
+    byrow = TRUE,         # remplissage par ligne
+    reverse = FALSE,      # inverse l'ordre
+    order = 1            # ordre parmi les légendes
+  )
+)
+
+# Modification du texte du titre
+labs(
+  color = "Nouveau titre",     # Pour légende de couleur
+  fill = "Nouveau titre",      # Pour légende de remplissage
+  size = "Nouveau titre",      # Pour légende de taille
+  shape = "Nouveau titre"      # Pour légende de forme
+)
+
+# Modification des étiquettes
+scale_color_discrete(labels = c("Label1", "Label2"))
+# ou
+scale_fill_discrete(labels = c("Label1", "Label2"))
+```
+
+```{r}
+#| label: title
+#| echo: False
+#| results: hide
+#| message: False
+#| warning: False
+
+# Via labs()
+labs(
+  title = "Titre principal",
+  subtitle = "Sous-titre",
+  caption = "Légende en bas",
+  tag = "A",  # Tag (comme A, B, C pour des sous-figures)
+)
+
+# Ou via ggtitle()
+ggtitle(
+  label = "Titre principal",
+  subtitle = "Sous-titre"
+)
+
+theme(
+  # Titre principal
+  plot.title = element_text(
+    family = "Arial",         # Police
+    face = "bold",           # "plain", "bold", "italic", "bold.italic"
+    size = 16,               # Taille
+    colour = "black",        # Couleur
+    angle = 0,               # Angle de rotation
+    hjust = 0.5,            # Alignement horizontal (0 = gauche, 1 = droite)
+    vjust = 0.5,            # Alignement vertical (0 = bas, 1 = haut)
+    lineheight = 1.2,       # Hauteur de ligne
+    margin = margin(b = 10), # Marges (t=haut, r=droite, b=bas, l=gauche)
+  ),
+  
+  # Sous-titre
+  plot.subtitle = element_text(
+    family = "Arial",
+    face = "plain",
+    size = 12,
+    colour = "grey50",
+    margin = margin(b = 10)
+  ),
+  
+  # Légende en bas
+  plot.caption = element_text(
+    family = "Arial",
+    face = "italic",
+    size = 8,
+    colour = "grey50",
+    hjust = 1,              # Aligné à droite par défaut
+    margin = margin(t = 10)
+  ),
+  
+  # Tag
+  plot.tag = element_text(
+    size = 12,
+    face = "bold"
+  ),
+  plot.tag.position = c(0, 1)  # Position du tag (x, y)
+)
+
+theme(
+  # Titre axe X
+  axis.title.x = element_text(
+    family = "Arial",
+    face = "bold",
+    size = 12,
+    colour = "black",
+    angle = 0,
+    hjust = 0.5,
+    vjust = 0,
+    margin = margin(t = 10)
+  ),
+  
+  # Titre axe Y
+  axis.title.y = element_text(
+    family = "Arial",
+    face = "bold",
+    size = 12,
+    colour = "black",
+    angle = 90,
+    hjust = 0.5,
+    vjust = 1,
+    margin = margin(r = 10)
+  ),
+  
+  # Titre axe Y secondaire
+  axis.title.y.right = element_text(
+    angle = 90,
+    vjust = 0
+  )
+)
+
+# Ajustement automatique du texte
+library(ggfittext)
+
+# Rotation automatique du texte
+theme(
+  axis.text.x = element_text(angle = 45, hjust = 1)
+)
+
+# Retour à la ligne automatique
+library(ggtext)
+theme(
+  plot.title = element_markdown(lineheight = 1.1)
+)
+
+theme(
+  # Alignement du titre
+  plot.title.position = "panel",  # "panel" ou "plot"
+  
+  # Marges du graphique
+  plot.margin = margin(t = 20, r = 20, b = 20, l = 20),
+  
+  # Position des éléments
+  plot.title = element_text(hjust = 0.5),  # Centré
+  plot.caption = element_text(hjust = 1),   # Aligné à droite
+)
+```
+
+```{r}
+#| label: axis
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+theme(
+  # Style des titres d'axes
+  axis.title = element_text(size = 12, face = "bold"),
+  axis.title.x = element_text(
+    margin = margin(t = 10),    # Marge supérieure
+    angle = 0,
+    hjust = 0.5,
+    vjust = 0
+  ),
+  axis.title.y = element_text(
+    margin = margin(r = 10),    # Marge droite
+    angle = 90,
+    hjust = 0.5,
+    vjust = 1
+  ),
+  
+  # Style des étiquettes d'axes
+  axis.text = element_text(size = 10),
+  axis.text.x = element_text(
+    angle = 45,               # Rotation
+    hjust = 1,               # Alignement horizontal
+    vjust = 1,               # Alignement vertical
+    margin = margin(t = 5)   # Marge
+  ),
+  axis.text.y = element_text(
+    hjust = 1,
+    margin = margin(r = 5)
+  ),
+  
+  # Lignes d'axes
+  axis.line = element_line(
+    colour = "black",
+    size = 0.5,
+    linetype = "solid"
+  ),
+  axis.line.x = element_line(),
+  axis.line.y = element_line(),
+  
+  # Graduations
+  axis.ticks = element_line(colour = "black", size = 0.5),
+  axis.ticks.x = element_line(),
+  axis.ticks.y = element_line(),
+  axis.ticks.length = unit(0.25, "cm"),
+  
+  # Espacement
+  axis.text.x.top = element_text(),    # Pour axes en haut
+  axis.text.y.right = element_text(),  # Pour axes à droite
+)
+
+# Échelle continue
+scale_x_continuous(
+  name = "Titre axe X",
+  breaks = seq(0, 100, by = 10),    # Points de graduation
+  limits = c(0, 100),               # Limites
+  expand = c(0, 0),                 # Expansion aux extrémités
+  labels = function(x) paste0(x, "%"), # Format des étiquettes
+  position = "bottom",              # Position de l'axe
+  trans = "log10"                   # Transformation
+)
+
+# Échelle discrète
+scale_x_discrete(
+  name = "Titre axe X",
+  limits = c("A", "B", "C"),       # Ordre des catégories
+  labels = c("Groupe A", "Groupe B", "Groupe C"),
+  expand = c(0.05, 0),             # Expansion
+  position = "bottom"
+)
+
+# Échelle de date
+scale_x_date(
+  name = "Date",
+  date_breaks = "1 month",         # Intervalle
+  date_labels = "%b %Y",          # Format de date
+  limits = as.Date(c("2020-01-01", "2020-12-31"))
+)
+
+theme(
+  # Lignes de grille majeures
+  panel.grid.major = element_line(
+    colour = "grey90",
+    size = 0.2,
+    linetype = "solid"
+  ),
+  panel.grid.major.x = element_line(),
+  panel.grid.major.y = element_line(),
+  
+  # Lignes de grille mineures
+  panel.grid.minor = element_line(
+    colour = "grey95",
+    size = 0.1,
+    linetype = "dotted"
+  ),
+  panel.grid.minor.x = element_line(),
+  panel.grid.minor.y = element_line()
+)
+
+# Axes secondaires
+scale_y_continuous(
+  sec.axis = sec_axis(
+    trans = ~.*0.453592,    # Conversion (ex: lbs to kg)
+    name = "Secondary Axis"
+  )
+)
+
+# Transformation des axes
+scale_x_continuous(trans = "log10")
+scale_y_continuous(trans = "sqrt")
+
+# Format des nombres
+scale_y_continuous(
+  labels = scales::comma,              # 1,000
+  labels = scales::percent,            # 50%
+  labels = scales::dollar,             # $100
+  labels = function(x) paste0(x, "€")  # Custom
+)
+
+# Positions alternatives des axes
+scale_x_continuous(position = "top")    # Axe X en haut
+scale_y_continuous(position = "right")  # Axe Y à droite
+
+# Suppression des axes
+theme(
+  axis.text = element_blank(),
+  axis.ticks = element_blank(),
+  axis.title = element_blank()
+)
+```
+
+```{r}
+#| label: panel-theme
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Panel customization
+theme(
+  # Background panel
+  panel.background = element_rect(
+    fill = "white",
+    colour = "black",
+    size = 0.5,
+    linetype = "solid"
+  ),
+  
+  # Panel border
+  panel.border = element_rect(
+    colour = "black",
+    fill = NA,
+    size = 1
+  ),
+  
+  # Panel spacing
+  panel.spacing = unit(2, "lines"),
+  panel.spacing.x = unit(2, "lines"),
+  panel.spacing.y = unit(2, "lines"),
+  
+  # Panel placement
+  panel.ontop = FALSE,
+  
+  # Outer margin
+  plot.margin = margin(t = 20, r = 20, b = 20, l = 20, unit = "pt")
+)
+```
+
+```{r}
+#| label: strip-theme
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Facet strip customization
+theme(
+  # Strip background
+  strip.background = element_rect(
+    fill = "grey90",
+    colour = "black",
+    size = 0.5,
+    linetype = "solid"
+  ),
+  
+  # Strip text
+  strip.text = element_text(
+    family = "Arial",
+    size = 12,
+    face = "bold",
+    colour = "black",
+    margin = margin(t = 5, b = 5)
+  ),
+  
+  # Specific strip placement
+  strip.text.x = element_text(margin = margin(b = 5)),
+  strip.text.y = element_text(angle = -90, margin = margin(l = 5)),
+  
+  # Strip placement
+  strip.placement = "outside",
+  strip.switch.pad.grid = unit(0.5, "cm"),
+  strip.switch.pad.wrap = unit(0.5, "cm")
+)
+```
+
+```{r}
+#| label: facet-theme
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Facet specific theme elements
+facet_wrap(
+  ~variable,
+  scales = "free",
+  nrow = 2,
+  strip.position = "top",
+  labeller = label_wrap_gen(width = 20)
+)
+
+facet_grid(
+  rows = vars(var1),
+  cols = vars(var2),
+  switch = "y",
+  space = "free",
+  margins = TRUE
+)
+```
+
+```{r}
+#| label: plot-service-lines
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Reference lines and annotations
+theme(
+  # Reference line thickness
+  ref.line.thickness = 0.5,
+  
+  # Reference line color
+  ref.line.colour = "grey50",
+  
+  # Annotation text
+  plot.annotation = element_text(
+    family = "Arial",
+    size = 10,
+    colour = "grey30",
+    margin = margin(t = 10)
+  ),
+  
+  # Annotation background
+  plot.annotation.background = element_rect(
+    fill = "white",
+    colour = NA
+  )
+)
+```
+
+```{r}
+#| label: aspect-ratio
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Aspect ratio and coordinate system
+theme(
+  # Aspect ratio
+  aspect.ratio = 1,
+  
+  # Plot dimensions
+  plot.width = unit(6, "in"),
+  plot.height = unit(4, "in"),
+  
+  # Coordinate expansion
+  plot.expansion = expansion(
+    mult = c(0.05, 0.05),
+    add = c(0, 0)
+  )
+)
+
+# Coordinate systems
+coord_fixed(ratio = 1)
+coord_flip()
+coord_polar(theta = "y")
+```
+
+```{r}
+#| label: custom-fonts
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Font customization
+theme(
+  # Text family for all elements
+  text = element_text(
+    family = "Arial",
+    size = 12,
+    colour = "black"
+  ),
+  
+  # Custom font loading
+  # Requires systemfonts package
+  font.family = "Comic Sans MS",
+  font.face = "bold",
+  
+  # Font fallback
+  font.fallback = TRUE,
+  
+  # Text rendering
+  text.rendering = "auto"
+)
+```
+
+```{r}
+#| label: color-palettes
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Color palette customization
+scale_color_brewer(palette = "Set1")
+scale_fill_viridis_d()
+scale_color_gradient(low = "blue", high = "red")
+scale_fill_gradientn(
+  colours = c("red", "yellow", "green"),
+  values = c(0, 0.5, 1),
+  guide = "colorbar"
+)
+
+# Custom color scales
+scale_color_manual(
+  values = c("red", "blue", "green"),
+  aesthetics = c("colour", "fill"),
+  guide = "legend"
+)
+```
+
+```{r}
+#| label: guides-advanced
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Advanced guide customization
+guides(
+  colour = guide_colorbar(
+    barwidth = unit(20, "lines"),
+    barheight = unit(1, "lines"),
+    nbin = 100,
+    raster = TRUE,
+    ticks = TRUE,
+    title.position = "top",
+    title.hjust = 0.5,
+    label.position = "bottom"
+  ),
+  
+  size = guide_legend(
+    nrow = 1,
+    byrow = TRUE,
+    keywidth = unit(1, "cm"),
+    keyheight = unit(0.5, "cm"),
+    label.position = "bottom",
+    label.hjust = 0.5,
+    label.vjust = 1
+  )
+)
+```
+
+```{r}
+#| label: theme-modifications
+#| echo: false
+#| results: hide
+#| message: false
+#| warning: false
+
+# Theme modifications and inheritance
+theme_set(theme_minimal())
+theme_update(
+  text = element_text(family = "Arial"),
+  plot.title = element_text(face = "bold"),
+  axis.title = element_text(face = "italic")
+)
+
+# Create custom theme function
+theme_custom <- function(base_size = 12, base_family = "Arial") {
+  theme_minimal(base_size = base_size, base_family = base_family) %+replace%
+  theme(
+    plot.title = element_text(face = "bold", size = rel(1.2)),
+    plot.subtitle = element_text(face = "italic", size = rel(0.9)),
+    plot.caption = element_text(face = "italic", size = rel(0.7)),
+    axis.title = element_text(face = "bold"),
+    legend.title = element_text(face = "bold"),
+    panel.grid.major = element_line(colour = "grey90"),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA)
+  )
+}
+```

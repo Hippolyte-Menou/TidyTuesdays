@@ -57,11 +57,14 @@ format: html
 #| message: False
 
 library(DT)
+library(scales)
 library(ggimage)
 library(tidyverse)
 library(patchwork)
 library(extrafont)
 ```
+
+Let's explore this data
 
 ```{r}
 #| label: Import Data
@@ -106,9 +109,13 @@ theme_update(
 
 ```
 
-# *Visualizing Launches*
+# The Space Race: A Half-Century of Orbital Ambitions
 
-## *Launches by country*
+Since the launch of Sputnik 1 in 1957, the quest to reach orbit has been pursued by nations around the world, creating a fascinating story of technological achievement and geopolitical rivalry.
+
+## Global Leaders in Space
+
+China and France follow as the next most active spacefaring nations, though with significantly fewer launches. This hierarchy reflects both technological capabilities and national priorities in space exploration.
 
 ```{r}
 #| label: Launches by country
@@ -116,103 +123,263 @@ theme_update(
 #| fig.height: 9
 #| fig.width: 16
 
-countries_colors <- c("United States" = "#1a80bb",
-                      "France" = "#8cc5e3",
-                      "Soviet Union - Russia" = "#a00000",
-                      "China" = "#d8a6a6",
-                      "Other Countries" = "grey40")
+# Define base text size for relative scaling
+base_size <- 12
 
-launches_by_country <- launches %>% 
-  group_by(country_name) %>% 
-  summarise(count = n())
-
-total_country <- nrow(launches_by_country)
-keep_n <- 4  # Number of top countries to show in main plot
-
-# Create base theme for shared styling
-theme_space_launches <- function() {
-  theme_minimal() %+replace%
-    theme(  # Shared elements between both plots
+# Create base theme with relative scaling
+theme_space_launches <- function(base_size = 12) {
+  theme_minimal(base_size = base_size) %+replace%
+    theme(
       legend.position = "none",
       panel.grid.minor = element_blank(),
       panel.grid.major.y = element_blank(),
       axis.title = element_blank(),
       plot.background = element_rect(fill = "#f8f8f8"),
-      plot.title = element_text(face = "bold", margin = margin(b = 10), hjust = 0.5))
+      plot.title = element_text(
+        face = "bold", 
+        margin = margin(b = 10), 
+        hjust = 0.5,
+        size = rel(2.0)  # Relative to base size
+      )
+    )
 }
-
 
 # Main plot
 launches_by_country_top_plot <- launches_by_country %>% 
-  mutate(country_name = fct_lump_n(country_name, n = keep_n, w = count, other_level = "Other Countries"),  # Combine all countries beyond top 4 into "Other Countries"
-         country_name = fct_reorder(country_name, count)) %>% 
-  
+  mutate(
+    country_name = fct_lump_n(country_name, n = keep_n, w = count, 
+                             other_level = "Other Countries"),
+    country_name = fct_reorder(country_name, count)
+  ) %>% 
   ggplot(aes(x = country_name, y = count, fill = country_name)) +
   geom_col(width = 0.7) +
   coord_flip() +
   
-  # Add country flags next to bars
-  geom_image(aes(image = paste0("flags/", country_name, ".png")), y = -100, size = 0.08) +
+  # Add country flags
+  geom_image(aes(image = paste0("flags/", country_name, ".png")), 
+             y = -100, size = 0.08) +
   
-  scale_y_continuous(position = "right",
-                     labels = scales::comma,
-                     breaks = seq(0, 3000, by = 500)) +
+  scale_y_continuous(
+    position = "right",
+    labels = scales::comma,
+    breaks = seq(0, 3000, by = 500)
+  ) +
   
   scale_fill_manual(values = countries_colors) + 
   
-  # Add visual connectors to inset plot
-  geom_rect(xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 300, color = "#333333", fill = NA, size = 0.7, linetype = "dashed") +  # Rectangle around "Other Countries" bar
+  # Inset connectors
+  geom_rect(
+    xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 300,
+    color = "#333333", fill = NA, size = 0.7, linetype = "dashed"
+  ) +
+  geom_segment(
+    x = 0.5, y = 300, xend = 0.4, yend = 890,
+    color = "#333333", linetype = "dashed"
+  ) + 
+  geom_segment(
+    x = 1.5, y = 300, xend = 3, yend = 890,
+    color = "#333333", linetype = "dashed"
+  ) + 
   
-  geom_segment(x = 0.5, y = 300, xend = 0.4, yend = 890, color = "#333333", linetype = "dashed") + 
-  geom_segment(x = 1.5, y = 300, xend = 3, yend = 890, color = "#333333", linetype = "dashed") + 
+  labs(
+    title = "Global Space Race: Launch Statistics by Country",
+    subtitle = "Total number of orbital launches from 1957 to 2018",
+    caption = "Data source: Jonathan McDowell's JSR Launch Vehicle Database"
+  ) +
   
-  labs(title = "Global Space Race: Launch Statistics by Country",
-       subtitle = "Total number of orbital launches from 1957 to 2018",
-       caption = "Data source: Jonathan McDowell's JSR Launch Vehicle Database") +
-  
-  # Theme
-  theme_space_launches() +
-  theme(panel.background = element_rect(fill = "#f8f8f8", color = NA),
-        axis.text = element_text(size = 24, color = "#333333"),
-        axis.text.x = element_text(margin = margin(t = 10)),
-        plot.title = element_text(size = 32),
-        plot.subtitle = element_text(size = 24, color = "#666666", margin = margin(b = 20), hjust = 0.5),
-        plot.caption = element_text(size = 16, color = "#666666", margin = margin(t = 20)),
-        plot.margin = margin(80, 20, 20, 20))
+  theme_space_launches(base_size) +
+  theme(
+    panel.background = element_rect(fill = "#f8f8f8", color = NA),
+    axis.text = element_text(
+      size = rel(2.0),  # 24/12
+      color = "#333333"
+    ),
+    axis.text.x = element_text(margin = margin(t = 10)),
+    plot.title = element_text(size = rel(2.67)),  # 32/12
+    plot.subtitle = element_text(
+      size = rel(2.0),  # 24/12
+      color = "#666666",
+      margin = margin(b = 20),
+      hjust = 0.5
+    ),
+    plot.caption = element_text(
+      size = rel(1.33),  # 16/12
+      color = "#666666",
+      margin = margin(t = 20)
+    ),
+    plot.margin = margin(80, 20, 20, 20)
+  )
 
-# Inset plot with other countries
+# Inset plot
 launches_by_country_inset_plot <- launches_by_country %>% 
   arrange(count) %>% 
   head(total_country - keep_n) %>% 
   mutate(country_name = fct_reorder(country_name, count)) %>% 
   ggplot(aes(x = country_name, y = count, fill = country_name)) + 
   geom_col(width = 0.7) + 
-  scale_y_continuous(position = "right", 
-                     breaks = seq(0, 120, by = 20),
-                     labels = scales::comma) +
+  scale_y_continuous(
+    position = "right", 
+    breaks = seq(0, 120, by = 20),
+    labels = scales::comma
+  ) +
   scale_fill_viridis_d(option = "mako", begin = 0.7, end = 0.3) +
   coord_flip() +
-  labs(title = "Other Countries' Launch Statistics",
-       caption = "Note: Sea Launch program (1999-2014) involved multiple countries") +
-  theme_space_launches() +
-  theme(plot.background = element_rect(fill = "#f8f8f8", color = "#333333", size = 0.5),
-        plot.margin = unit(c(10, 15, 10, 10), "pt"),
-        axis.text = element_text(size = 14, color = "#333333"),
-        plot.title = element_text(size = 16),
-        plot.caption = element_text(size = 12, color = "#666666", margin = margin(t = 10)))
+  labs(
+    title = "Other Countries' Launch Statistics",
+    caption = "Note: Sea Launch program (1999-2014) involved multiple countries"
+  ) +
+  theme_space_launches(base_size) +
+  theme(
+    plot.background = element_rect(
+      fill = "#f8f8f8",
+      color = "#333333",
+      size = 0.5
+    ),
+    plot.margin = unit(c(10, 15, 10, 10), "pt"),
+    axis.text = element_text(
+      size = rel(1.17),  # 14/12
+      color = "#333333"
+    ),
+    plot.title = element_text(size = rel(1.33)),  # 16/12
+    plot.caption = element_text(
+      size = rel(1.0),  # 12/12
+      color = "#666666",
+      margin = margin(t = 10)
+    )
+  )
 
-# Combine main plot with inset plot
+# Combine plots
 launches_by_country_top_plot + 
-  inset_element(launches_by_country_inset_plot, 
-                l = 0.3, r = 1.0, t = 0.5, b = 0, clip = FALSE)
+  inset_element(
+    launches_by_country_inset_plot, 
+    l = 0.3, r = 1.0, t = 0.5, b = 0, 
+    clip = FALSE
+  )
 
 ```
+
+Our visualization reveals the dominant players in orbital launches from 1957 to 2018. The Soviet Union (later Russia) and the United States emerge as the clear frontrunners, reflecting their historic Space Race during the Cold War. Together, these two nations account for the majority of all orbital launches. They each have more than the combined total of all the other countries in the world.
+
+China and France follow as the next most active spacefaring nations, though with significantly fewer launches. This hierarchy reflects both technological capabilities and national priorities in space exploration. Once again the rest of the nations have a combined total of launches smaller than France.
+
+A diverse group of nations that have developed independent space launch capabilities, including:
+
+-   India, which has steadily built its space program since the 1960s
+-   Japan, known for its reliable and sophisticated launch vehicles
+-   Israel, which has developed specialized launch capabilities
+-   Iran and North Korea, which have more recently joined the ranks of spacefaring nations
+
+Of particular interest is the Sea Launch program, a unique multinational commercial venture that operated from 1999 to 2014. This project, involving Norway, Russia, Ukraine, and the United States, exemplified international cooperation in space access, using a mobile sea-based platform for equatorial launches.
 
 ## *The fall of the Soviet Union*
 
 ```{r}
 #| label: The Fall of the Soviet Union
 
+# Define base text size for relative scaling
+base_size <- 12
 
+# Define color scheme consistent with previous plot
+countries_colors <- c(
+  "United States" = "#1a80bb",
+  "France" = "#8cc5e3",
+  "Soviet Union - Russia" = "#a00000",
+  "China" = "#d8a6a6",
+  "Other Countries" = "grey40"
+)
+
+# Create base theme with relative scaling
+theme_space_timeline <- function(base_size = 12) {
+  theme_minimal(base_size = base_size) %+replace%
+    theme(
+      # Text elements
+      plot.title = element_text(
+        size = rel(1.83),  # 22/12 - reduced from 2.67
+        face = "bold",
+        margin = margin(t = 20, b = 10),
+        hjust = 0.5
+      ),
+      plot.subtitle = element_text(
+        size = rel(1.33),   # 16/12 - reduced from 2.0
+        color = "#666666",
+        margin = margin(b = 20),
+        hjust = 0.5
+      ),
+      plot.caption = element_text(
+        size = rel(1.33),  # 16/12
+        color = "#666666",
+        margin = margin(t = 20)
+      ),
+      
+      # Axis formatting
+      axis.title = element_text(
+        size = rel(1.5),   # 18/12
+        color = "#333333"
+      ),
+      axis.text = element_text(
+        size = rel(1.17),  # 14/12
+        color = "#333333"
+      ),
+      
+      # Grid lines
+      panel.grid.minor = element_blank(),
+      panel.grid.major.x = element_line(color = "grey90"),
+      panel.grid.major.y = element_line(color = "grey90"),
+      
+      # Legend formatting
+      legend.position = "right",
+      legend.title = element_text(size = rel(1.33)),  # 16/12
+      legend.text = element_text(size = rel(1.17)),   # 14/12
+      legend.key.size = unit(2, "lines"),
+      
+      # Background
+      plot.background = element_rect(fill = "#f8f8f8", color = NA),
+      panel.background = element_rect(fill = "#f8f8f8", color = NA),
+      
+      # Margins
+      plot.margin = margin(30, 30, 30, 30)  # Increased overall margins
+    )
+}
+
+# Calculate cumulative launches per country over time
+cumulative_launches <- launches %>%
+  arrange(launch_date) %>%
+  group_by(country_name) %>%
+  mutate(cumulative_count = row_number()) %>%
+  mutate(launch_year = year(launch_date)) %>% 
+  filter(launch_year <= 2024)
+
+# Create the line plot
+cumulative_launches %>% 
+  ggplot(aes(x = launch_date, 
+             y = cumulative_count, 
+             group = country_name)) +
+  # Add lines
+  geom_line() +
+  
+  # Customize scales
+  scale_y_continuous(
+    labels = scales::comma,
+    breaks = seq(0, 3000, by = 500),
+    expand = expansion(mult = c(0.02, 0.02))
+  ) +
+  
+  scale_x_date(
+    date_breaks = "10 years",
+    date_labels = "%Y",
+    expand = expansion(mult = c(0.02, 0.02))
+  ) +
+  
+  # Add labels
+  labs(
+    title = "The Space Race: Cumulative Orbital Launches (1957-2018)",
+    subtitle = "Showing the progression of space launches by major space-faring nations",
+    x = "Year",
+    y = "Cumulative Number of Launches",
+    caption = "Data source: Jonathan McDowell's JSR Launch Vehicle Database"
+  ) +
+  
+  # Apply themed styling with relative text sizes
+  theme_space_timeline(base_size)
 
 ```

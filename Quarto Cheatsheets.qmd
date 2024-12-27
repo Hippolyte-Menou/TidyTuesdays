@@ -5,56 +5,56 @@ author: "Hippolyte Menou"
 
 In Quarto, code blocks can be customized using various parameters to control their behavior and appearance. These parameters are specified using the `#|` syntax within the code block. Here are some of the key parameters you can use:
 
-1. **`label`**: A label for the code block, which can be used for referencing.
+1.  **`label`**: A label for the code block, which can be used for referencing.
 
 ```{r}
 #| label: fig-theme-setting
 ```
 
-2. **`echo`**: Controls whether the code itself is displayed in the output.
+2.  **`echo`**: Controls whether the code itself is displayed in the output.
 
 ```{r}
 #| echo: false
 ```
 
-3. **`include`**: Controls whether the code and its output are included in the final document.
+3.  **`include`**: Controls whether the code and its output are included in the final document.
 
 ```{r}
 #| include: true
 ```
 
-4. **`eval`**: Controls whether the code is evaluated.
+4.  **`eval`**: Controls whether the code is evaluated.
 
 ```{r}
 #| eval: false
 ```
 
-5. **`results`**: Controls how the results of the code are displayed (e.g., `"asis"`, `"hold"`, `"hide"`, `"markup"`).
+5.  **`results`**: Controls how the results of the code are displayed (e.g., `"asis"`, `"hold"`, `"hide"`, `"markup"`).
 
 ```{r}
 #| results: "asis"
 ```
 
-6. **`warning`** and **`message`**: Controls whether warnings and messages are displayed.
+6.  **`warning`** and **`message`**: Controls whether warnings and messages are displayed.
 
 ```{r}
 #| warning: false
 #| message: false
 ```
 
-7. **`error`**: Controls whether errors are displayed.
+7.  **`error`**: Controls whether errors are displayed.
 
 ```{r}
 #| error: true
 ```
 
-8. **`fig.cap`**: A caption for the figure.
+8.  **`fig.cap`**: A caption for the figure.
 
 ```{r}
 #| fig.cap: "Air Quality"
 ```
 
-9. **`fig.height`** and **`fig.width`**: Controls the height and width of the figure.
+9.  **`fig.height`** and **`fig.width`**: Controls the height and width of the figure.
 
 ```{r}
 #| fig.height: 6
@@ -139,4 +139,3 @@ In Quarto, code blocks can be customized using various parameters to control the
 ```{r}
 #| df-print: "kable"
 ```
-

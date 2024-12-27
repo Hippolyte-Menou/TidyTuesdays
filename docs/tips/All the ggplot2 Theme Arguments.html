@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hippolyte Menou">
 
-<title>Quarto Cheatsheet – TidyTuesdays</title>
+<title>All the ggplot2 Theme Arguments – TidyTuesdays</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,26 +20,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -80,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">TidyTuesdays</span>
     </a>
   </div>
@@ -91,7 +124,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./TidyTuesdays.html" aria-current="page"> <i class="bi bi-house-fill" role="img">
+    <a class="nav-link active" href="../TidyTuesdays.html" aria-current="page"> <i class="bi bi-house-fill" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
   </li>  
@@ -112,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Quarto Cheatsheet</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">All the ggplot2 Theme Arguments</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -126,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./TidyTuesdays.html" class="sidebar-item-text sidebar-link">
+  <a href="../TidyTuesdays.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -141,31 +174,31 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.html" class="sidebar-item-text sidebar-link">
+  <a href="../2018-04-03 - US Tuition Costs/2018-04-03 - US Tuition Costs.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2018-04-03 - US Tuition Costs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2019-01-15 - Space Launches/2019-01-15 - Space Launches.html" class="sidebar-item-text sidebar-link">
+  <a href="../2019-01-15 - Space Launches/2019-01-15 - Space Launches.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2019-01-15 - Space Launches</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2019-02-26 - French Train Delays/2019-02-26 - French Train Delays.html" class="sidebar-item-text sidebar-link">
+  <a href="../2019-02-26 - French Train Delays/2019-02-26 - French Train Delays.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2019-02-26 - French Train Delays</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2023-02-21 - Bob Ross Paintings/2023-02-21 - Bob Ross Paintings.html" class="sidebar-item-text sidebar-link">
+  <a href="../2023-02-21 - Bob Ross Paintings/2023-02-21 - Bob Ross Paintings.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2023-02-21 - Bob Ross Paintings</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2023-03-14 - European Drug Development/2023-03-14 - European Drug Development.html" class="sidebar-item-text sidebar-link">
+  <a href="../2023-03-14 - European Drug Development/2023-03-14 - European Drug Development.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2023-03-14 - European Drug Development</span></a>
   </div>
 </li>
@@ -212,19 +245,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quarto Cheatsheet</h1>
+<h1 class="title">All the ggplot2 Theme Arguments</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Hippolyte Menou </p>
-          </div>
-  </div>
     
   
     
@@ -235,83 +262,17 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>In Quarto, code blocks can be customized using various parameters to control their behavior and appearance. These parameters are specified using the <code>#|</code> syntax within the code block. Here are some of the key parameters you can use:</p>
-<ol type="1">
-<li><strong><code>label</code></strong>: A label for the code block, which can be used for referencing.</li>
-</ol>
-<ol start="2" type="1">
-<li><strong><code>echo</code></strong>: Controls whether the code itself is displayed in the output.</li>
-</ol>
-<ol start="3" type="1">
-<li><strong><code>include</code></strong>: Controls whether the code and its output are included in the final document.</li>
-</ol>
-<ol start="4" type="1">
-<li><strong><code>eval</code></strong>: Controls whether the code is evaluated.</li>
-</ol>
-<ol start="5" type="1">
-<li><p><strong><code>results</code></strong>: Controls how the results of the code are displayed (e.g., <code>"asis"</code>, <code>"hold"</code>, <code>"hide"</code>, <code>"markup"</code>).</p></li>
-<li><p><strong><code>warning</code></strong> and <strong><code>message</code></strong>: Controls whether warnings and messages are displayed.</p></li>
-</ol>
-<ol start="7" type="1">
-<li><strong><code>error</code></strong>: Controls whether errors are displayed.</li>
-</ol>
-<ol start="8" type="1">
-<li><strong><code>fig.cap</code></strong>: A caption for the figure.</li>
-</ol>
-<ol start="9" type="1">
-<li><strong><code>fig.height</code></strong> and <strong><code>fig.width</code></strong>: Controls the height and width of the figure.</li>
-</ol>
-<ol start="10" type="1">
-<li><strong><code>fig.align</code></strong>: Controls the alignment of the figure (e.g., <code>"left"</code>, <code>"center"</code>, <code>"right"</code>).</li>
-</ol>
-<ol start="11" type="1">
-<li><strong><code>out.width</code></strong> and <strong><code>out.height</code></strong>: Controls the width and height of the output.</li>
-</ol>
-<ol start="12" type="1">
-<li><strong><code>cache</code></strong>: Controls whether the results of the code block are cached.</li>
-</ol>
-<ol start="13" type="1">
-<li><strong><code>collapse</code></strong>: Controls whether the code and output are collapsed into a single block.</li>
-</ol>
-<ol start="14" type="1">
-<li><strong><code>code-fold</code></strong>: Controls whether the code is folded (hidden) by default.</li>
-</ol>
-<ol start="15" type="1">
-<li><strong><code>code-summary</code></strong>: Provides a summary of the code when it is folded.</li>
-</ol>
-<ol start="16" type="1">
-<li><strong><code>code-line-numbers</code></strong>: Controls whether line numbers are shown in the code block.</li>
-</ol>
-<ol start="17" type="1">
-<li><strong><code>code-tools</code></strong>: Controls whether code tools (e.g., copy button) are shown.</li>
-</ol>
-<ol start="18" type="1">
-<li><strong><code>code-overflow</code></strong>: Controls how code overflow is handled (e.g., <code>"scroll"</code>, <code>"wrap"</code>).</li>
-</ol>
-<ol start="19" type="1">
-<li><strong><code>code-link</code></strong>: Enables hyper-linking of functions within code blocks to their online documentation.</li>
-</ol>
-<ol start="20" type="1">
-<li><strong><code>layout-ncol</code></strong>: Controls the number of columns in a layout for figures.</li>
-</ol>
-<div>
-
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="cell quarto-layout-panel" data-layout-ncol="2">
-
+<div class="cell">
+<div class="cell-output cell-output-error">
+<pre><code>Error in scale_y_continuous(labels = scales::comma, labels = scales::percent, : argument formel "labels" correspondant à plusieurs arguments fournis</code></pre>
 </div>
-<ol start="21" type="1">
-<li><strong><code>layout-nrow</code></strong>: Controls the number of rows in a layout for figures.</li>
-</ol>
-<div>
-
 </div>
-<div class="cell quarto-layout-panel" data-layout-nrow="2">
-
-</div>
-<ol start="22" type="1">
-<li><strong><code>df-print</code></strong>: Controls the default data frame printing method (e.g., <code>"default"</code>, <code>"kable"</code>, <code>"tibble"</code>, <code>"paged"</code>).</li>
-</ol>
 
 
 

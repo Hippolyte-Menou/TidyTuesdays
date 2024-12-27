@@ -13,6 +13,7 @@ Welcome! I'm Hippolyte Menou, and this is where I explore and visualize interest
 Each week, I dive deep into diverse datasets from the TidyTuesday project, creating comprehensive analyses that go beyond just numbers. From European drug development patterns to American university tuition trends, these stories combine statistical insight with clear, engaging visualizations to uncover meaningful patterns and trends.
 
 -   [2018-04-03 - US Tuition Costs](2018-04-03%20-%20US%20Tuition%20Costs/2018-04-03%20-%20US%20Tuition%20Costs.qmd)
+-   [2019-01-15 - Space Launches](2019-01-15 - Space Launches\2019-01-15 - Space Launches.qmd)
 -   [2019-02-26 - French Train Delays](2019-02-26%20-%20French%20Train%20Delays/2019-02-26%20-%20French%20Train%20Delays.qmd)
 -   [2023-02-21 - Bob Ross Paintings](2023-02-21%20-%20Bob%20Ross%20Paintings/2023-02-21%20-%20Bob%20Ross%20Paintings.qmd)
 -   [2023-03-14 - European Drug Development](2023-03-14%20-%20European%20Drug%20Development/2023-03-14%20-%20European%20Drug%20Development.qmd)
