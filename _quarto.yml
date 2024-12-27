@@ -14,6 +14,10 @@ website:
       - icon: github
         text: "Github"
         href: https://github.com/Hippolyte-Menou/TidyTuesdays
+    right:
+      - icon: info-circle
+        text: "About"
+        href: about.qmd
 
 
   sidebar:
@@ -38,7 +42,32 @@ website:
           - text: "Hi!"
       - section: "Helpers"
         contents:
-          - tips/*.qmd
+          - text: "Advanced Facetting Techniques"
+            href: tips/Advanced facetting techniques.qmd
+          - text: "Advanced Geometries with ggforce"  
+            href: tips/Advanced geometries with ggforce.qmd
+          - text: "Advanced Nested Faceting with ggh4x"  
+            href: tips/Advanced Nested Faceting with ggh4x.qmd
+          - text: "Common Gotchas with text"  
+            href: tips/Common gotchas with text.qmd
+          - text: "Complex Layouts with patchwork"  
+            href: tips/Complex Layouts with patchwork.qmd
+          - text: "Custom Color Palettes"  
+            href: tips/Custom Color Palettes.qmd
+          - text: "Custom Theme Functions"  
+            href: tips/Custom theme functions.qmd
+          - text: "Data Emphasis"  
+            href: tips/Data Emphasis.qmd
+          - text: "Images with ggimage"
+            href: tips/Images with ggimage.qmd
+          - text: "Multiple Color Scales with ggnewscale"  
+            href: tips/Multiple Color Scales with ggnewscale.qm
+          - text: "Ordered Barcharts"  
+            href: tips/Ordered Barcharts.qmd
+          - text: "Saving and Reusing Themes"  
+            href: tips/Saving and reusing themes.qmd
+          - text: "Theme Elements"  
+            href: tips/Theme elements.qmd
 
 
 editor: visual

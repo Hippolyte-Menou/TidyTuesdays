@@ -1,0 +1,23 @@
+---
+title: "Hippolyte Menou"
+about:
+  template: jolla
+  image: profile.jpg
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/Hippolyte-Menou
+---
+
+I'm ...
+
+## Education
+
+Medical Genetics intern/resident | APHP - Paris, France
+ - | Nov 2023 - 
+
+Université Paris Descartes (Paris Cité) | Paris, France
+Medical School | Oct 2016 - Oct 2023 
+
+
+
